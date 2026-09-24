@@ -1,13 +1,18 @@
 /* header and nav layout */
 header .nav-wrapper {
-  background-color: var(--background-color);
+  background-color: #ff7f00;
   width: 100%;
   z-index: 2;
   position: fixed;
+  height: 90px;
 }
 
 header nav {
   box-sizing: border-box;
+  position: fixed;
+  background-color: #ff7f00;
+  height: 90px;
+  width: 100%;
   display: grid;
   grid-template:
     'hamburger brand tools' var(--nav-height)
@@ -16,8 +21,7 @@ header nav {
   gap: 0 24px;
   margin: auto;
   max-width: 1248px;
-  height: var(--nav-height);
-  padding: 0 24px;
+  /* padding: 0 24px; */
   font-family: var(--body-font-family);
 }
 
@@ -27,6 +31,7 @@ header nav[aria-expanded='true'] {
     'sections sections' 1fr
     'tools tools' var(--nav-height) / auto 1fr;
   overflow-y: auto;
+  /* position: fixed; */
   min-height: 100dvh;
 }
 
@@ -269,4 +274,20 @@ header nav .nav-sections ul > li > ul > li {
 /* tools */
 header nav .nav-tools {
   grid-area: tools;
+}
+
+
+
+header nav .nav-brand img{
+  width: 120px;
+  height: auto;
+  transform: rotate(-4deg);
+}
+
+header nav a:any-link {
+    color: #000;
+    font-weight: 700;
+    margin: 0.5em;
+    font-size: 1.15em;
+    cursor: pointer;
 }
