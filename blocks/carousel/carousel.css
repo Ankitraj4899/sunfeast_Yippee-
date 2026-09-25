@@ -1,6 +1,7 @@
 .carousel-wrapper {
   background: linear-gradient(to bottom, #ff7f00 50%, #f9f4f6 50%);
 }
+
 .carousel {
   display: flex;
   align-items: center;
@@ -26,6 +27,7 @@
   border-radius: 50%;
   object-fit: cover;
 }
+
 .next-button,
 .prev-button {
   height: 80px;
@@ -72,7 +74,6 @@
     33% 4%,
     42% 10%
   );
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -82,15 +83,14 @@
   background-color: #deacac;
   cursor: not-allowed;
 }
+
 .video-modal {
   position: fixed;
   inset: 0;
   z-index: 9999;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   background: rgb(0 0 0 / 80%);
 }
 
@@ -182,6 +182,7 @@
     font-size: 25px;
     transition: transform 0.2s ease;
 }
+
 .video-button:hover {
     transform: translate(-50%, -50%) scale(1.1);
 }
@@ -238,6 +239,7 @@
     font-size: 25px;
     transition: transform 0.2s ease;
 }
+
 .video-button-modal:hover {
     transform: translate(-50%, -50%) scale(1.1);
 }
