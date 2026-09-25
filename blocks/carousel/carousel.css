@@ -26,27 +26,218 @@
   border-radius: 50%;
   object-fit: cover;
 }
-
-.next-button {
-  background-color: #b50404;
-  height: 50px;
-  width: 50px;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-
+.next-button,
 .prev-button {
-  background-color: #b50404;
-  height: 50px;
-  width: 50px;
+  height: 80px;
+  width: 80px;
   border: none;
-  border-radius: 50%;
+  background-color: #b50404;
   cursor: pointer;
-}
+  color: white;
+  clip-path: polygon(
+    50% 0%,
+    58% 10%,
+    67% 4%,
+    69% 16%,
+    80% 11%,
+    79% 23%,
+    92% 20%,
+    87% 32%,
+    100% 36%,
+    90% 45%,
+    100% 53%,
+    89% 60%,
+    96% 72%,
+    83% 70%,
+    84% 84%,
+    72% 78%,
+    67% 96%,
+    57% 86%,
+    50% 100%,
+    43% 86%,
+    33% 96%,
+    28% 80%,
+    16% 86%,
+    18% 72%,
+    4% 74%,
+    11% 61%,
+    0% 54%,
+    10% 45%,
+    0% 37%,
+    13% 32%,
+    8% 20%,
+    21% 23%,
+    20% 10%,
+    32% 16%,
+    33% 4%,
+    42% 10%
+  );
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .disable{
   background-color: #deacac;
+  cursor: not-allowed;
+}
+.video-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgb(0 0 0 / 80%);
+}
+
+.video-modal-overlay {
+  position: absolute;
+  inset: 0;
+}
+
+.video-modal-content {
+  position: relative;
+  z-index: 1;
+  border-radius: 1em;
+  border: 20px solid #ff7f00;
+  width: 500px;
+  max-width: 80%;
+  background: #000;
+}
+
+.video-modal-content video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 1em;
+}
+
+.video-modal-close {
+  position: absolute;
+  top: -30px;
+  right: -15px;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.video-button {
+    position: absolute;
+    top: 60%;
+    left: 22%;
+    transform: translate(-50%, -50%);
+    width: 70px;
+    height: 70px;
+    border: none;
+    background: #fff;
+    color: #b50404;
+    cursor: pointer;
+    clip-path: polygon(
+    50% 0%,
+    58% 10%,
+    67% 4%,
+    69% 16%,
+    80% 11%,
+    79% 23%,
+    92% 20%,
+    87% 32%,
+    100% 36%,
+    90% 45%,
+    100% 53%,
+    89% 60%,
+    96% 72%,
+    83% 70%,
+    84% 84%,
+    72% 78%,
+    67% 96%,
+    57% 86%,
+    50% 100%,
+    43% 86%,
+    33% 96%,
+    28% 80%,
+    16% 86%,
+    18% 72%,
+    4% 74%,
+    11% 61%,
+    0% 54%,
+    10% 45%,
+    0% 37%,
+    13% 32%,
+    8% 20%,
+    21% 23%,
+    20% 10%,
+    32% 16%,
+    33% 4%,
+    42% 10%
+    );
+    font-size: 25px;
+    transition: transform 0.2s ease;
+}
+.video-button:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.video-button-modal {
+    position: absolute;
+    top: 47%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70px;
+    height: 70px;
+    border: none;
+    background: #fff;
+    color: #b50404;
+    cursor: pointer;
+    clip-path: polygon(
+    50% 0%,
+    58% 10%,
+    67% 4%,
+    69% 16%,
+    80% 11%,
+    79% 23%,
+    92% 20%,
+    87% 32%,
+    100% 36%,
+    90% 45%,
+    100% 53%,
+    89% 60%,
+    96% 72%,
+    83% 70%,
+    84% 84%,
+    72% 78%,
+    67% 96%,
+    57% 86%,
+    50% 100%,
+    43% 86%,
+    33% 96%,
+    28% 80%,
+    16% 86%,
+    18% 72%,
+    4% 74%,
+    11% 61%,
+    0% 54%,
+    10% 45%,
+    0% 37%,
+    13% 32%,
+    8% 20%,
+    21% 23%,
+    20% 10%,
+    32% 16%,
+    33% 4%,
+    42% 10%
+    );
+    font-size: 25px;
+    transition: transform 0.2s ease;
+}
+.video-button-modal:hover {
+    transform: translate(-50%, -50%) scale(1.1);
 }
