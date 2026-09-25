@@ -1,5 +1,5 @@
 .carousel-wrapper {
-  background: linear-gradient(to bottom, #ff7f00 50%, #f9f4f6 50%);
+  background: linear-gradient(to bottom, #ff7f00 40%, #f9f4f6 40%);
 }
 
 .carousel {
@@ -7,14 +7,17 @@
   align-items: center;
   width: 100%;
   overflow: hidden;
+  padding: 1rem;
 }
 
 .carousel-item {
   display: none;
   align-items: center;
-  margin: 100px 10px;
+  margin: 70px 10px;
   gap: 20px;
   width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .carousel-item.active {
@@ -22,20 +25,32 @@
 }
 
 .carousel-image {
-  height: 22.5rem;
-  width: 22.5rem;
+  height: 25rem;
+  width: 30rem;
   border-radius: 50%;
   object-fit: cover;
+  margin-left: 3em;
+}
+
+.next-button {
+  margin: 2rem;
+}
+
+.prev-button {
+  margin-left: 2rem;
 }
 
 .next-button,
 .prev-button {
-  height: 80px;
-  width: 80px;
+  height: 60px;
+  width: 60px;
   border: none;
   background-color: #b50404;
   cursor: pointer;
   color: white;
+  font-size: 3rem;
+  font-weight: 300;
+  line-height: 1;
   clip-path: polygon(
     50% 0%,
     58% 10%,
@@ -92,6 +107,7 @@
   align-items: center;
   justify-content: center;
   background: rgb(0 0 0 / 80%);
+  border-radius: 1rem;
 }
 
 .video-modal-overlay {
@@ -102,7 +118,7 @@
 .video-modal-content {
   position: relative;
   z-index: 1;
-  border-radius: 1em;
+  border-radius: 1.8em;
   border: 20px solid #ff7f00;
   width: 500px;
   max-width: 80%;
@@ -113,12 +129,12 @@
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 1em;
+  border-radius: 3em;
 }
 
 .video-modal-close {
   position: absolute;
-  top: -30px;
+  top: -28px;
   right: -15px;
   width: 40px;
   height: 40px;
@@ -133,7 +149,7 @@
 .video-button {
     position: absolute;
     top: 60%;
-    left: 22%;
+    left: 31%;
     transform: translate(-50%, -50%);
     width: 70px;
     height: 70px;
@@ -242,4 +258,71 @@
 
 .video-button-modal:hover {
     transform: translate(-50%, -50%) scale(1.1);
+}
+
+
+.carousel-heading {
+  margin-top: 4em;
+  color: #b50404;
+  margin-left: 7rem;
+}
+
+.carousel-description{
+  margin-left:7rem;
+}
+
+.star1,
+.star2,
+.star3,
+.star4 {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: #ffd43b;
+  clip-path: polygon(
+    50% 0%,
+    53% 12%,
+    56% 30%,
+    62% 40%,
+    72% 45%,
+    88% 48%,
+    100% 50%,
+    88% 52%,
+    72% 55%,
+    62% 60%,
+    56% 70%,
+    53% 88%,
+    50% 100%,
+    47% 88%,
+    44% 70%,
+    38% 60%,
+    28% 55%,
+    12% 52%,
+    0% 50%,
+    12% 48%,
+    28% 45%,
+    38% 40%,
+    44% 30%,
+    47% 12%
+  );
+}
+
+.star1 {
+  top: 130px;
+  left: 15%;
+}
+
+.star2 {
+  top: 250px;
+  right: 10%;
+}
+
+.star3 {
+  bottom: 1px;
+  left: 18%;
+}
+
+.star4 {
+  bottom: 55px;
+  right: 20%;
 }
