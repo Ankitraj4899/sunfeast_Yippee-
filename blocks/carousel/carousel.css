@@ -1,5 +1,6 @@
 .carousel-wrapper {
   background: linear-gradient(to bottom, #ff7f00 40%, #f9f4f6 40%);
+  overflow: hidden;
 }
 
 .carousel {
@@ -149,7 +150,7 @@
 .video-button {
     position: absolute;
     top: 60%;
-    left: 31%;
+    left: 29%;
     transform: translate(-50%, -50%);
     width: 70px;
     height: 70px;

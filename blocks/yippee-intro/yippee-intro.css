@@ -1,0 +1,440 @@
+.section:has(.yippee-intro) {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: clip;
+}
+
+.section:has(.yippee-intro) > div {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.yippee-intro,
+.yippee-intro * {
+  box-sizing: border-box;
+}
+
+.yippee-intro {
+  position: relative;
+  width: 100%;
+  max-width: none;
+  min-height: 530px;
+  margin: 100px 0 0;
+  overflow: visible;
+  background: #f9f4f6;
+}
+
+.yippee-yellow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 24%;
+  height: 450px;
+  background: #ffd447;
+  z-index: 1;
+}
+
+.yippee-red {
+  position: absolute;
+  top: 0;
+  right: 4.8%;
+  width: 20%;
+  height: 450px;
+  background: #b50404;
+  border-radius: 0 110px 110px 0;
+  z-index: 2;
+}
+
+.yippee-orange {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 81.5%;
+  height: 450px;
+  background: #ff7f00;
+  border-radius: 0 115px 115px 0;
+  z-index: 3;
+}
+
+.yippee-intro-row {
+  position: relative;
+  width: 100%;
+  z-index: 5;
+}
+
+.yippee-intro-heading-cell {
+  padding-top: 130px;
+  padding-left: 9%;
+  padding-right: 30%;
+}
+
+.yippee-intro-description-cell {
+  padding-left: 9%;
+  padding-right: 25%;
+}
+
+.yippee-intro-heading {
+  margin: 0;
+  font-family: 'Amaranth', sans-serif;
+  font-size: 3rem;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.yippee-heading-black {
+  color: #000;
+}
+
+.yippee-heading-red {
+  color: #b50404;
+}
+
+.yippee-heading-yellow {
+  color: #ffb900;
+}
+
+.yippee-heading-white {
+  color: #fff;
+}
+
+.yippee-intro-description {
+  max-width: 1300px;
+  margin-top: 2rem;
+  font-family: 'Amaranth', sans-serif;
+  font-size: 1.5rem;
+  line-height: 1.7;
+  font-weight: 400;
+  color: #000;
+}
+
+.bottom-head {
+  position: absolute;
+  top: -70px;
+  left: 200px;
+  z-index: 1000;
+  margin: 0;
+  color: #000;
+  font-family: 'Amaranth', sans-serif;
+  font-size: 2rem;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+/* .yippee-noodle-pattern {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+  overflow: hidden;
+  z-index: 10;
+  background-color: transparent;
+  background-image:
+    radial-gradient(
+      ellipse 75px 42px at 37px 0,
+      transparent 0,
+      transparent 19px,
+      #ff7f00 20px,
+      #ff7f00 22px,
+      transparent 23px
+    ),
+    radial-gradient(
+      ellipse 75px 42px at 112px 0,
+      transparent 0,
+      transparent 19px,
+      #ff7f00 20px,
+      #ff7f00 22px,
+      transparent 23px
+    ),
+    radial-gradient(
+      ellipse 75px 42px at 37px 0,
+      transparent 0,
+      transparent 27px,
+      #ff7f00 28px,
+      #ff7f00 30px,
+      transparent 31px
+    ),
+    radial-gradient(
+      ellipse 75px 42px at 112px 0,
+      transparent 0,
+      transparent 27px,
+      #ff7f00 28px,
+      #ff7f00 30px,
+      transparent 31px
+    ),
+    radial-gradient(
+      ellipse 75px 42px at 37px 0,
+      transparent 0,
+      transparent 35px,
+      #ff7f00 36px,
+      #ff7f00 38px,
+      transparent 39px
+    ),
+    radial-gradient(
+      ellipse 75px 42px at 112px 0,
+      transparent 0,
+      transparent 35px,
+      #ff7f00 36px,
+      #ff7f00 38px,
+      transparent 39px
+    );
+
+  background-size:
+    150px 48px,
+    150px 48px,
+    150px 48px,
+    150px 48px,
+    150px 48px,
+    150px 48px;
+
+  background-position:
+    0 0,
+    75px 8px,
+    0 8px,
+    75px 16px,
+    0 16px,
+    75px 24px;
+
+  background-repeat:
+    repeat-x,
+    repeat-x,
+    repeat-x,
+    repeat-x,
+    repeat-x,
+    repeat-x;
+} */
+
+.yippee-noodle-pattern {
+  --noodle: #ff7f00;
+  --w1: 160px;   /* back scallop width */
+  --h1: 80px;    /* back scallop height */
+  --w2: 110px;   /* front scallop width */
+  --h2: 56px;    /* front scallop height */
+  --ring: 8px;   /* distance between lines */
+
+  position: absolute;
+  left: 0;
+  top: 448px;               /* shapes are 450px tall, overlap by 2px */
+  width: 100%;
+  height: var(--h1);
+  z-index: 10;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.yippee-noodle-pattern::before,
+.yippee-noodle-pattern::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat-x;
+  -webkit-mask-repeat: repeat-x;
+  mask-repeat: repeat-x;
+}
+
+/* back layer: big concentric scallops */
+.yippee-noodle-pattern::before {
+  background-image: repeating-radial-gradient(
+    ellipse calc(var(--w1) / 2) var(--h1) at 50% 0,
+    #fff 0 calc(var(--ring) - 2px),
+    var(--noodle) calc(var(--ring) - 2px) var(--ring)
+  );
+  background-size: var(--w1) var(--h1);
+
+  -webkit-mask-image: radial-gradient(
+    ellipse calc(var(--w1) / 2) var(--h1) at 50% 0,
+    #000 99%, transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse calc(var(--w1) / 2) var(--h1) at 50% 0,
+    #000 99%, transparent 100%
+  );
+  -webkit-mask-size: var(--w1) var(--h1);
+  mask-size: var(--w1) var(--h1);
+}
+
+/* front layer: smaller scallops, offset so they overlap the back ones */
+.yippee-noodle-pattern::after {
+  background-image: repeating-radial-gradient(
+    ellipse calc(var(--w2) / 2) var(--h2) at 50% 0,
+    #fff 0 calc(var(--ring) - 2px),
+    var(--noodle) calc(var(--ring) - 2px) var(--ring)
+  );
+  background-size: var(--w2) var(--h2);
+  background-position: 60px 0;
+
+  -webkit-mask-image: radial-gradient(
+    ellipse calc(var(--w2) / 2) var(--h2) at 50% 0,
+    #000 99%, transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse calc(var(--w2) / 2) var(--h2) at 50% 0,
+    #000 99%, transparent 100%
+  );
+  -webkit-mask-size: var(--w2) var(--h2);
+  mask-size: var(--w2) var(--h2);
+  -webkit-mask-position: 60px 0;
+  mask-position: 60px 0;
+}
+@media (max-width: 1200px) {
+  .yippee-intro {
+    min-height: 520px;
+  }
+
+  .yippee-orange {
+    width: 80%;
+  }
+
+  .yippee-red {
+    right: 3%;
+    width: 20%;
+  }
+
+  .yippee-yellow {
+    width: 23%;
+  }
+
+  .yippee-intro-heading-cell {
+    padding-top: 120px;
+    padding-left: 7%;
+    padding-right: 22%;
+  }
+
+  .yippee-intro-description-cell {
+    padding-left: 7%;
+    padding-right: 20%;
+  }
+
+  .yippee-intro-heading {
+    font-size: 2.7rem;
+  }
+
+  .yippee-intro-description {
+    font-size: 1.35rem;
+  }
+
+  .bottom-head {
+    left: 7%;
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .yippee-intro {
+    min-height: 500px;
+  }
+
+  .yippee-yellow {
+    width: 24%;
+    height: 420px;
+  }
+
+  .yippee-red {
+    right: 0;
+    width: 22%;
+    height: 420px;
+    border-radius: 0 75px 75px 0;
+  }
+
+  .yippee-orange {
+    width: 88%;
+    height: 420px;
+    border-radius: 0 75px 75px 0;
+  }
+
+  .yippee-intro-heading-cell {
+    padding-top: 100px;
+    padding-left: 5rem;
+    padding-right: 15rem;
+  }
+
+  .yippee-intro-description-cell {
+    padding-left: 5rem;
+    padding-right: 10rem;
+  }
+
+  .yippee-intro-heading {
+    font-size: 2.3rem;
+  }
+
+  .yippee-intro-description {
+    margin-top: 1.5rem;
+    font-size: 1.2rem;
+    line-height: 1.6;
+  }
+
+  .yippee-noodle-pattern {
+    height: 90px;
+  }
+
+  .bottom-head {
+    top: -65px;
+    left: 5rem;
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .yippee-intro {
+    min-height: 500px;
+    margin-top: 80px;
+  }
+
+  .yippee-yellow {
+    width: 25%;
+    height: 420px;
+  }
+
+  .yippee-red {
+    right: 0;
+    width: 24%;
+    height: 420px;
+    border-radius: 0 55px 55px 0;
+  }
+
+  .yippee-orange {
+    width: 90%;
+    height: 420px;
+    border-radius: 0 55px 55px 0;
+  }
+
+  .yippee-intro-heading-cell {
+    padding-top: 80px;
+    padding-left: 2rem;
+    padding-right: 4rem;
+  }
+
+  .yippee-intro-description-cell {
+    padding-left: 2rem;
+    padding-right: 3rem;
+  }
+
+  .yippee-intro-heading {
+    font-size: 1.8rem;
+    letter-spacing: 0;
+  }
+
+  .yippee-intro-description {
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .yippee-noodle-pattern {
+    height: 80px;
+  }
+
+  .bottom-head {
+    top: -55px;
+    left: 2rem;
+    right: 2rem;
+    font-size: 1.1rem;
+  }
+}
