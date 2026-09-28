@@ -43,8 +43,8 @@
 .yippee-red {
   position: absolute;
   top: 0;
-  right: 4.8%;
-  width: 20%;
+  right: 6.8%;
+  width: 30%;
   height: 450px;
   background: #b50404;
   border-radius: 0 110px 110px 0;
@@ -81,7 +81,7 @@
 
 .yippee-intro-heading {
   margin: 0;
-  font-family: 'Amaranth', sans-serif;
+  font-family: Amaranth, sans-serif;
   font-size: 3rem;
   line-height: 1;
   font-weight: 700;
@@ -107,7 +107,7 @@
 .yippee-intro-description {
   max-width: 1300px;
   margin-top: 2rem;
-  font-family: 'Amaranth', sans-serif;
+  font-family: Amaranth, sans-serif;
   font-size: 1.5rem;
   line-height: 1.7;
   font-weight: 400;
@@ -121,7 +121,7 @@
   z-index: 1000;
   margin: 0;
   color: #000;
-  font-family: 'Amaranth', sans-serif;
+  font-family: Amaranth, sans-serif;
   font-size: 2rem;
   line-height: 1.2;
   font-weight: 700;
@@ -235,7 +235,6 @@
   position: absolute;
   inset: 0;
   background-repeat: repeat-x;
-  -webkit-mask-repeat: repeat-x;
   mask-repeat: repeat-x;
 }
 
@@ -247,16 +246,10 @@
     var(--noodle) calc(var(--ring) - 2px) var(--ring)
   );
   background-size: var(--w1) var(--h1);
-
-  -webkit-mask-image: radial-gradient(
-    ellipse calc(var(--w1) / 2) var(--h1) at 50% 0,
-    #000 99%, transparent 100%
-  );
   mask-image: radial-gradient(
     ellipse calc(var(--w1) / 2) var(--h1) at 50% 0,
     #000 99%, transparent 100%
   );
-  -webkit-mask-size: var(--w1) var(--h1);
   mask-size: var(--w1) var(--h1);
 }
 
@@ -269,21 +262,15 @@
   );
   background-size: var(--w2) var(--h2);
   background-position: 60px 0;
-
-  -webkit-mask-image: radial-gradient(
-    ellipse calc(var(--w2) / 2) var(--h2) at 50% 0,
-    #000 99%, transparent 100%
-  );
   mask-image: radial-gradient(
     ellipse calc(var(--w2) / 2) var(--h2) at 50% 0,
     #000 99%, transparent 100%
   );
-  -webkit-mask-size: var(--w2) var(--h2);
   mask-size: var(--w2) var(--h2);
-  -webkit-mask-position: 60px 0;
   mask-position: 60px 0;
 }
-@media (max-width: 1200px) {
+
+@media (width <= 1200px) {
   .yippee-intro {
     min-height: 520px;
   }
@@ -326,7 +313,7 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (width <= 900px) {
   .yippee-intro {
     min-height: 500px;
   }
@@ -381,7 +368,7 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (width <= 600px) {
   .yippee-intro {
     min-height: 500px;
     margin-top: 80px;
