@@ -131,12 +131,18 @@ export default async function decorate(block) {
   });
 
   const navBrand = nav.querySelector('.nav-brand');
+  const logo = navBrand.querySelector('img');
   const brandLink = navBrand.querySelector('.button');
   if (brandLink) {
     brandLink.className = '';
     brandLink.closest('.button-container').className = '';
   }
-
+  logo.classList.add('logo');
+  if (logo) {
+    logo.addEventListener('click', () => {
+      window.location.href = '/';
+    });
+  }
   const navSections = nav.querySelector('.nav-sections');
   if (navSections) {
     navSections.querySelectorAll(':scope .default-content-wrapper > ul > li').forEach((navSection) => {

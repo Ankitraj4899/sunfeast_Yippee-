@@ -294,3 +294,7 @@ header nav a:any-link {
     font-size: 1.15em;
     cursor: pointer;
 }
+
+.logo {
+  cursor: pointer;
+}
