@@ -1,12 +1,9 @@
 .carousel-wrapper {
-  position: relative;
   background: linear-gradient(to bottom, #ff7f00 40%, #f9f4f6 40%);
   overflow: hidden;
 }
 
 .carousel {
-  position: relative;
-  z-index: 1;
   display: flex;
   align-items: center;
   width: 100%;
@@ -15,10 +12,12 @@
 }
 
 .carousel-item {
+  position: relative;
   display: none;
   align-items: center;
+  justify-content: center;
   margin: 70px 10px;
-  gap: 20px;
+  gap: 160px;
   width: 100%;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -29,11 +28,14 @@
 }
 
 .carousel-image {
-  height: 25rem;
-  width: 30rem;
+  height: auto;
+  width: 540px;
+  aspect-ratio: 1 / 1;
+  max-width: 100%;
+  flex-shrink: 0;
   border-radius: 50%;
   object-fit: cover;
-  margin-left: 3em;
+  margin-left: 0;
 }
 
 .next-button {
@@ -48,6 +50,7 @@
 .prev-button {
   height: 60px;
   width: 60px;
+  flex-shrink: 0;
   border: none;
   background-color: #b50404;
   cursor: pointer;
@@ -98,193 +101,10 @@
   justify-content: center;
 }
 
-.disable {
+.disable{
   background-color: #deacac;
   cursor: not-allowed;
 }
-
-.video-button {
-  position: absolute;
-  top: 49%;
-  left: 29%;
-  z-index: 2;
-  transform: translate(-50%, -50%);
-  width: 70px;
-  height: 70px;
-  border: none;
-  background: #fff;
-  color: #b50404;
-  cursor: pointer;
-  clip-path: polygon(
-    50% 0%,
-    58% 10%,
-    67% 4%,
-    69% 16%,
-    80% 11%,
-    79% 23%,
-    92% 20%,
-    87% 32%,
-    100% 36%,
-    90% 45%,
-    100% 53%,
-    89% 60%,
-    96% 72%,
-    83% 70%,
-    84% 84%,
-    72% 78%,
-    67% 96%,
-    57% 86%,
-    50% 100%,
-    43% 86%,
-    33% 96%,
-    28% 80%,
-    16% 86%,
-    18% 72%,
-    4% 74%,
-    11% 61%,
-    0% 54%,
-    10% 45%,
-    0% 37%,
-    13% 32%,
-    8% 20%,
-    21% 23%,
-    20% 10%,
-    32% 16%,
-    33% 4%,
-    42% 10%
-  );
-  font-size: 25px;
-  transition: transform 0.2s ease;
-}
-
-.video-button:hover {
-  transform: translate(-50%, -50%) scale(1.1);
-}
-
-.video-button-modal {
-  position: absolute;
-  top: 47%;
-  left: 50%;
-  z-index: 2;
-  transform: translate(-50%, -50%);
-  width: 70px;
-  height: 70px;
-  border: none;
-  background: #fff;
-  color: #b50404;
-  cursor: pointer;
-  clip-path: polygon(
-    50% 0%,
-    58% 10%,
-    67% 4%,
-    69% 16%,
-    80% 11%,
-    79% 23%,
-    92% 20%,
-    87% 32%,
-    100% 36%,
-    90% 45%,
-    100% 53%,
-    89% 60%,
-    96% 72%,
-    83% 70%,
-    84% 84%,
-    72% 78%,
-    67% 96%,
-    57% 86%,
-    50% 100%,
-    43% 86%,
-    33% 96%,
-    28% 80%,
-    16% 86%,
-    18% 72%,
-    4% 74%,
-    11% 61%,
-    0% 54%,
-    10% 45%,
-    0% 37%,
-    13% 32%,
-    8% 20%,
-    21% 23%,
-    20% 10%,
-    32% 16%,
-    33% 4%,
-    42% 10%
-  );
-  font-size: 25px;
-  transition: transform 0.2s ease;
-}
-
-.video-button-modal:hover {
-  transform: translate(-50%, -50%) scale(1.1);
-}
-
-.carousel-heading {
-  margin-top: 2em;
-  margin-left: 7rem;
-  color: #b50404;
-}
-
-.carousel-description {
-  margin-left: 7rem;
-}
-
-.star1,
-.star2,
-.star3,
-.star4 {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  background: #ffd43b;
-  clip-path: polygon(
-    50% 0%,
-    53% 12%,
-    56% 30%,
-    62% 40%,
-    72% 45%,
-    88% 48%,
-    100% 50%,
-    88% 52%,
-    72% 55%,
-    62% 60%,
-    56% 70%,
-    53% 88%,
-    50% 100%,
-    47% 88%,
-    44% 70%,
-    38% 60%,
-    28% 55%,
-    12% 52%,
-    0% 50%,
-    12% 48%,
-    28% 45%,
-    38% 40%,
-    44% 30%,
-    47% 12%
-  );
-}
-
-.star1 {
-  top: 100px;
-  left: 10%;
-}
-
-.star2 {
-  top: 187px;
-  right: 10%;
-}
-
-.star3 {
-  bottom: 88px;
-  left: 18%;
-}
-
-.star4 {
-  bottom: 115px;
-  right: 20%;
-}
-
 .video-modal {
   position: fixed;
   inset: 0;
@@ -340,302 +160,345 @@
   cursor: pointer;
 }
 
-/* Tablet */
+.video-button {
+    position: absolute;
+    top: 50%;
+    left: calc(50% - 400px);
+    transform: translate(-50%, -50%);
+    width: 70px;
+    height: 70px;
+    border: none;
+    background: #fff;
+    color: #b50404;
+    cursor: pointer;
+    clip-path: polygon(
+    50% 0%,
+    58% 10%,
+    67% 4%,
+    69% 16%,
+    80% 11%,
+    79% 23%,
+    92% 20%,
+    87% 32%,
+    100% 36%,
+    90% 45%,
+    100% 53%,
+    89% 60%,
+    96% 72%,
+    83% 70%,
+    84% 84%,
+    72% 78%,
+    67% 96%,
+    57% 86%,
+    50% 100%,
+    43% 86%,
+    33% 96%,
+    28% 80%,
+    16% 86%,
+    18% 72%,
+    4% 74%,
+    11% 61%,
+    0% 54%,
+    10% 45%,
+    0% 37%,
+    13% 32%,
+    8% 20%,
+    21% 23%,
+    20% 10%,
+    32% 16%,
+    33% 4%,
+    42% 10%
+    );
+    font-size: 25px;
+    transition: transform 0.2s ease;
+}
 
-@media (max-width: 900px) {
-  .carousel {
-    padding: 1rem;
-  }
+.video-button:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+}
 
+.video-button-modal {
+    position: absolute;
+    top: 47%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70px;
+    height: 70px;
+    border: none;
+    background: #fff;
+    color: #b50404;
+    cursor: pointer;
+    clip-path: polygon(
+    50% 0%,
+    58% 10%,
+    67% 4%,
+    69% 16%,
+    80% 11%,
+    79% 23%,
+    92% 20%,
+    87% 32%,
+    100% 36%,
+    90% 45%,
+    100% 53%,
+    89% 60%,
+    96% 72%,
+    83% 70%,
+    84% 84%,
+    72% 78%,
+    67% 96%,
+    57% 86%,
+    50% 100%,
+    43% 86%,
+    33% 96%,
+    28% 80%,
+    16% 86%,
+    18% 72%,
+    4% 74%,
+    11% 61%,
+    0% 54%,
+    10% 45%,
+    0% 37%,
+    13% 32%,
+    8% 20%,
+    21% 23%,
+    20% 10%,
+    32% 16%,
+    33% 4%,
+    42% 10%
+    );
+    font-size: 25px;
+    transition: transform 0.2s ease;
+}
+
+.video-button-modal:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+
+.carousel-heading {
+  margin-top: 0;
+  color: #b50404;
+  margin-left: 0;
+}
+
+.carousel-description{
+  margin-left:0;
+  max-width: 640px;
+}
+
+.star1,
+.star2,
+.star3,
+.star4 {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: #ffd43b;
+  clip-path: polygon(
+    50% 0%,
+    53% 12%,
+    56% 30%,
+    62% 40%,
+    72% 45%,
+    88% 48%,
+    100% 50%,
+    88% 52%,
+    72% 55%,
+    62% 60%,
+    56% 70%,
+    53% 88%,
+    50% 100%,
+    47% 88%,
+    44% 70%,
+    38% 60%,
+    28% 55%,
+    12% 52%,
+    0% 50%,
+    12% 48%,
+    28% 45%,
+    38% 40%,
+    44% 30%,
+    47% 12%
+  );
+}
+
+.star1 {
+  top: 130px;
+  left: 15%;
+}
+
+.star2 {
+  top: 250px;
+  right: 10%;
+}
+
+.star3 {
+  bottom: 1px;
+  left: 18%;
+}
+
+.star4 {
+  bottom: 55px;
+  right: 20%;
+}
+
+@media (width <= 1600px) {
   .carousel-item {
-    gap: 15px;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    gap: 100px;
   }
 
   .carousel-image {
-    width: 22rem;
-    height: 22rem;
+    width: 460px;
+  }
+
+  .carousel-description {
+    max-width: 520px;
+  }
+
+  .video-button {
+    left: calc(50% - 310px);
+  }
+}
+
+@media (width <= 1400px) {
+  .carousel-item {
+    gap: 60px;
+  }
+
+  .carousel-image {
+    width: 380px;
+  }
+
+  .carousel-description {
+    max-width: 420px;
+  }
+
+  .video-button {
+    left: calc(50% - 240px);
+  }
+}
+
+@media (width <= 1200px) {
+  .carousel-item {
+    gap: 50px;
+  }
+
+  .carousel-image {
+    width: 340px;
+  }
+
+  .carousel-description {
+    max-width: 360px;
+  }
+
+  .video-button {
+    left: calc(50% - 205px);
+  }
+}
+
+@media (width <= 1000px) {
+  .carousel-item {
+    gap: 32px;
+  }
+
+  .carousel-image {
+    width: 280px;
+  }
+
+  .carousel-description {
+    max-width: 300px;
+  }
+
+  .video-button {
+    left: calc(50% - 166px);
+  }
+}
+
+@media (width <= 900px) {
+  .carousel-item {
+    gap: 24px;
+  }
+
+  .carousel-image {
+    width: 240px;
+  }
+
+  .carousel-description {
+    max-width: 240px;
+  }
+
+  .video-button {
+    left: calc(50% - 132px);
+  }
+
+  .next-button,
+  .prev-button {
+    height: 44px;
+    width: 44px;
+    font-size: 2.2rem;
+  }
+
+  .next-button {
+    margin: 1rem;
+  }
+
+  .prev-button {
     margin-left: 1rem;
   }
-
-  .carousel-heading {
-    margin-left: 2rem;
-  }
-
-  .carousel-description {
-    margin-left: 2rem;
-  }
-
-  .video-button {
-    left: 27%;
-  }
-
-  .star1 {
-    left: 10%;
-  }
-
-  .star2 {
-    right: 7%;
-  }
-
-  .star3 {
-    left: 12%;
-  }
-
-  .star4 {
-    right: 15%;
-  }
 }
 
-/* Mobile */
-
-@media (max-width: 600px) {
+@media (width <= 700px) {
   .carousel-wrapper {
-    background: linear-gradient(to bottom, #ff7f00 48%, #f9f4f6 48%);
-  }
-
-  .carousel {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    min-height: 650px;
-    padding: 1rem;
-    overflow: hidden;
+    background: linear-gradient(to bottom, #ff7f00 28%, #f9f4f6 28%);
   }
 
   .carousel-item {
-    position: relative;
-    display: none;
     flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    width: 100%;
-    margin: 40px 0 100px;
-    padding: 0;
-    gap: 15px;
-  }
-
-  .carousel-item.active {
-    display: flex;
+    text-align: center;
+    margin: 30px 0;
+    gap: 16px;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .carousel-image {
-    display: block;
-    width: 15rem;
-    height: 15rem;
-    margin: 0;
-    flex-shrink: 0;
-  }
-
-  .carousel-heading {
-    width: 100%;
-    margin: 1rem 0 0;
-    text-align: center;
+    width: 260px;
   }
 
   .carousel-description {
-    width: 100%;
-    margin: 0;
-    /* padding: 0 1rem; */
-    text-align: center;
-  }
-
-  .prev-button,
-  .next-button {
-    position: absolute;
-    top: auto;
-    bottom: 25px;
-    z-index: 10;
-    width: 50px;
-    height: 50px;
-    margin: 0;
-    font-size: 2rem;
-  }
-
-  .prev-button {
-    left: calc(50% - 65px);
-  }
-
-  .next-button {
-    right: calc(50% - 65px);
+    max-width: 100%;
   }
 
   .video-button {
-    position: absolute;
-    top: 132px;
+    top: 140px;
     left: 50%;
-    z-index: 5;
-    width: 55px;
-    height: 55px;
-    font-size: 20px;
   }
 
-  .video-button-modal {
-    width: 55px;
-    height: 55px;
-    font-size: 20px;
+  .next-button {
+    margin: 0 0.25rem;
+    margin-right: 2rem;
   }
 
-  .star1,
+  .prev-button {
+    margin-left: 0.25rem;
+  }
+
   .star2,
-  .star3,
   .star4 {
-    width: 30px;
-    height: 30px;
-  }
-
-  .star1 {
-    top: 80px;
-    left: 5%;
-  }
-
-  .star2 {
-    top: 130px;
-    right: 5%;
-  }
-
-  .star3 {
-    bottom: 30px;
-    left: 8%;
-  }
-
-  .star4 {
-    right: 8%;
-    bottom: 35px;
-  }
-
-  .video-modal-content {
-    width: 90vw;
-    max-width: 90vw;
-    max-height: 75vh;
-    border-width: 10px;
-    border-radius: 1em;
-  }
-
-  .video-modal-content video {
-    max-height: 65vh;
-  }
-
-  .video-modal-close {
-    top: -25px;
-    right: -10px;
-    width: 35px;
-    height: 35px;
-    font-size: 30px;
-    line-height: 35px;
+    display: none;
   }
 }
 
-/* Small Mobile */
-@media (max-width: 400px) {
+@media (width <= 420px) {
   .carousel {
-    min-height: 600px;
-    padding: 0.75rem;
-  }
-
-  .carousel-item {
-    margin-top: 30px;
-    margin-bottom: 90px;
-    gap: 10px;
+    padding: 0.5rem;
   }
 
   .carousel-image {
-    width: 13rem;
-    height: 13rem;
-  }
-
-  .carousel-heading {
-    width: 90%;
-    margin: 0.75rem auto 0;
-    font-size: 1.5rem;
-    line-height: 1.2;
-    text-align: center;
-  }
-
-  .carousel-description {
-    width: 88%;
-    margin: 0.25rem auto 0;
-    padding: 0;
-    font-size: 0.9rem;
-    line-height: 1.5;
-    text-align: center;
-  }
-
-  .prev-button,
-  .next-button {
-    bottom: 20px;
-    width: 40px;
-    height: 40px;
-    font-size: 1.6rem;
-  }
-
-  .prev-button {
-    left: calc(50% - 55px);
-  }
-
-  .next-button {
-    right: calc(50% - 55px);
+    width: 240px;
   }
 
   .video-button {
-    top: 104px;
-    width: 50px;
-    height: 50px;
-    font-size: 18px;
-  }
-
-  .video-button-modal {
-    width: 50px;
-    height: 50px;
-    font-size: 18px;
-  }
-
-  .star1,
-  .star2,
-  .star3,
-  .star4 {
-    width: 25px;
-    height: 25px;
-  }
-
-  .star1 {
-    top: 80px;
-    left: 5%;
-  }
-
-  .star2 {
-    top: 130px;
-    right: 5%;
-  }
-
-  .star3 {
-    bottom: 30px;
-    left: 8%;
-  }
-
-  .star4 {
-    right: 8%;
-    bottom: 35px;
-  }
-
-  .video-modal-content {
-    width: 92vw;
-    max-width: 92vw;
-    border-width: 8px;
-  }
-
-  .video-modal-content video {
-    max-height: 65vh;
-  }
-
-  .video-modal-close {
-    top: -23px;
-    right: -9px;
-    width: 32px;
-    height: 32px;
-    font-size: 27px;
-    line-height: 32px;
+    top: 140px;
   }
 }
