@@ -1,29 +1,34 @@
-/* header and nav layout */
-header .nav-wrapper {
-  background-color: #ff7f00;
-  width: 100%;
-  z-index: 100000;
-  position: fixed;
-  height: 90px;
+header {
+  --nav-height: 70px;          
 
+  height: var(--nav-height);  
+}
+
+header .nav-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--nav-height);
+  background-color: #ff7f00;
+  z-index: 100000;
 }
 
 header nav {
   box-sizing: border-box;
-  position: fixed;
-  background-color: #ff7f00;
-  height: 90px;
+  position: relative;
   width: 100%;
+  height: var(--nav-height);
+  max-width: 1248px;
+  margin: auto;
+  padding: 0 clamp(16px, 4vw, 24px);
+  background-color: #ff7f00;
   display: grid;
   grid-template:
     'hamburger brand tools' var(--nav-height)
     'sections sections sections' 1fr / auto 1fr auto;
   align-items: center;
-  gap: 0 24px;
-  margin: auto;
-  max-width: 1248px;
-
-  /* padding: 0 24px; */
+  gap: 0 clamp(12px, 3vw, 24px);
   font-family: var(--body-font-family);
 }
 
@@ -32,29 +37,9 @@ header nav[aria-expanded='true'] {
     'hamburger brand' var(--nav-height)
     'sections sections' 1fr
     'tools tools' var(--nav-height) / auto 1fr;
-  overflow-y: auto;
-
-  /* position: fixed; */
+  height: auto;
   min-height: 100dvh;
-}
-
-@media (width >= 900px) {
-  header .nav-wrapper {
-    position: relative;
-  }
-
-  header nav {
-    display: flex;
-    justify-content: space-between;
-    gap: 0 32px;
-    max-width: 1264px;
-    padding: 0 32px;
-  }
-
-  header nav[aria-expanded='true'] {
-    min-height: 0;
-    overflow: visible;
-  }
+  overflow-y: auto;
 }
 
 header nav p {
@@ -62,29 +47,34 @@ header nav p {
   line-height: 1;
 }
 
-/* header nav a:any-link {
-  color: currentcolor;
-} */
 
-/* hamburger */
 header nav .nav-hamburger {
   grid-area: hamburger;
-  height: 22px;
   display: flex;
   align-items: center;
 }
 
 header nav .nav-hamburger button {
-  height: 22px;
-  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;                 
+  height: 44px;
+  margin: 0 0 0 -12px;       
   border: 0;
   border-radius: 0;
   padding: 0;
-  background-color: var(--background-color);
-  color: inherit;
+  background: transparent;
+  color: #000;
+  cursor: pointer;
   overflow: initial;
   text-overflow: initial;
   white-space: initial;
+}
+
+header nav .nav-hamburger button:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
 }
 
 header nav .nav-hamburger-icon,
@@ -140,14 +130,6 @@ header nav[aria-expanded='true'] .nav-hamburger-icon::after {
   transform: rotate(-45deg);
 }
 
-@media (width >= 900px) {
-  header nav .nav-hamburger {
-    display: none;
-    visibility: hidden;
-  }
-}
-
-/* brand */
 header .nav-brand {
   grid-area: brand;
   flex-basis: 128px;
@@ -156,12 +138,13 @@ header .nav-brand {
   line-height: 1;
 }
 
-/* header nav .nav-brand img {
-  width: 128px;
+header nav .nav-brand img {
+  display: block;
+  width: clamp(80px, 22vw, 120px);
   height: auto;
-} */
+  transform: rotate(-4deg);
+}
 
-/* sections */
 header nav .nav-sections {
   grid-area: sections;
   flex: 1 1 auto;
@@ -173,15 +156,18 @@ header nav[aria-expanded='true'] .nav-sections {
   display: block;
   visibility: visible;
   align-self: start;
+  padding: 0.5rem 0 1.5rem;
 }
 
 header nav .nav-sections ul {
   list-style: none;
   padding-left: 0;
+  margin: 0;
   font-size: var(--body-font-size-s);
 }
 
 header nav .nav-sections ul > li {
+  padding: 0.5rem 0;           
   font-weight: 500;
 }
 
@@ -193,15 +179,69 @@ header nav .nav-sections ul > li > ul > li {
   font-weight: 400;
 }
 
+
+header nav .nav-tools {
+  grid-area: tools;
+}
+
+
+header nav a:any-link {
+  display: inline-block;
+  margin: 0.5em;
+  color: #000;
+  font-weight: 700;
+  font-size: 1.15em;
+  cursor: pointer;
+}
+
+header nav .nav-brand a:any-link {
+  margin: 0;
+  font-size: inherit;
+}
+
+.logo {
+  cursor: pointer;
+}
+
 @media (width >= 900px) {
-  header nav .nav-sections {
+  header {
+    --nav-height: 90px;
+  }
+
+  header nav,
+  header nav[aria-expanded='true'] {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0 clamp(16px, 2.5vw, 32px);
+    max-width: 1264px;
+    height: var(--nav-height);
+    min-height: 0;
+    padding: 0 clamp(16px, 3vw, 32px);
+    overflow: visible;
+  }
+
+  header nav .nav-hamburger {
+    display: none;
+    visibility: hidden;
+  }
+
+  header nav .nav-sections,
+  header nav[aria-expanded='true'] .nav-sections {
     display: block;
     visibility: visible;
+    align-self: unset;
+    padding: 0;
     white-space: nowrap;
   }
 
-  header nav[aria-expanded='true'] .nav-sections {
-    align-self: unset;
+  header nav .nav-sections ul > li {
+    padding: 0;
+  }
+
+  header nav a:any-link {
+    font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+    margin: 0.5em clamp(0.25em, 0.6vw, 0.5em);
   }
 
   header nav .nav-sections .nav-drop {
@@ -232,8 +272,7 @@ header nav .nav-sections ul > li > ul > li {
 
   header nav .nav-sections ul {
     display: flex;
-    gap: 24px;
-    margin: 0;
+    gap: clamp(8px, 1.8vw, 24px);
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li {
@@ -272,30 +311,19 @@ header nav .nav-sections ul > li > ul > li {
   header nav .nav-sections .default-content-wrapper > ul > li > ul > li {
     padding: 8px 0;
   }
+
+  header nav .nav-brand img {
+    width: clamp(100px, 10vw, 120px);
+  }
 }
 
-/* tools */
-header nav .nav-tools {
-  grid-area: tools;
-}
 
+@media (width <= 380px) {
+  header {
+    --nav-height: 64px;
+  }
 
-
-header nav .nav-brand img{
-  width: 120px;
-  height: auto;
-  transform: rotate(-4deg);
-}
-
-header nav a:any-link {
-    color: currentcolor;
-    color: #000;
-    font-weight: 700;
-    margin: 0.5em;
-    font-size: 1.15em;
-    cursor: pointer;
-}
-
-.logo {
-  cursor: pointer;
+  header nav {
+    gap: 0 10px;
+  }
 }
