@@ -109,9 +109,9 @@
   max-width: 1300px;
   margin-top: 1.5rem;
   font-family: var(--body-font-family, inherit);
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   line-height: 1.75;
-  font-weight: 400;
+  font-weight: lighter;
   color: #000;
 }
 
@@ -169,7 +169,7 @@
   }
 
   .yippee-red {
-    right: 3%;
+    right: 10%;
     width: 20%;
   }
 
@@ -193,7 +193,7 @@
   }
 
   .yippee-intro-description {
-    font-size: 1.35rem;
+    font-size: 1rem;
   }
 
   .bottom-head {

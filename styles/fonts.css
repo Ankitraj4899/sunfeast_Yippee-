@@ -1,6 +1,6 @@
 /* stylelint-disable max-line-length */
 @font-face {
-  font-family: roboto-condensed;
+  font-family: Amaranth, sans-serif;
   font-style: normal;
   font-weight: 700;
   font-display: swap;
@@ -9,7 +9,7 @@
 }
 
 @font-face {
-  font-family: roboto;
+  font-family: Amaranth, sans-serif;
   font-style: normal;
   font-weight: 700;
   font-display: swap;
@@ -18,7 +18,7 @@
 }
 
 @font-face {
-  font-family: roboto;
+  font-family: Amaranth, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-display: swap;
@@ -27,7 +27,7 @@
 }
 
 @font-face {
-  font-family: roboto;
+  font-family: Amaranth, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-display: swap;
