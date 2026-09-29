@@ -1,5 +1,5 @@
 .carousel-wrapper {
-  background: linear-gradient(to bottom, #ff7f00 40%, #f9f4f6 40%);
+  background: linear-gradient(to bottom, #ff7f00 40%, #f7f5f5 40%);
   overflow: hidden;
 }
 
@@ -105,6 +105,7 @@
   background-color: #deacac;
   cursor: not-allowed;
 }
+
 .video-modal {
   position: fixed;
   inset: 0;
