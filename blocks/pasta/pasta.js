@@ -1,39 +1,27 @@
 export default function decorate(block) {
   const rows = [...block.children];
-
   const items = rows.map((row) => {
     const image = row.querySelector('img');
-
     if (image) {
       image.classList.add('pasta-image');
     }
-
     row.classList.add('pasta-card');
-
     return row;
   });
 
   block.classList.add('pasta');
-
   const heading = document.createElement('h2');
   heading.classList.add('pasta-heading');
-
   const leftStar = document.createElement('span');
   leftStar.classList.add('pasta-heading-star');
   leftStar.textContent = '✧';
-
   const title = document.createElement('span');
   title.textContent = "YiPPee!'s Pasta Range";
-
   const rightStar = document.createElement('span');
   rightStar.classList.add('pasta-heading-star');
   rightStar.textContent = '✧';
 
-  heading.append(
-    leftStar,
-    title,
-    rightStar,
-  );
+  heading.append(leftStar, title, rightStar);
 
   const pastaIcon1 = document.createElement('span');
   pastaIcon1.classList.add(
@@ -134,11 +122,9 @@ export default function decorate(block) {
       nextButton.disabled = true;
     } else if (isMobile()) {
       previousButton.disabled = currentIndex === 0;
-
       nextButton.disabled = currentIndex >= items.length - 1;
     } else {
       previousButton.disabled = currentIndex === 0;
-
       nextButton.disabled = currentIndex !== 0;
     }
 
@@ -152,91 +138,68 @@ export default function decorate(block) {
       nextButton.disabled,
     );
 
-    previousButton.hidden = isViewAll
-            || items.length <= 1;
+    previousButton.hidden = isViewAll || items.length <= 1;
 
-    nextButton.hidden = isViewAll
-            || items.length <= 3;
+    nextButton.hidden = isViewAll || items.length <= 3;
 
-    viewAllButton.textContent = isViewAll
-      ? 'View Less'
-      : 'View More';
+    viewAllButton.textContent = isViewAll ? 'View Less' : 'View More';
   };
 
-  previousButton.addEventListener(
-    'click',
-    () => {
-      if (isViewAll) {
-        return;
-      }
+  previousButton.addEventListener('click', () => {
+    if (isViewAll) {
+      return;
+    }
 
-      if (isMobile()) {
-        if (currentIndex > 0) {
-          currentIndex -= 1;
-          render();
-        }
-
-        return;
-      }
-
-      if (currentIndex !== 0) {
-        currentIndex = 0;
+    if (isMobile()) {
+      if (currentIndex > 0) {
+        currentIndex -= 1;
         render();
       }
-    },
-  );
+      return;
+    }
 
-  nextButton.addEventListener(
-    'click',
-    () => {
-      if (isViewAll) {
-        return;
-      }
-
-      if (isMobile()) {
-        if (
-          currentIndex
-                    < items.length - 1
-        ) {
-          currentIndex += 1;
-          render();
-        }
-
-        return;
-      }
-
-      if (currentIndex === 0) {
-        currentIndex = 3;
-        render();
-      }
-    },
-  );
-
-  viewAllButton.addEventListener(
-    'click',
-    () => {
-      isViewAll = !isViewAll;
+    if (currentIndex !== 0) {
       currentIndex = 0;
       render();
-    },
-  );
+    }
+  });
 
-  window.addEventListener(
-    'resize',
-    () => {
-      if (!isMobile()) {
-        currentIndex = currentIndex >= 3
-          ? 3
-          : 0;
-      } else if (
-        currentIndex >= items.length
-      ) {
-        currentIndex = items.length - 1;
+  nextButton.addEventListener('click', () => {
+    if (isViewAll) {
+      return;
+    }
+
+    if (isMobile()) {
+      if (currentIndex < items.length - 1) {
+        currentIndex += 1;
+        render();
       }
+      return;
+    }
 
+    if (currentIndex === 0) {
+      currentIndex = 3;
       render();
-    },
-  );
+    }
+  });
+
+  viewAllButton.addEventListener('click', () => {
+    isViewAll = !isViewAll;
+    currentIndex = 0;
+    render();
+  });
+
+  window.addEventListener('resize', () => {
+    if (!isMobile()) {
+      currentIndex = currentIndex >= 3
+        ? 3
+        : 0;
+    } else if (currentIndex >= items.length) {
+      currentIndex = items.length - 1;
+    }
+
+    render();
+  });
 
   carousel.append(
     previousButton,
