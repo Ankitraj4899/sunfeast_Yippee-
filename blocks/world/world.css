@@ -1,4 +1,3 @@
-.section:has(.world),
 .world-container {
   width: 100%;
   max-width: none;
@@ -7,7 +6,6 @@
   box-sizing: border-box;
 }
 
-.section:has(.world) > div,
 .world-wrapper {
   width: 100%;
   max-width: 1200px;
@@ -26,15 +24,15 @@
   font-family: Amaranth, sans-serif;
 }
 
-.world .world-header {
+.world-header {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   text-align: center;
   margin-bottom: 40px;
 }
 
-.world .world-title {
+.world-title {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -49,7 +47,7 @@
   text-align: center;
 }
 
-.world .world-heading-star {
+.world-heading-star {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -61,27 +59,27 @@
   user-select: none;
 }
 
-.world .world-cards {
+.world-cards {
   display: flex;
-  justify-content: center;
   align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 40px;
   margin: 0 auto;
-  flex-wrap: wrap;
 }
 
-.world .world-card {
+.world-card {
   flex: 1 1 260px;
   max-width: 320px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  box-sizing: border-box;
   padding: 8px 12px;
+  box-sizing: border-box;
 }
 
-.world .world-card-image {
+.world-card-image {
   width: 100%;
   height: 145px;
   display: flex;
@@ -90,55 +88,58 @@
   margin-bottom: 20px;
 }
 
-.world .world-card-image img,
-.world .world-card-image picture {
-  max-height: 140px;
+.world-card-picture {
+  display: contents;
+}
+
+.world-card-img {
   max-width: 100%;
+  max-height: 140px;
   width: auto;
   height: auto;
   object-fit: contain;
   filter: drop-shadow(0 4px 10px rgb(0 0 0 / 6%));
 }
 
-.world .world-card-body {
+.world-card-body {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
 }
 
-.world .world-card-title {
+.world-card-title {
+  margin: 0 0 10px;
   color: #b50404;
   font-family: Amaranth, sans-serif;
   font-size: 26px;
   font-weight: 700;
   line-height: 1.25;
-  margin: 0 0 10px;
   text-align: center;
 }
 
-.world .world-card-desc {
+.world-card-desc {
+  margin: 0;
+  max-width: 270px;
   color: #1a1a1a;
   font-family: Amaranth, sans-serif;
   font-size: 16px;
   font-weight: 500;
   line-height: 1.45;
-  margin: 0;
   text-align: center;
-  max-width: 270px;
 }
 
-.world .world-footer {
+.world-footer {
+  width: 100%;
   margin-top: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  width: 100%;
 }
 
-.world .world-subtitle-wrapper {
+.world-subtitle-wrapper {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -147,17 +148,17 @@
   padding: 10px 42px;
 }
 
-.world .world-subtitle {
+.world-subtitle {
+  margin: 0;
   color: #000;
   font-family: Amaranth, sans-serif;
   font-size: 21px;
   font-weight: 700;
   line-height: 1.35;
-  margin: 0;
   text-align: center;
 }
 
-.world .world-sparkle {
+.world-sparkle {
   position: absolute;
   display: inline-flex;
   align-items: center;
@@ -167,50 +168,50 @@
   filter: drop-shadow(0 2px 4px rgb(253 185 19 / 35%));
 }
 
-.world .sparkle-top-right {
+.sparkle-top-right {
   top: -4px;
   right: 12px;
 }
 
-.world .sparkle-bottom-left {
+.sparkle-bottom-left {
   bottom: -2px;
   left: 12px;
 }
 
-.world .world-cta-wrapper {
+.world-cta-wrapper {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 }
 
-.world .world-btn {
+.world-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  padding: 13px 44px;
+  border: none;
+  border-radius: 50px;
   background-color: #b50404 !important;
   color: #fff !important;
-  text-decoration: none !important;
   font-family: Amaranth, sans-serif;
   font-size: 19px;
   font-weight: 700;
-  padding: 13px 44px;
-  border-radius: 50px;
-  box-shadow: 0 4px 14px rgb(181 4 4 / 28%);
-  transition: background-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
   letter-spacing: 0.2px;
-  border: none;
+  text-decoration: none !important;
+  box-shadow: 0 4px 14px rgb(181 4 4 / 28%);
   cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.world .world-btn:hover {
+.world-btn:hover {
   background-color: #920303 !important;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgb(181 4 4 / 38%);
   color: #fff !important;
   text-decoration: none !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgb(181 4 4 / 38%);
 }
 
-.world .world-btn:active {
+.world-btn:active {
   transform: translateY(0);
   box-shadow: 0 2px 8px rgb(181 4 4 / 20%);
 }
@@ -220,68 +221,68 @@
     padding: 35px 16px 45px;
   }
 
-  .world .world-title {
+  .world-title {
     font-size: 30px;
     gap: 12px;
   }
 
-  .world .world-heading-star {
+  .world-heading-star {
     font-size: 28px;
   }
 
-  .world .world-cards {
+  .world-cards {
     gap: 28px;
   }
 
-  .world .world-card-title {
+  .world-card-title {
     font-size: 22px;
   }
 
-  .world .world-subtitle {
+  .world-subtitle {
     font-size: 18px;
   }
 
-  .world .world-btn {
-    font-size: 17px;
+  .world-btn {
     padding: 11px 36px;
+    font-size: 17px;
   }
 }
 
 @media (width <= 600px) {
-  .world .world-title {
+  .world-title {
     font-size: 23px;
     gap: 8px;
   }
 
-  .world .world-heading-star {
+  .world-heading-star {
     font-size: 20px;
   }
 
-  .world .world-cards {
+  .world-cards {
     flex-direction: column;
     align-items: center;
     gap: 32px;
   }
 
-  .world .world-card {
-    max-width: 100%;
+  .world-card {
     width: 100%;
+    max-width: 100%;
   }
 
-  .world .world-subtitle-wrapper {
+  .world-subtitle-wrapper {
     padding: 8px 28px;
   }
 
-  .world .world-subtitle {
+  .world-subtitle {
     font-size: 16px;
   }
 
-  .world .sparkle-top-right {
+  .sparkle-top-right {
     top: -8px;
     right: 4px;
   }
 
-  .world .sparkle-bottom-left {
+  .sparkle-bottom-left {
     bottom: -6px;
     left: 4px;
   }

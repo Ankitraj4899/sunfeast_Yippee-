@@ -134,17 +134,23 @@ export default function decorate(block) {
       const rawText = imageCol.textContent.trim();
 
       if (picture) {
+        picture.classList.add('world-card-picture');
+        const pImg = picture.querySelector('img');
+        if (pImg) pImg.classList.add('world-card-img');
         imageWrapper.append(picture);
       } else if (img) {
+        img.classList.add('world-card-img');
         imageWrapper.append(img);
       } else if (link && link.href) {
         const newImg = document.createElement('img');
+        newImg.classList.add('world-card-img');
         newImg.src = link.href;
         newImg.alt = cardTitleText || 'Better World Initiative';
         newImg.loading = 'lazy';
         imageWrapper.append(newImg);
       } else if (rawText.startsWith('http://') || rawText.startsWith('https://')) {
         const newImg = document.createElement('img');
+        newImg.classList.add('world-card-img');
         newImg.src = rawText;
         newImg.alt = cardTitleText || 'Better World Initiative';
         newImg.loading = 'lazy';
