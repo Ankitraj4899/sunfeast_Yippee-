@@ -2,8 +2,10 @@
 Your project's description...
 
 ## Environments
-- Preview: https://main--sunfeast_Yippee---Ankitraj4899.aem.page/
-- Live: https://main--sunfeast_Yippee---Ankitraj4899.aem.live/
+- Preview: https://main--sunfeast-yippee--ankitraj4899.aem.page/
+- Live: https://main--sunfeast-yippee--ankitraj4899.aem.live/
+
+
 
 ## Documentation
 
