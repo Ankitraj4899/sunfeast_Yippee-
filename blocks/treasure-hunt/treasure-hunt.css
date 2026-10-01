@@ -1,0 +1,351 @@
+.section:has(.treasure-hunt) {
+  width: 100%;
+  max-width: none;
+  margin-right: 0;
+  margin-left: 0;
+  padding-right: 0;
+  padding-left: 0;
+  box-sizing: border-box;
+}
+
+.section:has(.treasure-hunt)>div {
+  width: 100%;
+  max-width: none;
+  margin-right: 0;
+  margin-left: 0;
+  padding-right: 0;
+  padding-left: 0;
+  box-sizing: border-box;
+}
+
+.treasure-hunt-wrapper {
+  width: 100%;
+  max-width: none;
+  margin-right: 0;
+  margin-left: 0;
+  padding-right: 0;
+  padding-left: 0;
+  box-sizing: border-box;
+}
+
+.treasure-hunt {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Amaranth, sans-serif;
+  overflow: visible;
+}
+
+.treasure-hunt-container {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+}
+
+.treasure-hunt-banner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: block;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.treasure-hunt-media {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  line-height: 0;
+}
+
+.treasure-hunt-media picture,
+.treasure-hunt-media img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.treasure-hunt-play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 4;
+  transform: translate(-50%, -50%);
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border: none;
+  cursor: pointer;
+  clip-path: polygon(50% 0%, 58% 10%, 67% 4%, 69% 16%, 80% 11%, 79% 23%, 92% 20%, 87% 32%,
+      100% 36%, 90% 45%, 100% 53%, 89% 60%, 96% 72%, 83% 70%, 84% 84%, 72% 78%,
+      67% 96%, 57% 86%, 50% 100%, 43% 86%, 33% 96%, 28% 80%, 16% 86%, 18% 72%,
+      4% 74%, 11% 61%, 0% 54%, 10% 45%, 0% 37%, 13% 32%, 8% 20%, 21% 23%,
+      20% 10%, 32% 16%, 33% 4%, 42% 10%);
+  filter: drop-shadow(0 4px 10px rgb(0 0 0 / 25%));
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.25s ease;
+}
+
+.treasure-hunt-play-btn:hover,
+.treasure-hunt-banner:hover .treasure-hunt-play-btn {
+  transform: translate(-50%, -50%) scale(1.12);
+  filter: drop-shadow(0 6px 16px rgb(0 0 0 / 35%));
+}
+
+.treasure-hunt-play-icon {
+  color: #b50404;
+  font-size: 24px;
+  line-height: 1;
+  margin-left: 3px;
+  user-select: none;
+}
+
+.treasure-hunt-wave {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  z-index: 6;
+  pointer-events: none;
+  line-height: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.treasure-hunt-wave picture,
+.treasure-hunt-wave img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  object-position: bottom center;
+}
+
+.treasure-hunt-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.treasure-hunt-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-color: rgb(0 0 0 / 75%);
+  backdrop-filter: blur(4px);
+}
+
+.treasure-hunt-modal-frame {
+  position: relative;
+  z-index: 1000000;
+  width: 100%;
+  max-width: 850px;
+  background-color: #ff7800;
+  border-radius: 26px;
+  padding: 22px 18px 24px;
+  box-sizing: border-box;
+  box-shadow: 0 14px 45px rgb(0 0 0 / 35%);
+}
+
+.treasure-hunt-modal-player {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 18px;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.treasure-hunt-modal-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 18px;
+}
+
+.treasure-hunt-modal-iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 18px;
+}
+
+.treasure-hunt-modal-close {
+  position: absolute;
+  top: 2px;
+  right: 6px;
+  z-index: 1000001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.treasure-hunt-modal-close:hover {
+  transform: scale(1.15);
+  opacity: 0.85;
+}
+
+.treasure-hunt-modal-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 10;
+  transform: translate(-50%, -50%);
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border: none;
+  cursor: pointer;
+  clip-path: polygon(
+    50% 0%, 58% 10%, 67% 4%, 69% 16%, 80% 11%, 79% 23%, 92% 20%, 87% 32%,
+    100% 36%, 90% 45%, 100% 53%, 89% 60%, 96% 72%, 83% 70%, 84% 84%, 72% 78%,
+    67% 96%, 57% 86%, 50% 100%, 43% 86%, 33% 96%, 28% 80%, 16% 86%, 18% 72%,
+    4% 74%, 11% 61%, 0% 54%, 10% 45%, 0% 37%, 13% 32%, 8% 20%, 21% 23%,
+    20% 10%, 32% 16%, 33% 4%, 42% 10%
+  );
+  filter: drop-shadow(0 4px 10px rgb(0 0 0 / 30%));
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.25s ease;
+}
+
+.treasure-hunt-modal-btn:hover {
+  transform: translate(-50%, -50%) scale(1.12);
+  filter: drop-shadow(0 6px 14px rgb(0 0 0 / 40%));
+}
+
+.treasure-hunt-modal-btn .pause-icon {
+  color: #b50404;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 2px;
+  user-select: none;
+  display: inline-block;
+}
+
+.treasure-hunt-modal-btn .play-icon {
+  color: #b50404;
+  font-size: 24px;
+  line-height: 1;
+  margin-left: 3px;
+  user-select: none;
+  display: inline-block;
+}
+
+@media (width <= 900px) {
+  .treasure-hunt-play-btn {
+    width: 60px;
+    height: 60px;
+  }
+
+  .treasure-hunt-play-icon {
+    font-size: 20px;
+  }
+
+  .treasure-hunt-modal-frame {
+    border-radius: 20px;
+    padding: 16px 12px;
+  }
+
+  .treasure-hunt-modal-player {
+    border-radius: 14px;
+  }
+
+  .treasure-hunt-modal-iframe,
+  .treasure-hunt-modal-video {
+    border-radius: 14px;
+  }
+
+  .treasure-hunt-modal-btn {
+    width: 60px;
+    height: 60px;
+  }
+
+  .treasure-hunt-modal-btn .pause-icon {
+    font-size: 18px;
+  }
+
+  .treasure-hunt-modal-btn .play-icon {
+    font-size: 20px;
+  }
+}
+
+@media (width <= 600px) {
+  .treasure-hunt-play-btn {
+    width: 48px;
+    height: 48px;
+  }
+
+  .treasure-hunt-play-icon {
+    font-size: 16px;
+    margin-left: 2px;
+  }
+
+  .treasure-hunt-modal {
+    padding: 12px;
+  }
+
+  .treasure-hunt-modal-frame {
+    border-radius: 16px;
+    padding: 12px 8px;
+  }
+
+  .treasure-hunt-modal-close {
+    top: 2px;
+    right: 4px;
+    font-size: 18px;
+  }
+
+  .treasure-hunt-modal-player {
+    border-radius: 12px;
+  }
+
+  .treasure-hunt-modal-iframe,
+  .treasure-hunt-modal-video {
+    border-radius: 12px;
+  }
+
+  .treasure-hunt-modal-btn {
+    width: 48px;
+    height: 48px;
+  }
+
+  .treasure-hunt-modal-btn .pause-icon {
+    font-size: 15px;
+    letter-spacing: 1px;
+  }
+
+  .treasure-hunt-modal-btn .play-icon {
+    font-size: 16px;
+  }
+}
