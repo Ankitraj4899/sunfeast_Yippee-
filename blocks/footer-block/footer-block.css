@@ -162,14 +162,11 @@
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  transition: transform 0.2s ease, opacity 0.2s ease;
   line-height: 1;
 }
 
 .footer-block-social-link:any-link:hover {
   color: #fff;
-  opacity: 0.85;
-  transform: scale(1.12);
 }
 
 @media (width <= 1100px) {

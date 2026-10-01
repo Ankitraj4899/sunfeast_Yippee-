@@ -162,7 +162,7 @@
   text-decoration: none;
   cursor: pointer;
   box-shadow: 0 6px 18px rgb(181 4 4 / 35%);
-  transition: background-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  transition: background-color 0.25s ease, box-shadow 0.25s ease;
   user-select: none;
 }
 
@@ -170,12 +170,10 @@
   background-color: #920303;
   color: #fff;
   text-decoration: none;
-  transform: translateY(-2px);
   box-shadow: 0 8px 24px rgb(181 4 4 / 45%);
 }
 
 .grid-cards .grid-cards-btn:any-link:active {
-  transform: translateY(0);
   box-shadow: 0 3px 10px rgb(181 4 4 / 30%);
 }
 

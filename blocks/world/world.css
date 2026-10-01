@@ -200,19 +200,17 @@
   text-decoration: none !important;
   box-shadow: 0 4px 14px rgb(181 4 4 / 28%);
   cursor: pointer;
-  transition: background-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  transition: background-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .world-btn:hover {
   background-color: #920303 !important;
   color: #fff !important;
   text-decoration: none !important;
-  transform: translateY(-2px);
   box-shadow: 0 6px 18px rgb(181 4 4 / 38%);
 }
 
 .world-btn:active {
-  transform: translateY(0);
   box-shadow: 0 2px 8px rgb(181 4 4 / 20%);
 }
 
