@@ -160,7 +160,6 @@ export default function decorate(block) {
   const container = document.createElement('div');
   container.className = 'recipe-carousel-container';
 
-  // 1. Header
   const header = document.createElement('div');
   header.className = 'recipe-carousel-header';
 
@@ -177,11 +176,9 @@ export default function decorate(block) {
 
   header.append(wave, heading, subtitle);
 
-  // 2. Category Tabs
   const nav = document.createElement('div');
   nav.className = 'recipe-categories-nav';
 
-  // 3. Recipes Section
   const section = document.createElement('div');
   section.className = 'recipe-cards-section';
 
