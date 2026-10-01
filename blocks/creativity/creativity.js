@@ -15,9 +15,41 @@ function normalizeYouTubeUrl(url) {
   return trimmed;
 }
 
+function getVolumeIconSvg(isMuted) {
+  if (isMuted) {
+    return `
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#ffffff"></polygon>
+        <line x1="23" y1="9" x2="17" y2="15"></line>
+        <line x1="17" y1="9" x2="23" y2="15"></line>
+      </svg>
+    `;
+  }
+  return `
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#ffffff"></polygon>
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+    </svg>
+  `;
+}
+
+function getFullscreenIconSvg() {
+  return `
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+    </svg>
+  `;
+}
+
 function openVideoModal(videoUrl) {
+  if (!videoUrl) return;
+
   const modal = document.createElement('div');
   modal.classList.add('creativity-modal');
+  modal.setAttribute('role', 'dialog');
+  modal.setAttribute('aria-modal', 'true');
+  modal.setAttribute('aria-label', 'Video player');
 
   const overlay = document.createElement('div');
   overlay.classList.add('creativity-modal-overlay');
@@ -34,24 +66,239 @@ function openVideoModal(videoUrl) {
   const player = document.createElement('div');
   player.classList.add('creativity-modal-player');
 
-  const iframe = document.createElement('iframe');
-  iframe.classList.add('creativity-modal-iframe');
-  iframe.src = normalizeYouTubeUrl(videoUrl);
-  iframe.title = 'Creative DIY Video';
-  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-  iframe.allowFullscreen = true;
+  // TERRA Brand Badge at Top-Right
+  const badge = document.createElement('div');
+  badge.classList.add('creativity-modal-badge');
+  badge.setAttribute('aria-hidden', 'true');
+  badge.innerHTML = `
+    <div class="terra-badge-inner">
+      <div class="terra-badge-title">TERRA</div>
+      <div class="terra-badge-logo">
+        <span class="terra-logo-sunfeast">Sunfeast</span>
+        <span class="terra-logo-yippee">YiPPee!</span>
+      </div>
+      <div class="terra-badge-tagline">A BETTER WORLD</div>
+    </div>
+  `;
+  player.append(badge);
 
-  player.append(iframe);
+  const trimmed = videoUrl.trim();
+  const isYouTube = trimmed.includes('youtube.com') || trimmed.includes('youtu.be');
+
+  let handleKeyDown;
+  let videoEl = null;
+
+  if (isYouTube) {
+    const iframe = document.createElement('iframe');
+    iframe.classList.add('creativity-modal-iframe');
+    iframe.src = normalizeYouTubeUrl(trimmed);
+    iframe.title = 'Creative DIY Video';
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+    iframe.allowFullscreen = true;
+    player.append(iframe);
+  } else {
+    const video = document.createElement('video');
+    videoEl = video;
+    video.classList.add('creativity-modal-video');
+    video.playsInline = true;
+    video.preload = 'auto';
+
+    const source = document.createElement('source');
+    source.src = trimmed;
+    source.type = 'video/mp4';
+    video.append(source);
+    player.append(video);
+
+    // Center Starburst Play/Pause Button
+    const playBtn = document.createElement('button');
+    playBtn.classList.add('creativity-modal-btn');
+    playBtn.type = 'button';
+    playBtn.setAttribute('aria-label', 'Play or pause video');
+    playBtn.innerHTML = '<span class="play-icon">&#9654;</span>';
+
+    // Bottom Controls Bar
+    const controls = document.createElement('div');
+    controls.classList.add('creativity-modal-controls');
+
+    // Progress Bar Track
+    const progressWrap = document.createElement('div');
+    progressWrap.classList.add('creativity-modal-progress-wrap');
+    progressWrap.setAttribute('role', 'slider');
+    progressWrap.setAttribute('aria-label', 'Video progress');
+    progressWrap.setAttribute('aria-valuemin', '0');
+    progressWrap.setAttribute('aria-valuemax', '100');
+    progressWrap.setAttribute('aria-valuenow', '0');
+
+    const progressTrack = document.createElement('div');
+    progressTrack.classList.add('creativity-modal-progress-track');
+
+    const progressFill = document.createElement('div');
+    progressFill.classList.add('creativity-modal-progress-fill');
+    progressTrack.append(progressFill);
+    progressWrap.append(progressTrack);
+
+    // Bottom Action Row (Volume & Fullscreen)
+    const actionsRow = document.createElement('div');
+    actionsRow.classList.add('creativity-modal-actions');
+
+    const volumeBtn = document.createElement('button');
+    volumeBtn.classList.add('creativity-control-btn', 'creativity-volume-btn');
+    volumeBtn.type = 'button';
+    volumeBtn.setAttribute('aria-label', 'Toggle mute');
+    volumeBtn.innerHTML = getVolumeIconSvg(false);
+
+    const fullscreenBtn = document.createElement('button');
+    fullscreenBtn.classList.add('creativity-control-btn', 'creativity-fullscreen-btn');
+    fullscreenBtn.type = 'button';
+    fullscreenBtn.setAttribute('aria-label', 'Toggle fullscreen');
+    fullscreenBtn.innerHTML = getFullscreenIconSvg();
+
+    actionsRow.append(volumeBtn, fullscreenBtn);
+    controls.append(progressWrap, actionsRow);
+    player.append(playBtn, controls);
+
+    let isSeeking = false;
+
+    const updatePlayState = () => {
+      if (video.paused) {
+        playBtn.innerHTML = '<span class="play-icon">&#9654;</span>';
+        player.classList.remove('is-playing');
+        player.classList.add('is-paused');
+      } else {
+        playBtn.innerHTML = '<span class="pause-icon">&#10074;&#10074;</span>';
+        player.classList.add('is-playing');
+        player.classList.remove('is-paused');
+      }
+    };
+
+    const togglePlayPause = () => {
+      if (video.paused) {
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+    };
+
+    playBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      togglePlayPause();
+    });
+
+    video.addEventListener('click', (e) => {
+      e.stopPropagation();
+      togglePlayPause();
+    });
+
+    video.addEventListener('play', updatePlayState);
+    video.addEventListener('pause', updatePlayState);
+    video.addEventListener('ended', () => {
+      playBtn.innerHTML = '<span class="play-icon">&#9654;</span>';
+      player.classList.remove('is-playing');
+      player.classList.add('is-paused');
+    });
+
+    video.addEventListener('timeupdate', () => {
+      if (video.duration && !isSeeking) {
+        const percent = (video.currentTime / video.duration) * 100;
+        progressFill.style.width = `${percent}%`;
+        progressWrap.setAttribute('aria-valuenow', Math.round(percent).toString());
+      }
+    });
+
+    const seek = (e) => {
+      const rect = progressTrack.getBoundingClientRect();
+      const pos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      if (video.duration) {
+        video.currentTime = pos * video.duration;
+        progressFill.style.width = `${pos * 100}%`;
+      }
+    };
+
+    progressWrap.addEventListener('mousedown', (e) => {
+      isSeeking = true;
+      seek(e);
+      const onMouseMove = (moveEvt) => {
+        seek(moveEvt);
+      };
+      const onMouseUp = () => {
+        isSeeking = false;
+        window.removeEventListener('mousemove', onMouseMove);
+        window.removeEventListener('mouseup', onMouseUp);
+      };
+      window.addEventListener('mousemove', onMouseMove);
+      window.addEventListener('mouseup', onMouseUp);
+    });
+
+    progressWrap.addEventListener('touchstart', (e) => {
+      isSeeking = true;
+      if (e.touches.length > 0) seek(e.touches[0]);
+    }, { passive: true });
+
+    progressWrap.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) seek(e.touches[0]);
+    }, { passive: true });
+
+    progressWrap.addEventListener('touchend', () => {
+      isSeeking = false;
+    });
+
+    volumeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      video.muted = !video.muted;
+      volumeBtn.innerHTML = getVolumeIconSvg(video.muted);
+    });
+
+    fullscreenBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!document.fullscreenElement) {
+        if (player.requestFullscreen) {
+          player.requestFullscreen();
+        } else if (player.webkitRequestFullscreen) {
+          player.webkitRequestFullscreen();
+        }
+      } else if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    });
+
+    video.play().catch(() => {
+      updatePlayState();
+    });
+  }
+
   frame.append(closeButton, player);
   modal.append(overlay, frame);
   document.body.append(modal);
 
   const closeModal = () => {
+    if (videoEl) {
+      videoEl.pause();
+      videoEl.currentTime = 0;
+    }
+    const iframeEl = modal.querySelector('iframe');
+    if (iframeEl) {
+      iframeEl.src = '';
+    }
+    if (document.fullscreenElement && document.exitFullscreen) {
+      document.exitFullscreen().catch(() => {});
+    }
     modal.remove();
+    document.removeEventListener('keydown', handleKeyDown);
+  };
+
+  handleKeyDown = (e) => {
+    if (e.key === 'Escape') {
+      closeModal();
+    } else if (e.key === ' ' && videoEl && e.target === modal) {
+      e.preventDefault();
+      if (videoEl.paused) videoEl.play();
+      else videoEl.pause();
+    }
   };
 
   closeButton.addEventListener('click', closeModal);
   overlay.addEventListener('click', closeModal);
+  document.addEventListener('keydown', handleKeyDown);
 }
 
 export default function decorate(block) {

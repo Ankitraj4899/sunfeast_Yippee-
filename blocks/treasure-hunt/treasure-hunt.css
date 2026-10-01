@@ -136,7 +136,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 24px;
   box-sizing: border-box;
 }
 
@@ -144,63 +144,38 @@
   position: fixed;
   inset: 0;
   z-index: 0;
-  background-color: rgb(0 0 0 / 75%);
-  backdrop-filter: blur(4px);
+  background-color: rgb(0 0 0 / 78%);
+  backdrop-filter: blur(6px);
 }
 
 .treasure-hunt-modal-frame {
   position: relative;
   z-index: 1000000;
   width: 100%;
-  max-width: 850px;
-  background-color: #ff7800;
-  border-radius: 26px;
-  padding: 22px 18px 24px;
+  max-width: 920px;
+  background-color: #f36c21;
+  border-radius: 28px;
+  padding: 30px 22px 22px;
   box-sizing: border-box;
-  box-shadow: 0 14px 45px rgb(0 0 0 / 35%);
-}
-
-.treasure-hunt-modal-player {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 18px;
-  overflow: hidden;
-  background-color: #000;
-}
-
-.treasure-hunt-modal-video {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  border-radius: 18px;
-}
-
-.treasure-hunt-modal-iframe {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border: none;
-  border-radius: 18px;
+  box-shadow: 0 20px 50px rgb(0 0 0 / 45%);
 }
 
 .treasure-hunt-modal-close {
   position: absolute;
-  top: 2px;
-  right: 6px;
+  top: 4px;
+  right: 12px;
   z-index: 1000001;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   padding: 0;
   border: none;
   background: transparent;
   color: #fff;
   font-family: Arial, sans-serif;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   line-height: 1;
   cursor: pointer;
@@ -209,15 +184,109 @@
 }
 
 .treasure-hunt-modal-close:hover {
-  transform: scale(1.15);
+  transform: scale(1.18);
   opacity: 0.85;
 }
 
+.treasure-hunt-modal-player {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 22px;
+  overflow: hidden;
+  background-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.treasure-hunt-modal-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 22px;
+  background-color: #000;
+}
+
+.treasure-hunt-modal-iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 22px;
+}
+
+/* Top Right Brand Badge */
+.treasure-hunt-modal-badge {
+  position: absolute;
+  top: 0;
+  right: 36px;
+  z-index: 25;
+  background-color: #fff;
+  border-radius: 0 0 14px 14px;
+  padding: 6px 16px 8px;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 25%);
+  pointer-events: none;
+}
+
+.terra-badge-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.terra-badge-title {
+  color: #d84315;
+  font-family: "Arial Black", Impact, sans-serif;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.terra-badge-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  line-height: 1;
+}
+
+.terra-logo-sunfeast {
+  font-family: cursive, sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  color: #d84315;
+}
+
+.terra-logo-yippee {
+  font-family: Amaranth, "Comic Sans MS", sans-serif;
+  font-size: 10px;
+  font-weight: 900;
+  color: #ff7800;
+  text-shadow: 0.5px 0.5px 0 #b50404;
+}
+
+.terra-badge-tagline {
+  color: #1b5e20;
+  font-family: Arial, sans-serif;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  margin-top: 2px;
+  text-transform: uppercase;
+}
+
+/* Center Starburst Play Button */
 .treasure-hunt-modal-btn {
   position: absolute;
   top: 50%;
   left: 50%;
-  z-index: 10;
+  z-index: 20;
   transform: translate(-50%, -50%);
   width: 72px;
   height: 72px;
@@ -235,7 +304,8 @@
     20% 10%, 32% 16%, 33% 4%, 42% 10%
   );
   filter: drop-shadow(0 4px 10px rgb(0 0 0 / 30%));
-  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.25s ease;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+  opacity: 1;
 }
 
 .treasure-hunt-modal-btn:hover {
@@ -262,6 +332,99 @@
   display: inline-block;
 }
 
+.treasure-hunt-modal-player.is-playing .treasure-hunt-modal-btn {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.treasure-hunt-modal-player.is-paused .treasure-hunt-modal-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.treasure-hunt-modal-player.is-playing:hover .treasure-hunt-modal-btn {
+  opacity: 0.85;
+  pointer-events: auto;
+}
+
+/* Bottom Controls */
+.treasure-hunt-modal-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding: 26px 28px 12px;
+  background: linear-gradient(to top, rgb(0 0 0 / 85%) 0%, rgb(0 0 0 / 40%) 60%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-sizing: border-box;
+}
+
+.treasure-hunt-modal-progress-wrap {
+  position: relative;
+  width: 100%;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.treasure-hunt-modal-progress-track {
+  width: 100%;
+  height: 4px;
+  background: #fff;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  transition: height 0.15s ease;
+}
+
+.treasure-hunt-modal-progress-wrap:hover .treasure-hunt-modal-progress-track {
+  height: 6px;
+}
+
+.treasure-hunt-modal-progress-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0%;
+  background: #e51b24;
+  border-radius: 4px;
+  transition: width 0.08s linear;
+}
+
+.treasure-hunt-modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  width: 100%;
+}
+
+.treasure-hunt-control-btn {
+  background: transparent;
+  border: none;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.treasure-hunt-control-btn:hover {
+  transform: scale(1.15);
+  opacity: 0.85;
+}
+
+.treasure-hunt-control-btn svg {
+  display: block;
+}
+
 @media (width <= 900px) {
   .treasure-hunt-play-btn {
     width: 60px;
@@ -273,30 +436,35 @@
   }
 
   .treasure-hunt-modal-frame {
-    border-radius: 20px;
-    padding: 16px 12px;
+    border-radius: 22px;
+    padding: 24px 16px 16px;
   }
 
   .treasure-hunt-modal-player {
-    border-radius: 14px;
+    border-radius: 16px;
   }
 
   .treasure-hunt-modal-iframe,
   .treasure-hunt-modal-video {
-    border-radius: 14px;
+    border-radius: 16px;
   }
 
   .treasure-hunt-modal-btn {
-    width: 60px;
-    height: 60px;
+    width: 62px;
+    height: 62px;
   }
 
-  .treasure-hunt-modal-btn .pause-icon {
-    font-size: 18px;
+  .treasure-hunt-modal-badge {
+    right: 20px;
+    padding: 4px 12px 6px;
   }
 
-  .treasure-hunt-modal-btn .play-icon {
-    font-size: 20px;
+  .terra-badge-title {
+    font-size: 15px;
+  }
+
+  .treasure-hunt-modal-controls {
+    padding: 20px 20px 10px;
   }
 }
 
@@ -316,14 +484,14 @@
   }
 
   .treasure-hunt-modal-frame {
-    border-radius: 16px;
-    padding: 12px 8px;
+    border-radius: 18px;
+    padding: 20px 10px 10px;
   }
 
   .treasure-hunt-modal-close {
     top: 2px;
-    right: 4px;
-    font-size: 18px;
+    right: 6px;
+    font-size: 20px;
   }
 
   .treasure-hunt-modal-player {
@@ -336,16 +504,36 @@
   }
 
   .treasure-hunt-modal-btn {
-    width: 48px;
-    height: 48px;
+    width: 50px;
+    height: 50px;
   }
 
-  .treasure-hunt-modal-btn .pause-icon {
-    font-size: 15px;
-    letter-spacing: 1px;
+  .treasure-hunt-modal-badge {
+    right: 14px;
+    padding: 3px 10px 5px;
   }
 
-  .treasure-hunt-modal-btn .play-icon {
-    font-size: 16px;
+  .terra-badge-title {
+    font-size: 13px;
+  }
+
+  .terra-logo-sunfeast {
+    font-size: 7px;
+  }
+
+  .terra-logo-yippee {
+    font-size: 8px;
+  }
+
+  .terra-badge-tagline {
+    font-size: 6px;
+  }
+
+  .treasure-hunt-modal-controls {
+    padding: 16px 14px 8px;
+  }
+
+  .treasure-hunt-modal-actions {
+    gap: 12px;
   }
 }
