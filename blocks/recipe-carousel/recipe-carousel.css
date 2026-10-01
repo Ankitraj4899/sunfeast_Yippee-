@@ -114,12 +114,7 @@
   padding: 0;
   margin: 0;
   cursor: pointer;
-  transition: transform 0.2s ease;
   outline: none;
-}
-
-.recipe-category-tab:hover {
-  transform: translateY(-2px);
 }
 
 .recipe-category-icon-wrap {
@@ -136,11 +131,6 @@
   height: 100%;
   object-fit: contain;
   filter: drop-shadow(0 4px 6px rgb(0 0 0 / 15%));
-  transition: transform 0.2s ease;
-}
-
-.recipe-category-tab:hover .recipe-category-icon {
-  transform: scale(1.08);
 }
 
 .recipe-category-name {
@@ -221,7 +211,7 @@
     4% 74%, 11% 61%, 0% 54%, 10% 45%, 0% 37%, 13% 32%, 8% 20%, 21% 23%,
     20% 10%, 32% 16%, 33% 4%, 42% 10%
   );
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 
 .recipe-arrow-prev {
@@ -237,10 +227,6 @@
   background: #e2b5b5;
   cursor: not-allowed;
   pointer-events: none;
-}
-
-.recipe-arrow:hover:not(.disabled, :disabled) {
-  transform: translateY(-50%) scale(1.08);
 }
 
 .recipe-viewport {
@@ -289,12 +275,6 @@
   padding: 6px;
   margin: 0;
   border-radius: 50%;
-  transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-.recipe-card-menu:hover {
-  transform: scale(1.15);
-  opacity: 0.9;
 }
 
 .recipe-card-menu span {
@@ -319,18 +299,16 @@
   flex-direction: column;
   gap: 10px;
   box-shadow: 0 8px 24px rgb(0 0 0 / 40%);
-  animation: recipe-popup-in 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: recipe-popup-in 0.15s ease-out forwards;
 }
 
 @keyframes recipe-popup-in {
   from {
     opacity: 0;
-    transform: translateY(-6px) scale(0.96);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
   }
 }
 
@@ -359,12 +337,6 @@
   cursor: pointer;
   line-height: 1;
   text-decoration: none;
-  transition: opacity 0.15s ease, transform 0.15s ease;
-}
-
-.recipe-popup-btn:hover {
-  opacity: 0.85;
-  transform: translateX(2px);
 }
 
 .recipe-popup-btn span {
@@ -385,12 +357,6 @@
   justify-content: center;
   color: #f1cfcf;
   cursor: pointer;
-  transition: transform 0.15s ease, opacity 0.15s ease;
-}
-
-.recipe-popup-close-btn:hover {
-  opacity: 0.8;
-  transform: scale(1.1);
 }
 
 /* Share Modal Styles */
@@ -420,19 +386,17 @@
   border-radius: 24px;
   overflow: hidden;
   box-shadow: 0 20px 48px rgb(0 0 0 / 35%);
-  animation: recipe-modal-slide-in 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: recipe-modal-slide-in 0.2s ease-out;
   font-family: Amaranth, sans-serif;
 }
 
 @keyframes recipe-modal-slide-in {
   from {
     opacity: 0;
-    transform: translateY(16px) scale(0.96);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
   }
 }
 
@@ -464,12 +428,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.15s ease, opacity 0.15s ease;
-}
-
-.recipe-share-modal-close:hover {
-  transform: scale(1.15);
-  opacity: 0.75;
 }
 
 .recipe-share-modal-body {
@@ -496,11 +454,6 @@
   align-items: center;
   gap: 8px;
   outline: none;
-  transition: transform 0.2s ease;
-}
-
-.recipe-share-social-btn:hover {
-  transform: translateY(-3px);
 }
 
 .recipe-share-circle {
@@ -562,7 +515,7 @@
   border-radius: 22px;
   padding: 0 28px;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  transition: background-color 0.2s ease;
   flex-shrink: 0;
   box-sizing: border-box;
 }
@@ -673,13 +626,12 @@
   border-radius: 50%;
   background: #fff;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition: background-color 0.2s ease;
   box-sizing: border-box;
 }
 
 .recipe-dot.active {
   background: #b50404;
-  transform: scale(1.15);
 }
 
 .recipe-view-all {
@@ -696,12 +648,11 @@
   line-height: 1;
   cursor: pointer;
   box-shadow: 0 4px 12px rgb(0 0 0 / 20%);
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 
 .recipe-view-all:hover {
   background: #7d0000;
-  transform: translateY(-2px);
 }
 
 .recipe-view-all:focus {

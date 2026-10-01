@@ -58,50 +58,48 @@
   font-size: 3rem;
   font-weight: 300;
   line-height: 1;
-  clip-path: polygon(
-    50% 0%,
-    58% 10%,
-    67% 4%,
-    69% 16%,
-    80% 11%,
-    79% 23%,
-    92% 20%,
-    87% 32%,
-    100% 36%,
-    90% 45%,
-    100% 53%,
-    89% 60%,
-    96% 72%,
-    83% 70%,
-    84% 84%,
-    72% 78%,
-    67% 96%,
-    57% 86%,
-    50% 100%,
-    43% 86%,
-    33% 96%,
-    28% 80%,
-    16% 86%,
-    18% 72%,
-    4% 74%,
-    11% 61%,
-    0% 54%,
-    10% 45%,
-    0% 37%,
-    13% 32%,
-    8% 20%,
-    21% 23%,
-    20% 10%,
-    32% 16%,
-    33% 4%,
-    42% 10%
-  );
+  clip-path: polygon(50% 0%,
+      58% 10%,
+      67% 4%,
+      69% 16%,
+      80% 11%,
+      79% 23%,
+      92% 20%,
+      87% 32%,
+      100% 36%,
+      90% 45%,
+      100% 53%,
+      89% 60%,
+      96% 72%,
+      83% 70%,
+      84% 84%,
+      72% 78%,
+      67% 96%,
+      57% 86%,
+      50% 100%,
+      43% 86%,
+      33% 96%,
+      28% 80%,
+      16% 86%,
+      18% 72%,
+      4% 74%,
+      11% 61%,
+      0% 54%,
+      10% 45%,
+      0% 37%,
+      13% 32%,
+      8% 20%,
+      21% 23%,
+      20% 10%,
+      32% 16%,
+      33% 4%,
+      42% 10%);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.disable{
+.disable {
   background-color: #deacac;
   cursor: not-allowed;
 }
@@ -157,12 +155,6 @@
   line-height: 1;
   cursor: pointer;
   user-select: none;
-  transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-.video-modal-close:hover {
-  transform: scale(1.18);
-  opacity: 0.85;
 }
 
 .video-modal-player {
@@ -196,56 +188,53 @@
 }
 
 .video-button {
-    position: absolute;
-    top: 50%;
-    left: calc(50% - 400px);
-    transform: translate(-50%, -50%);
-    width: 70px;
-    height: 70px;
-    border: none;
-    background: #fff;
-    color: #b50404;
-    cursor: pointer;
-    clip-path: polygon(
-    50% 0%,
-    58% 10%,
-    67% 4%,
-    69% 16%,
-    80% 11%,
-    79% 23%,
-    92% 20%,
-    87% 32%,
-    100% 36%,
-    90% 45%,
-    100% 53%,
-    89% 60%,
-    96% 72%,
-    83% 70%,
-    84% 84%,
-    72% 78%,
-    67% 96%,
-    57% 86%,
-    50% 100%,
-    43% 86%,
-    33% 96%,
-    28% 80%,
-    16% 86%,
-    18% 72%,
-    4% 74%,
-    11% 61%,
-    0% 54%,
-    10% 45%,
-    0% 37%,
-    13% 32%,
-    8% 20%,
-    21% 23%,
-    20% 10%,
-    32% 16%,
-    33% 4%,
-    42% 10%
-    );
-    font-size: 25px;
-    transition: transform 0.2s ease;
+  position: absolute;
+  top: 50%;
+  left: calc(50% - 400px);
+  transform: translate(-50%, -50%);
+  width: 70px;
+  height: 70px;
+  border: none;
+  background: #fff;
+  color: #b50404;
+  cursor: pointer;
+  clip-path: polygon(50% 0%,
+      58% 10%,
+      67% 4%,
+      69% 16%,
+      80% 11%,
+      79% 23%,
+      92% 20%,
+      87% 32%,
+      100% 36%,
+      90% 45%,
+      100% 53%,
+      89% 60%,
+      96% 72%,
+      83% 70%,
+      84% 84%,
+      72% 78%,
+      67% 96%,
+      57% 86%,
+      50% 100%,
+      43% 86%,
+      33% 96%,
+      28% 80%,
+      16% 86%,
+      18% 72%,
+      4% 74%,
+      11% 61%,
+      0% 54%,
+      10% 45%,
+      0% 37%,
+      13% 32%,
+      8% 20%,
+      21% 23%,
+      20% 10%,
+      32% 16%,
+      33% 4%,
+      42% 10%);
+  font-size: 25px;
 }
 
 .video-button-modal {
@@ -262,15 +251,12 @@
   background-color: #fff;
   border: none;
   cursor: pointer;
-  clip-path: polygon(
-    50% 0%, 58% 10%, 67% 4%, 69% 16%, 80% 11%, 79% 23%, 92% 20%, 87% 32%,
-    100% 36%, 90% 45%, 100% 53%, 89% 60%, 96% 72%, 83% 70%, 84% 84%, 72% 78%,
-    67% 96%, 57% 86%, 50% 100%, 43% 86%, 33% 96%, 28% 80%, 16% 86%, 18% 72%,
-    4% 74%, 11% 61%, 0% 54%, 10% 45%, 0% 37%, 13% 32%, 8% 20%, 21% 23%,
-    20% 10%, 32% 16%, 33% 4%, 42% 10%
-  );
+  clip-path: polygon(50% 0%, 58% 10%, 67% 4%, 69% 16%, 80% 11%, 79% 23%, 92% 20%, 87% 32%,
+      100% 36%, 90% 45%, 100% 53%, 89% 60%, 96% 72%, 83% 70%, 84% 84%, 72% 78%,
+      67% 96%, 57% 86%, 50% 100%, 43% 86%, 33% 96%, 28% 80%, 16% 86%, 18% 72%,
+      4% 74%, 11% 61%, 0% 54%, 10% 45%, 0% 37%, 13% 32%, 8% 20%, 21% 23%,
+      20% 10%, 32% 16%, 33% 4%, 42% 10%);
   filter: drop-shadow(0 4px 10px rgb(0 0 0 / 30%));
-  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
   opacity: 1;
 }
 
@@ -339,7 +325,6 @@
   border-radius: 4px;
   position: relative;
   overflow: hidden;
-  transition: height 0.15s ease;
 }
 
 .video-modal-progress-wrap:hover .video-modal-progress-track {
@@ -374,12 +359,6 @@
   justify-content: center;
   cursor: pointer;
   color: #fff;
-  transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-.video-control-btn:hover {
-  transform: scale(1.15);
-  opacity: 0.85;
 }
 
 .video-control-btn svg {
@@ -393,8 +372,8 @@
   margin-left: 0;
 }
 
-.carousel-description{
-  margin-left:0;
+.carousel-description {
+  margin-left: 0;
   max-width: 640px;
 }
 
@@ -406,32 +385,30 @@
   width: 40px;
   height: 40px;
   background: #ffd43b;
-  clip-path: polygon(
-    50% 0%,
-    53% 12%,
-    56% 30%,
-    62% 40%,
-    72% 45%,
-    88% 48%,
-    100% 50%,
-    88% 52%,
-    72% 55%,
-    62% 60%,
-    56% 70%,
-    53% 88%,
-    50% 100%,
-    47% 88%,
-    44% 70%,
-    38% 60%,
-    28% 55%,
-    12% 52%,
-    0% 50%,
-    12% 48%,
-    28% 45%,
-    38% 40%,
-    44% 30%,
-    47% 12%
-  );
+  clip-path: polygon(50% 0%,
+      53% 12%,
+      56% 30%,
+      62% 40%,
+      72% 45%,
+      88% 48%,
+      100% 50%,
+      88% 52%,
+      72% 55%,
+      62% 60%,
+      56% 70%,
+      53% 88%,
+      50% 100%,
+      47% 88%,
+      44% 70%,
+      38% 60%,
+      28% 55%,
+      12% 52%,
+      0% 50%,
+      12% 48%,
+      28% 45%,
+      38% 40%,
+      44% 30%,
+      47% 12%);
 }
 
 .star1 {
@@ -454,7 +431,7 @@
   right: 20%;
 }
 
-@media (width <= 1600px) {
+@media (width <=1600px) {
   .carousel-item {
     gap: 100px;
   }
@@ -472,7 +449,7 @@
   }
 }
 
-@media (width <= 1400px) {
+@media (width <=1400px) {
   .carousel-item {
     gap: 60px;
   }
@@ -490,7 +467,7 @@
   }
 }
 
-@media (width <= 1200px) {
+@media (width <=1200px) {
   .carousel-item {
     gap: 50px;
   }
@@ -508,7 +485,7 @@
   }
 }
 
-@media (width <= 1000px) {
+@media (width <=1000px) {
   .carousel-item {
     gap: 32px;
   }
@@ -526,7 +503,7 @@
   }
 }
 
-@media (width <= 900px) {
+@media (width <=900px) {
   .carousel-item {
     gap: 24px;
   }
@@ -563,6 +540,7 @@
     border-radius: 16px;
   }
 
+  .video-modal-iframe,
   .video-modal-video {
     border-radius: 16px;
   }
@@ -577,7 +555,7 @@
   }
 }
 
-@media (width <= 700px) {
+@media (width <=700px) {
   .carousel-wrapper {
     background: linear-gradient(to bottom, #ff7f00 28%, #f9f4f6 28%);
   }
@@ -637,6 +615,7 @@
     border-radius: 12px;
   }
 
+  .video-modal-iframe,
   .video-modal-video {
     border-radius: 12px;
   }
@@ -655,7 +634,7 @@
   }
 }
 
-@media (width <= 420px) {
+@media (width <=420px) {
   .carousel {
     padding: 0.5rem;
   }
