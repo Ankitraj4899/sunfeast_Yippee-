@@ -395,19 +395,6 @@
   border-radius: 22px;
 }
 
-/* Top Right Brand Badge */
-.creativity-modal-badge {
-  position: absolute;
-  top: 0;
-  right: 36px;
-  z-index: 25;
-  background-color: #fff;
-  border-radius: 0 0 14px 14px;
-  padding: 6px 16px 8px;
-  box-shadow: 0 4px 14px rgb(0 0 0 / 25%);
-  pointer-events: none;
-}
-
 /* Center Starburst Play Button */
 .creativity-modal-btn {
   position: absolute;
@@ -433,11 +420,6 @@
   filter: drop-shadow(0 4px 10px rgb(0 0 0 / 30%));
   transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
   opacity: 1;
-}
-
-.creativity-modal-btn:hover {
-  transform: translate(-50%, -50%) scale(1.12);
-  filter: drop-shadow(0 6px 14px rgb(0 0 0 / 40%));
 }
 
 .creativity-modal-btn .pause-icon {
@@ -607,11 +589,6 @@
     height: 62px;
   }
 
-  .creativity-modal-badge {
-    right: 20px;
-    padding: 4px 12px 6px;
-  }
-
   .creativity-modal-controls {
     padding: 20px 20px 10px;
   }
@@ -699,11 +676,6 @@
   .creativity-modal-btn {
     width: 50px;
     height: 50px;
-  }
-
-  .creativity-modal-badge {
-    right: 14px;
-    padding: 3px 10px 5px;
   }
 
   .creativity-modal-controls {

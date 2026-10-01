@@ -240,10 +240,6 @@
     transition: transform 0.2s ease;
 }
 
-.video-button:hover {
-    transform: translate(-50%, -50%) scale(1.1);
-}
-
 .video-button-modal {
   position: absolute;
   top: 50%;
@@ -268,11 +264,6 @@
   filter: drop-shadow(0 4px 10px rgb(0 0 0 / 30%));
   transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
   opacity: 1;
-}
-
-.video-button-modal:hover {
-  transform: translate(-50%, -50%) scale(1.12);
-  filter: drop-shadow(0 6px 14px rgb(0 0 0 / 40%));
 }
 
 .video-button-modal .pause-icon {

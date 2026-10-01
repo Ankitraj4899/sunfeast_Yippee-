@@ -66,22 +66,6 @@ function openVideoModal(videoUrl) {
   const player = document.createElement('div');
   player.classList.add('creativity-modal-player');
 
-  // TERRA Brand Badge at Top-Right
-  const badge = document.createElement('div');
-  badge.classList.add('creativity-modal-badge');
-  badge.setAttribute('aria-hidden', 'true');
-  badge.innerHTML = `
-    <div class="terra-badge-inner">
-      <div class="terra-badge-title">TERRA</div>
-      <div class="terra-badge-logo">
-        <span class="terra-logo-sunfeast">Sunfeast</span>
-        <span class="terra-logo-yippee">YiPPee!</span>
-      </div>
-      <div class="terra-badge-tagline">A BETTER WORLD</div>
-    </div>
-  `;
-  player.append(badge);
-
   const trimmed = videoUrl.trim();
   const isYouTube = trimmed.includes('youtube.com') || trimmed.includes('youtu.be');
 

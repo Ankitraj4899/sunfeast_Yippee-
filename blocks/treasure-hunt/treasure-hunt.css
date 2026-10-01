@@ -93,12 +93,6 @@
   transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.25s ease;
 }
 
-.treasure-hunt-play-btn:hover,
-.treasure-hunt-banner:hover .treasure-hunt-play-btn {
-  transform: translate(-50%, -50%) scale(1.12);
-  filter: drop-shadow(0 6px 16px rgb(0 0 0 / 35%));
-}
-
 .treasure-hunt-play-icon {
   color: #b50404;
   font-size: 24px;
@@ -218,69 +212,6 @@
   border-radius: 22px;
 }
 
-/* Top Right Brand Badge */
-.treasure-hunt-modal-badge {
-  position: absolute;
-  top: 0;
-  right: 36px;
-  z-index: 25;
-  background-color: #fff;
-  border-radius: 0 0 14px 14px;
-  padding: 6px 16px 8px;
-  box-shadow: 0 4px 14px rgb(0 0 0 / 25%);
-  pointer-events: none;
-}
-
-.terra-badge-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.terra-badge-title {
-  color: #d84315;
-  font-family: "Arial Black", Impact, sans-serif;
-  font-size: 18px;
-  font-weight: 900;
-  letter-spacing: 1.5px;
-  line-height: 1;
-  margin-bottom: 2px;
-}
-
-.terra-badge-logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  line-height: 1;
-}
-
-.terra-logo-sunfeast {
-  font-family: cursive, sans-serif;
-  font-size: 8px;
-  font-weight: 700;
-  color: #d84315;
-}
-
-.terra-logo-yippee {
-  font-family: Amaranth, "Comic Sans MS", sans-serif;
-  font-size: 10px;
-  font-weight: 900;
-  color: #ff7800;
-  text-shadow: 0.5px 0.5px 0 #b50404;
-}
-
-.terra-badge-tagline {
-  color: #1b5e20;
-  font-family: Arial, sans-serif;
-  font-size: 7px;
-  font-weight: 800;
-  letter-spacing: 0.8px;
-  margin-top: 2px;
-  text-transform: uppercase;
-}
-
 /* Center Starburst Play Button */
 .treasure-hunt-modal-btn {
   position: absolute;
@@ -306,11 +237,6 @@
   filter: drop-shadow(0 4px 10px rgb(0 0 0 / 30%));
   transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
   opacity: 1;
-}
-
-.treasure-hunt-modal-btn:hover {
-  transform: translate(-50%, -50%) scale(1.12);
-  filter: drop-shadow(0 6px 14px rgb(0 0 0 / 40%));
 }
 
 .treasure-hunt-modal-btn .pause-icon {
@@ -454,15 +380,6 @@
     height: 62px;
   }
 
-  .treasure-hunt-modal-badge {
-    right: 20px;
-    padding: 4px 12px 6px;
-  }
-
-  .terra-badge-title {
-    font-size: 15px;
-  }
-
   .treasure-hunt-modal-controls {
     padding: 20px 20px 10px;
   }
@@ -506,27 +423,6 @@
   .treasure-hunt-modal-btn {
     width: 50px;
     height: 50px;
-  }
-
-  .treasure-hunt-modal-badge {
-    right: 14px;
-    padding: 3px 10px 5px;
-  }
-
-  .terra-badge-title {
-    font-size: 13px;
-  }
-
-  .terra-logo-sunfeast {
-    font-size: 7px;
-  }
-
-  .terra-logo-yippee {
-    font-size: 8px;
-  }
-
-  .terra-badge-tagline {
-    font-size: 6px;
   }
 
   .treasure-hunt-modal-controls {
