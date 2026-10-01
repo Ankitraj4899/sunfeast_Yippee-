@@ -67,22 +67,6 @@ export default function decorate(block) {
     const player = document.createElement('div');
     player.classList.add('video-modal-player');
 
-    // TERRA Brand Badge at Top-Right
-    const badge = document.createElement('div');
-    badge.classList.add('video-modal-badge');
-    badge.setAttribute('aria-hidden', 'true');
-    badge.innerHTML = `
-      <div class="terra-badge-inner">
-        <div class="terra-badge-title">TERRA</div>
-        <div class="terra-badge-logo">
-          <span class="terra-logo-sunfeast">Sunfeast</span>
-          <span class="terra-logo-yippee">YiPPee!</span>
-        </div>
-        <div class="terra-badge-tagline">A BETTER WORLD</div>
-      </div>
-    `;
-    player.append(badge);
-
     const video = document.createElement('video');
     video.classList.add('video-modal-video');
     video.playsInline = true;
