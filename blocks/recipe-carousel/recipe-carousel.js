@@ -621,6 +621,8 @@ export default function decorate(block) {
   const createCard = (recipe) => {
     const card = document.createElement('div');
     card.className = 'recipe-card';
+    card.setAttribute('itemscope', '');
+    card.setAttribute('itemtype', 'https://schema.org/Recipe');
 
     const menu = document.createElement('button');
     menu.type = 'button';
@@ -639,6 +641,7 @@ export default function decorate(block) {
     img.className = 'recipe-card-img';
     img.src = recipe.imageUrl;
     img.alt = recipe.title;
+    img.setAttribute('itemprop', 'image');
 
     imageWrap.append(img);
 
@@ -648,6 +651,7 @@ export default function decorate(block) {
     const title = document.createElement('div');
     title.className = 'recipe-card-title';
     title.textContent = recipe.title;
+    title.setAttribute('itemprop', 'name');
 
     const timeWrap = document.createElement('div');
     timeWrap.className = 'recipe-card-time';
@@ -664,6 +668,28 @@ export default function decorate(block) {
     const unitEl = document.createElement('span');
     unitEl.className = 'badge-unit';
     unitEl.textContent = unit;
+
+    const cookTimeMeta = document.createElement('meta');
+    cookTimeMeta.setAttribute('itemprop', 'cookTime');
+    cookTimeMeta.setAttribute('content', `PT${num}M`);
+    timeWrap.append(cookTimeMeta);
+
+    const categoryMeta = document.createElement('meta');
+    categoryMeta.setAttribute('itemprop', 'recipeCategory');
+    categoryMeta.setAttribute('content', categoriesData[activeCatIndex]?.category || 'Snacks');
+    card.append(categoryMeta);
+
+    const authorSpan = document.createElement('span');
+    authorSpan.setAttribute('itemprop', 'author');
+    authorSpan.setAttribute('itemscope', '');
+    authorSpan.setAttribute('itemtype', 'https://schema.org/Organization');
+    authorSpan.hidden = true;
+
+    const authorName = document.createElement('meta');
+    authorName.setAttribute('itemprop', 'name');
+    authorName.setAttribute('content', 'Sunfeast YiPPee!');
+    authorSpan.append(authorName);
+    card.append(authorSpan);
 
     timeWrap.append(badge, unitEl);
     footer.append(title, timeWrap);

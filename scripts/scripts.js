@@ -10,11 +10,12 @@ import {
   loadSections,
   loadCSS,
   buildBlock,
+  getMetadata,
 } from './aem.js';
 
 if (window.trustedTypes && window.trustedTypes.createPolicy) {
   const innerTT = window.trustedTypes.createPolicy('tt-inner', {
-    createHTML: (s) => s, // avoid stack overflow
+    createHTML: (s) => s,
   });
 
   window.trustedTypes.createPolicy('default', {
@@ -37,22 +38,14 @@ if (window.trustedTypes && window.trustedTypes.createPolicy) {
   });
 }
 
-/**
- * load fonts.css and set a session storage flag
- */
 async function loadFonts() {
   await loadCSS(`${window.hlx.codeBasePath}/styles/fonts.css`);
   try {
     if (!window.location.hostname.includes('localhost')) sessionStorage.setItem('fonts-loaded', 'true');
   } catch (e) {
-    // do nothing
   }
 }
 
-/**
- * Turns `/widgets/...` links into widget blocks.
- * @param {Element} main The container element
- */
 function buildWidgetAutoBlocks(main) {
   const widgetLinks = [...main.querySelectorAll('a[href*="/widgets/"]')];
   widgetLinks.forEach((link) => {
@@ -73,16 +66,10 @@ function buildWidgetAutoBlocks(main) {
   });
 }
 
-/**
- * Builds all synthetic blocks in a container element.
- * @param {Element} main The container element
- */
 function buildAutoBlocks(main) {
   try {
-    // auto load `*/fragments/*` references
     const fragments = [...main.querySelectorAll('a[href*="/fragments/"]')].filter((f) => !f.closest('.fragment'));
     if (fragments.length > 0) {
-      // eslint-disable-next-line import/no-cycle
       import('../blocks/fragment/fragment.js').then(({ loadFragment }) => {
         fragments.forEach(async (fragment) => {
           try {
@@ -90,7 +77,6 @@ function buildAutoBlocks(main) {
             const frag = await loadFragment(pathname);
             fragment.parentElement.replaceWith(...frag.children);
           } catch (error) {
-            // eslint-disable-next-line no-console
             console.error('Fragment loading failed', error);
           }
         });
@@ -98,37 +84,29 @@ function buildAutoBlocks(main) {
     }
     buildWidgetAutoBlocks(main);
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
   }
 }
 
-/**
- * Decorates formatted links to style them as buttons.
- * @param {HTMLElement} main The main container element
- */
 function decorateButtons(main) {
   main.querySelectorAll('p a[href]').forEach((a) => {
     a.title = a.title || a.textContent;
     const p = a.closest('p');
     const text = a.textContent.trim();
 
-    // quick structural checks
     if (a.querySelector('img') || p.textContent.trim() !== text) return;
 
-    // skip URL display links
     try {
       if (new URL(a.href).href === new URL(text, window.location).href) return;
-    } catch { /* continue */ }
+    } catch { }
 
-    // require authored formatting for buttonization
     const strong = a.closest('strong');
     const em = a.closest('em');
     if (!strong && !em) return;
 
     p.className = 'button-wrapper';
     a.className = 'button';
-    if (strong && em) { // high-impact call-to-action
+    if (strong && em) {
       a.classList.add('accent');
       const outer = strong.contains(em) ? strong : em;
       outer.replaceWith(a);
@@ -142,23 +120,38 @@ function decorateButtons(main) {
   });
 }
 
-/**
- * Decorates the main element.
- * @param {Element} main The main element
- */
-// eslint-disable-next-line import/prefer-default-export
+function decorateMicrodata(main) {
+  main.setAttribute('itemscope', '');
+  main.setAttribute('itemtype', 'https://schema.org/WebPage');
+
+  const h1 = main.querySelector('h1');
+  if (h1 && !h1.hasAttribute('itemprop')) {
+    h1.setAttribute('itemprop', 'name');
+  }
+
+  const description = getMetadata('description');
+  if (description) {
+    const metaDesc = document.createElement('meta');
+    metaDesc.setAttribute('itemprop', 'description');
+    metaDesc.setAttribute('content', description);
+    main.prepend(metaDesc);
+  }
+
+  const metaUrl = document.createElement('meta');
+  metaUrl.setAttribute('itemprop', 'url');
+  metaUrl.setAttribute('content', window.location.href);
+  main.prepend(metaUrl);
+}
+
 export function decorateMain(main) {
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
   decorateButtons(main);
+  decorateMicrodata(main);
 }
 
-/**
- * Loads everything needed to get to LCP.
- * @param {Element} doc The container element
- */
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
@@ -170,19 +163,13 @@ async function loadEager(doc) {
   }
 
   try {
-    /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */
     if (window.innerWidth >= 900 || sessionStorage.getItem('fonts-loaded')) {
       loadFonts();
     }
   } catch (e) {
-    // do nothing
   }
 }
 
-/**
- * Loads everything that doesn't need to be delayed.
- * @param {Element} doc The container element
- */
 async function loadLazy(doc) {
   loadHeader(doc.querySelector('body > header'));
 
@@ -199,13 +186,8 @@ async function loadLazy(doc) {
   loadFonts();
 }
 
-/**
- * Loads everything that happens a lot later,
- * without impacting the user experience.
- */
 function loadDelayed() {
   import('./consent-check.js');
-  // load anything that can be postponed to the latest here
 }
 
 async function loadPage() {

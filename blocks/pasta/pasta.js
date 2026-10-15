@@ -1,10 +1,27 @@
 export default function decorate(block) {
   const rows = [...block.children];
   const items = rows.map((row) => {
+    row.setAttribute('itemscope', '');
+    row.setAttribute('itemtype', 'https://schema.org/Product');
     const image = row.querySelector('img');
     if (image) {
       image.classList.add('pasta-image');
+      image.setAttribute('itemprop', 'image');
     }
+    const titleEl = row.querySelector('h2, h3, h4, strong, p');
+    if (titleEl) {
+      titleEl.setAttribute('itemprop', 'name');
+    }
+    const brandSpan = document.createElement('span');
+    brandSpan.setAttribute('itemprop', 'brand');
+    brandSpan.setAttribute('itemscope', '');
+    brandSpan.setAttribute('itemtype', 'https://schema.org/Brand');
+    brandSpan.hidden = true;
+    const brandName = document.createElement('meta');
+    brandName.setAttribute('itemprop', 'name');
+    brandName.setAttribute('content', 'Sunfeast YiPPee!');
+    brandSpan.append(brandName);
+    row.append(brandSpan);
     row.classList.add('pasta-card');
     return row;
   });

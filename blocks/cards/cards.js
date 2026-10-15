@@ -67,12 +67,34 @@ export default function decorate(block) {
   const createCard = (row) => {
     const card = row.cloneNode(true);
     card.classList.add('noodle-card');
+    card.setAttribute('itemscope', '');
+    card.setAttribute('itemtype', 'https://schema.org/Product');
 
     const cell = card.children[0];
     if (!cell) return card;
 
     const image = cell.querySelector('img');
-    if (image) image.classList.add('noodle-image');
+    if (image) {
+      image.classList.add('noodle-image');
+      image.setAttribute('itemprop', 'image');
+    }
+
+    const titleEl = cell.querySelector('h2, h3, h4, strong, p');
+    if (titleEl) {
+      titleEl.setAttribute('itemprop', 'name');
+    }
+
+    const brandSpan = document.createElement('span');
+    brandSpan.setAttribute('itemprop', 'brand');
+    brandSpan.setAttribute('itemscope', '');
+    brandSpan.setAttribute('itemtype', 'https://schema.org/Brand');
+    brandSpan.hidden = true;
+
+    const brandName = document.createElement('meta');
+    brandName.setAttribute('itemprop', 'name');
+    brandName.setAttribute('content', 'Sunfeast YiPPee!');
+    brandSpan.append(brandName);
+    card.append(brandSpan);
 
     return card;
   };
