@@ -121,6 +121,8 @@ function decorateButtons(main) {
 }
 
 function decorateMicrodata(main) {
+  if (!main || main !== document.querySelector('main')) return;
+
   main.setAttribute('itemscope', '');
   main.setAttribute('itemtype', 'https://schema.org/WebPage');
 
@@ -134,13 +136,13 @@ function decorateMicrodata(main) {
     const metaDesc = document.createElement('meta');
     metaDesc.setAttribute('itemprop', 'description');
     metaDesc.setAttribute('content', description);
-    main.prepend(metaDesc);
+    main.append(metaDesc);
   }
 
   const metaUrl = document.createElement('meta');
   metaUrl.setAttribute('itemprop', 'url');
   metaUrl.setAttribute('content', window.location.href);
-  main.prepend(metaUrl);
+  main.append(metaUrl);
 }
 
 export function decorateMain(main) {
