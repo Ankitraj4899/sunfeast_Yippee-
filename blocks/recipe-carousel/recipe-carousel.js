@@ -1,3 +1,5 @@
+import { addSchemaEntities } from '../../scripts/schema.js';
+
 const DEFAULT_ICONS = {
   appetizers: '/Appetizers.webp',
   breakfast: '/breakfast.webp',
@@ -459,6 +461,29 @@ export default function decorate(block) {
     });
   }
 
+  const recipesList = [];
+  categoriesData.forEach((cat) => {
+    (cat.recipes || []).forEach((rec) => {
+      const parts = (rec.duration || '15 Mins').split(' ');
+      const num = parts[0] || '15';
+      const slug = encodeURIComponent(rec.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
+      recipesList.push({
+        '@type': 'Recipe',
+        '@id': `${window.location.origin}/#recipe-${slug}`,
+        name: rec.title,
+        image: rec.imageUrl,
+        recipeCategory: cat.category,
+        cookTime: `PT${num}M`,
+        description: `${rec.title} recipe by Sunfeast YiPPee!`,
+        author: {
+          '@type': 'Organization',
+          name: 'Sunfeast YiPPee!',
+        },
+      });
+    });
+  });
+  addSchemaEntities(recipesList);
+
   block.textContent = '';
 
   const container = document.createElement('div');
@@ -621,8 +646,6 @@ export default function decorate(block) {
   const createCard = (recipe) => {
     const card = document.createElement('div');
     card.className = 'recipe-card';
-    card.setAttribute('itemscope', '');
-    card.setAttribute('itemtype', 'https://schema.org/Recipe');
 
     const menu = document.createElement('button');
     menu.type = 'button';
@@ -641,7 +664,6 @@ export default function decorate(block) {
     img.className = 'recipe-card-img';
     img.src = recipe.imageUrl;
     img.alt = recipe.title;
-    img.setAttribute('itemprop', 'image');
 
     imageWrap.append(img);
 
@@ -651,7 +673,6 @@ export default function decorate(block) {
     const title = document.createElement('div');
     title.className = 'recipe-card-title';
     title.textContent = recipe.title;
-    title.setAttribute('itemprop', 'name');
 
     const timeWrap = document.createElement('div');
     timeWrap.className = 'recipe-card-time';
@@ -668,28 +689,6 @@ export default function decorate(block) {
     const unitEl = document.createElement('span');
     unitEl.className = 'badge-unit';
     unitEl.textContent = unit;
-
-    const cookTimeMeta = document.createElement('meta');
-    cookTimeMeta.setAttribute('itemprop', 'cookTime');
-    cookTimeMeta.setAttribute('content', `PT${num}M`);
-    timeWrap.append(cookTimeMeta);
-
-    const categoryMeta = document.createElement('meta');
-    categoryMeta.setAttribute('itemprop', 'recipeCategory');
-    categoryMeta.setAttribute('content', categoriesData[activeCatIndex]?.category || 'Snacks');
-    card.append(categoryMeta);
-
-    const authorSpan = document.createElement('span');
-    authorSpan.setAttribute('itemprop', 'author');
-    authorSpan.setAttribute('itemscope', '');
-    authorSpan.setAttribute('itemtype', 'https://schema.org/Organization');
-    authorSpan.hidden = true;
-
-    const authorName = document.createElement('meta');
-    authorName.setAttribute('itemprop', 'name');
-    authorName.setAttribute('content', 'Sunfeast YiPPee!');
-    authorSpan.append(authorName);
-    card.append(authorSpan);
 
     timeWrap.append(badge, unitEl);
     footer.append(title, timeWrap);

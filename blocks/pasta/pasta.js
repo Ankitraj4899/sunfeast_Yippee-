@@ -1,31 +1,35 @@
+import { addSchemaEntities } from '../../scripts/schema.js';
+
 export default function decorate(block) {
   const rows = [...block.children];
+
+  const products = rows.map((row, idx) => {
+    const titleEl = row.querySelector('h2, h3, h4, strong, p');
+    const image = row.querySelector('img');
+    const name = titleEl ? titleEl.textContent.trim() : `YiPPee Pasta ${idx + 1}`;
+    const slug = encodeURIComponent(name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
+    return {
+      '@type': 'Product',
+      '@id': `${window.location.origin}/#pasta-${slug}`,
+      name,
+      image: image?.src || '',
+      category: 'Pasta',
+      brand: {
+        '@type': 'Brand',
+        name: 'Sunfeast YiPPee!',
+      },
+    };
+  });
+  addSchemaEntities(products);
+
   const items = rows.map((row) => {
-    row.setAttribute('itemscope', '');
-    row.setAttribute('itemtype', 'https://schema.org/Product');
     const image = row.querySelector('img');
     if (image) {
       image.classList.add('pasta-image');
-      image.setAttribute('itemprop', 'image');
     }
-    const titleEl = row.querySelector('h2, h3, h4, strong, p');
-    if (titleEl) {
-      titleEl.setAttribute('itemprop', 'name');
-    }
-    const brandSpan = document.createElement('span');
-    brandSpan.setAttribute('itemprop', 'brand');
-    brandSpan.setAttribute('itemscope', '');
-    brandSpan.setAttribute('itemtype', 'https://schema.org/Brand');
-    brandSpan.hidden = true;
-    const brandName = document.createElement('meta');
-    brandName.setAttribute('itemprop', 'name');
-    brandName.setAttribute('content', 'Sunfeast YiPPee!');
-    brandSpan.append(brandName);
-    row.append(brandSpan);
     row.classList.add('pasta-card');
     return row;
   });
-
   block.classList.add('pasta');
   const heading = document.createElement('h2');
   heading.classList.add('pasta-heading');

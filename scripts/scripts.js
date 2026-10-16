@@ -10,8 +10,8 @@ import {
   loadSections,
   loadCSS,
   buildBlock,
-  getMetadata,
 } from './aem.js';
+import { buildPageSchema } from './schema.js';
 
 if (window.trustedTypes && window.trustedTypes.createPolicy) {
   const innerTT = window.trustedTypes.createPolicy('tt-inner', {
@@ -120,38 +120,13 @@ function decorateButtons(main) {
   });
 }
 
-function decorateMicrodata(main) {
-  if (!main || main !== document.querySelector('main')) return;
-
-  main.setAttribute('itemscope', '');
-  main.setAttribute('itemtype', 'https://schema.org/WebPage');
-
-  const h1 = main.querySelector('h1');
-  if (h1 && !h1.hasAttribute('itemprop')) {
-    h1.setAttribute('itemprop', 'name');
-  }
-
-  const description = getMetadata('description');
-  if (description) {
-    const metaDesc = document.createElement('meta');
-    metaDesc.setAttribute('itemprop', 'description');
-    metaDesc.setAttribute('content', description);
-    main.append(metaDesc);
-  }
-
-  const metaUrl = document.createElement('meta');
-  metaUrl.setAttribute('itemprop', 'url');
-  metaUrl.setAttribute('content', window.location.href);
-  main.append(metaUrl);
-}
-
+// eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
   decorateButtons(main);
-  decorateMicrodata(main);
 }
 
 async function loadEager(doc) {
@@ -173,7 +148,7 @@ async function loadEager(doc) {
 }
 
 async function loadLazy(doc) {
-  loadHeader(doc.querySelector('body > header'));
+  const headerPromise = loadHeader(doc.querySelector('body > header'));
 
   const main = doc.querySelector('main');
   await loadSections(main);
@@ -186,6 +161,13 @@ async function loadLazy(doc) {
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
+
+  try {
+    await headerPromise;
+  } catch (e) {
+    // header load error handled gracefully
+  }
+  buildPageSchema(doc);
 }
 
 function loadDelayed() {

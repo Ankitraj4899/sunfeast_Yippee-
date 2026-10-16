@@ -1,5 +1,7 @@
+/* eslint-disable no-use-before-define */
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
+import { updateSchemaGraph } from '../../scripts/schema.js';
 
 const isDesktop = window.matchMedia('(min-width: 900px)');
 
@@ -104,14 +106,6 @@ export default async function decorate(block) {
   });
 
   const navBrand = nav.querySelector('.nav-brand');
-  if (navBrand) {
-    navBrand.setAttribute('itemscope', '');
-    navBrand.setAttribute('itemtype', 'https://schema.org/Organization');
-    const brandName = document.createElement('meta');
-    brandName.setAttribute('itemprop', 'name');
-    brandName.setAttribute('content', 'Sunfeast YiPPee!');
-    navBrand.append(brandName);
-  }
   const logo = navBrand?.querySelector('img');
   const brandLink = navBrand?.querySelector('.button');
   if (brandLink) {
@@ -120,7 +114,6 @@ export default async function decorate(block) {
   }
   if (logo) {
     logo.classList.add('logo');
-    logo.setAttribute('itemprop', 'logo');
     logo.addEventListener('click', () => {
       window.location.href = '/';
     });
@@ -128,17 +121,6 @@ export default async function decorate(block) {
   const navSections = nav.querySelector('.nav-sections');
   if (navSections) {
     navSections.querySelectorAll(':scope .default-content-wrapper > ul > li').forEach((navSection) => {
-      navSection.setAttribute('itemscope', '');
-      navSection.setAttribute('itemtype', 'https://schema.org/SiteNavigationElement');
-      const a = navSection.querySelector('a');
-      if (a) {
-        a.setAttribute('itemprop', 'url');
-        const span = document.createElement('span');
-        span.setAttribute('itemprop', 'name');
-        span.textContent = a.textContent.trim();
-        a.textContent = '';
-        a.append(span);
-      }
       if (navSection.querySelector('ul')) navSection.classList.add('nav-drop');
       navSection.addEventListener('click', () => {
         if (isDesktop.matches) {
@@ -165,4 +147,6 @@ export default async function decorate(block) {
   navWrapper.className = 'nav-wrapper';
   navWrapper.append(nav);
   block.append(navWrapper);
+
+  updateSchemaGraph(document);
 }
