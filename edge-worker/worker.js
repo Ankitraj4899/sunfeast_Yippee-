@@ -1,14 +1,3 @@
-/**
- * Edge Worker for Adobe Edge Delivery Services (AEM EDS)
- * Platform: Cloudflare Workers / Fastly Compute / Edge Functions
- *
- * Purpose: Intercepts the HTML response from the AEM EDS origin,
- * builds the Schema.org JSON-LD graph, and injects it directly into
- * the <head> before returning it to the crawler or browser.
- *
- * This ensures the Schema is 100% present in the initial raw page source (View Source / curl).
- */
-
 const EDS_ORIGIN = 'https://main--sunfeast-yippee--ankitraj4899.aem.live';
 
 function generateBaseSchema(url) {
