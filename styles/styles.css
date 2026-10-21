@@ -42,13 +42,13 @@
 
 /* fallback fonts */
 @font-face {
-  font-family: Amaranth, sans-serif;
+  font-family: Amaranth;
   size-adjust: 88.82%;
   src: local('Arial');
 }
 
 @font-face {
-  font-family: Amaranth, sans-serif;
+  font-family: Amaranth;
   size-adjust: 99.529%;
   src: local('Arial');
 }

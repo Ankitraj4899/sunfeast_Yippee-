@@ -1,8 +1,0 @@
-name = "sunfeast-yippee-edge-schema"
-main = "worker.js"
-compatibility_date = "2024-01-01"
-
-# Route this worker to your production domain if using Cloudflare
-# routes = [
-#   { pattern = "www.sunfeastyippee.com/*", zone_name = "sunfeastyippee.com" }
-# ]

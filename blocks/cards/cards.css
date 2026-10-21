@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .section:has(.noodle-range) {
   width: 100%;
   max-width: none;

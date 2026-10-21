@@ -43,6 +43,7 @@ async function loadFonts() {
   try {
     if (!window.location.hostname.includes('localhost')) sessionStorage.setItem('fonts-loaded', 'true');
   } catch (e) {
+    // do nothing
   }
 }
 
@@ -70,6 +71,7 @@ function buildAutoBlocks(main) {
   try {
     const fragments = [...main.querySelectorAll('a[href*="/fragments/"]')].filter((f) => !f.closest('.fragment'));
     if (fragments.length > 0) {
+      // eslint-disable-next-line import/no-cycle
       import('../blocks/fragment/fragment.js').then(({ loadFragment }) => {
         fragments.forEach(async (fragment) => {
           try {
@@ -77,6 +79,7 @@ function buildAutoBlocks(main) {
             const frag = await loadFragment(pathname);
             fragment.parentElement.replaceWith(...frag.children);
           } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Fragment loading failed', error);
           }
         });
@@ -84,6 +87,7 @@ function buildAutoBlocks(main) {
     }
     buildWidgetAutoBlocks(main);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
   }
 }
@@ -98,7 +102,9 @@ function decorateButtons(main) {
 
     try {
       if (new URL(a.href).href === new URL(text, window.location).href) return;
-    } catch { }
+    } catch {
+      // ignore invalid URLs
+    }
 
     const strong = a.closest('strong');
     const em = a.closest('em');
@@ -144,6 +150,7 @@ async function loadEager(doc) {
       loadFonts();
     }
   } catch (e) {
+    // do nothing
   }
 }
 

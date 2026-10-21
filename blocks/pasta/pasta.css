@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .section:has(.pasta) {
   width: 100%;
   max-width: none;

@@ -1,0 +1,11 @@
+manifest_version = 3
+name = "sunfeast-yippee-fastly-worker"
+description = "Fastly Compute edge schema injector for Adobe Edge Delivery Services"
+language = "javascript"
+
+[scripts]
+build = "npm run build"
+
+# Default origin backend for Adobe EDS
+[local_server.backends.eds_origin]
+url = "https://main--sunfeast-yippee--ankitraj4899.aem.live"
