@@ -77,7 +77,7 @@ function generateBaseSchema(url, { title, description } = {}) {
     ],
   };
 }
-
+// Actual Edge Function
 async function handleRequest(event) {
   const req = event.request;
   const url = new URL(req.url);
