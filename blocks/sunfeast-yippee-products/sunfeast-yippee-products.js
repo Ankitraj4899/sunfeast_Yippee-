@@ -456,14 +456,6 @@ export default function decorate(block) {
     headingWrap.append(leftSparkle, rangeTitle, rightSparkle);
     section.append(headingWrap);
 
-    // Subtitle (e.g. Instant Noodles, Tricolor Pasta, Fiery Hot)
-    if (cat.subHeading) {
-      const subTitle = document.createElement('h3');
-      subTitle.className = 'category-subtitle';
-      subTitle.textContent = cat.subHeading;
-      section.append(subTitle);
-    }
-
     // Larger Product Cards Grid
     const grid = document.createElement('div');
     grid.className = 'product-cards-grid';
@@ -536,7 +528,22 @@ export default function decorate(block) {
     sectionElements.forEach((sec) => observer.observe(sec));
   }
 
-  block.append(breadcrumb, mainTitle, tabList, sectionsContainer);
+  // 1. Breadcrumb Wrap
+  const breadcrumbWrap = document.createElement('div');
+  breadcrumbWrap.className = 'product-breadcrumb-wrap';
+  breadcrumbWrap.append(breadcrumb);
+
+  // 2. Banner Wrap
+  const bannerWrap = document.createElement('div');
+  bannerWrap.className = 'product-banner-wrap';
+  bannerWrap.append(mainTitle);
+
+  // 3. Content Wrap
+  const contentWrap = document.createElement('div');
+  contentWrap.className = 'product-content-wrap';
+  contentWrap.append(tabList, sectionsContainer);
+
+  block.append(breadcrumbWrap, bannerWrap, contentWrap);
 
   // Generate and register complete Page & Card Schemas
   try {
