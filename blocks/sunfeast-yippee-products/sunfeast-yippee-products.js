@@ -1,4 +1,4 @@
-import { addSchemaEntities } from '../../scripts/schema.js';
+import { addSchemaEntities, updateSchemaGraph } from '../../scripts/schema.js';
 
 function createSparkleIcon() {
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -13,6 +13,152 @@ function createSparkleIcon() {
   svg.setAttribute('aria-hidden', 'true');
   svg.innerHTML = '<path d="M12 2C12 7.5 7.5 12 2 12C7.5 12 12 16.5 12 22C12 16.5 16.5 12 22 12C16.5 12 12 7.5 12 2Z"/>';
   return svg;
+}
+
+function resolveProductName(altText, imgSrc, catName, subHeading, idx) {
+  if (altText && !altText.match(/\.(png|jpg|jpeg|webp|gif|svg)$/i)) {
+    return altText.replace(/\s+/g, ' ').trim();
+  }
+  const lowerSrc = (imgSrc || '').toLowerCase();
+  if (/magic[-_]?masala/i.test(lowerSrc)) return 'Magic Masala Noodles';
+  if (/mood[-_]?masala/i.test(lowerSrc)) return 'Mood Masala Noodles';
+  if (/millet/i.test(lowerSrc)) return 'Magic Millet Noodles';
+  if (/atta|power[-_]?up/i.test(lowerSrc)) return 'Power Up Atta Noodles';
+  if (/creamy[-_]?corn/i.test(lowerSrc)) return 'Tricolor Pasta Creamy Corn';
+  if (/masala/i.test(lowerSrc) && /pasta/i.test(catName)) return 'Tricolor Pasta Treat Masala';
+  if (/tomato/i.test(lowerSrc) && /pasta/i.test(catName)) return 'Tricolor Pasta Tomato Cheese';
+  if (/fiery|korean/i.test(lowerSrc)) return 'Korean Fiery Hot Noodles';
+
+  if (/noodle/i.test(catName)) {
+    const noodleNames = [
+      'Magic Masala Noodles',
+      'Mood Masala Noodles',
+      'Magic Millet Noodles',
+      'Power Up Atta Noodles',
+    ];
+    if (noodleNames[idx]) return noodleNames[idx];
+  } else if (/pasta/i.test(catName)) {
+    const pastaNames = [
+      'Tricolor Pasta Creamy Corn',
+      'Tricolor Pasta Treat Masala',
+      'Tricolor Pasta Tomato Cheese',
+    ];
+    if (pastaNames[idx]) return pastaNames[idx];
+  } else if (/korean/i.test(catName)) {
+    return 'Korean Fiery Hot Noodles';
+  }
+
+  return `${subHeading || catName} Product ${idx + 1}`;
+}
+
+function generateProductSchema(prodName, imageUrl, catName, subHeading, productUrl) {
+  const { origin } = window.location;
+  const fullName = prodName.toLowerCase().startsWith('sunfeast') ? prodName : `Sunfeast YiPPee! ${prodName}`;
+  const slug = encodeURIComponent(prodName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
+  const categoryPath = subHeading ? `${catName} > ${subHeading}` : catName;
+
+  return {
+    '@type': 'Product',
+    '@id': `${origin}/#product-${slug}`,
+    name: fullName,
+    description: `${fullName} - Delicious, non-sticky ${subHeading || catName} packed with flavour and quality ingredients by Sunfeast YiPPee!`,
+    image: imageUrl,
+    category: categoryPath,
+    brand: {
+      '@type': 'Brand',
+      name: 'Sunfeast YiPPee!',
+      logo: `${origin}/yippee1.png`,
+    },
+    manufacturer: {
+      '@type': 'Organization',
+      name: 'ITC Limited',
+    },
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'INR',
+      availability: 'https://schema.org/InStock',
+      url: productUrl || window.location.href,
+      seller: {
+        '@type': 'Organization',
+        name: 'ITC Store',
+      },
+    },
+  };
+}
+
+function generatePageSchema(allProducts, categories) {
+  const { origin } = window.location;
+  const pageUrl = window.location.href.split('#')[0];
+
+  const collectionPage = {
+    '@type': 'CollectionPage',
+    '@id': `${pageUrl}#collectionpage`,
+    url: pageUrl,
+    name: 'Sunfeast YiPPee! Products - Noodles, Pasta & Korean Noodles',
+    description: 'Explore the wide range of Sunfeast YiPPee! instant noodles, tricolor pasta, and fiery hot Korean noodles.',
+    inLanguage: 'en',
+    isPartOf: {
+      '@id': `${origin}/#website`,
+    },
+    about: {
+      '@id': `${origin}/#organization`,
+    },
+    mainEntity: {
+      '@type': 'ItemList',
+      '@id': `${pageUrl}#product-catalog`,
+      name: 'Sunfeast YiPPee! Complete Product Range',
+      numberOfItems: allProducts.length,
+      itemListElement: allProducts.map((prod, idx) => ({
+        '@type': 'ListItem',
+        position: idx + 1,
+        item: {
+          '@id': prod['@id'],
+          name: prod.name,
+          image: prod.image,
+        },
+      })),
+    },
+  };
+
+  const breadcrumbList = {
+    '@type': 'BreadcrumbList',
+    '@id': `${pageUrl}#breadcrumb`,
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home Page',
+        item: `${origin}/`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Product Listing',
+        item: pageUrl,
+      },
+    ],
+  };
+
+  const sectionItemLists = categories.map((cat) => {
+    const catSlug = cat.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    return {
+      '@type': 'ItemList',
+      '@id': `${pageUrl}#section-${catSlug}-list`,
+      name: `${cat.rangeHeading} - ${cat.subHeading || cat.name}`,
+      numberOfItems: cat.products.length,
+      itemListElement: cat.products.map((prod, idx) => ({
+        '@type': 'ListItem',
+        position: idx + 1,
+        item: {
+          '@id': `${origin}/#product-${encodeURIComponent(prod.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''))}`,
+          name: prod.name,
+          image: prod.imageUrl,
+        },
+      })),
+    };
+  });
+
+  return [collectionPage, breadcrumbList, ...sectionItemLists];
 }
 
 function openBuyNowModal(productName) {
@@ -218,23 +364,24 @@ export default function decorate(block) {
 
       const img = pic.tagName.toLowerCase() === 'img' ? pic : pic.querySelector('img');
       const altText = img?.alt?.trim() || '';
-      const prodName = altText || `${catName} ${idx + 1}`;
+      const imgSrc = img?.currentSrc || img?.src || '';
+      const absoluteImageUrl = imgSrc ? new URL(imgSrc, window.location.href).href : '';
 
-      allProductsSchema.push({
-        '@type': 'Product',
-        '@id': `${window.location.origin}/#product-${encodeURIComponent(prodName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''))}`,
-        name: prodName,
-        image: img?.src || '',
-        category: catName,
-        brand: {
-          '@type': 'Brand',
-          name: 'Sunfeast YiPPee!',
-        },
-      });
+      const prodName = resolveProductName(altText, imgSrc, catName, subHeading, idx);
+      const productSchema = generateProductSchema(
+        prodName,
+        absoluteImageUrl,
+        catName,
+        subHeading,
+        targetLink,
+      );
+
+      allProductsSchema.push(productSchema);
 
       return {
         picture: pic,
         name: prodName,
+        imageUrl: absoluteImageUrl,
         link: targetLink,
       };
     });
@@ -391,11 +538,12 @@ export default function decorate(block) {
 
   block.append(breadcrumb, mainTitle, tabList, sectionsContainer);
 
-  if (allProductsSchema.length > 0) {
-    try {
-      addSchemaEntities(allProductsSchema);
-    } catch {
-      // Schema handling fallback
-    }
+  // Generate and register complete Page & Card Schemas
+  try {
+    const pageSchemas = generatePageSchema(allProductsSchema, categories);
+    addSchemaEntities([...pageSchemas, ...allProductsSchema]);
+    updateSchemaGraph(document);
+  } catch {
+    // Schema handling fallback
   }
 }
