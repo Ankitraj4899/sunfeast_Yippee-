@@ -12,24 +12,31 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .sunfeast-yippee-products .breadcrumb-pill {
   display: inline-flex;
   align-items: center;
-  background-color: #f26522;
-  color: #fff;
+  justify-content: center;
+  background-color: #ff7200;
+  color: #000;
+  font-family: Amaranth, sans-serif;
   font-size: 13px;
-  font-weight: 600;
-  padding: 5px 14px;
+  font-weight: 400;
+  padding: 3px 12px;
   border-radius: 20px;
   text-decoration: none;
   line-height: 1.2;
 }
 
 .sunfeast-yippee-products .breadcrumb-pill:hover {
-  background-color: #d95314;
+  background-color: #f26522;
+}
+
+.sunfeast-yippee-products .breadcrumb-pill.active {
+  color: #8a121d;
+  cursor: default;
 }
 
 /* Main Title */
