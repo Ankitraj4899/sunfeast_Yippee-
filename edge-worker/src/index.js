@@ -1,5 +1,4 @@
 const EDS_HOST = 'main--sunfeast-yippee--ankitraj4899.aem.live';
-const BACKEND_NAME = 'eds_origin';
 
 function extractPageMetadata(html) {
   const ogTitleMatch = html.match(/<meta\s+[^>]*property=["']og:title["'][^>]*content=["']([^"']*)["']/i)
@@ -333,20 +332,21 @@ function generateProductListingSchema(url, html, { title, description } = {}) {
   };
 }
 
-// Fastly Compute / Edge Worker fetch handler
-async function handleRequest(event) {
-  const req = event.request;
+// Cloudflare Worker / Edge Worker fetch handler
+async function handleRequest(requestOrEvent, env = {}) {
+  const req = requestOrEvent.request || requestOrEvent;
+  const edsHost = env.EDS_HOST || EDS_HOST;
   const url = new URL(req.url);
 
   const upstreamHeaders = new Headers(req.headers);
-  upstreamHeaders.set('host', EDS_HOST);
+  upstreamHeaders.set('host', edsHost);
 
-  const upstreamUrl = new URL(url.pathname + url.search, `https://${EDS_HOST}`);
+  const upstreamUrl = new URL(url.pathname + url.search, `https://${edsHost}`);
 
   const originResponse = await fetch(upstreamUrl.toString(), {
-    backend: BACKEND_NAME,
     method: req.method,
     headers: upstreamHeaders,
+    redirect: 'follow',
   });
 
   const contentType = originResponse.headers.get('content-type') || '';
@@ -374,6 +374,7 @@ async function handleRequest(event) {
 
   const responseHeaders = new Headers(originResponse.headers);
   responseHeaders.delete('content-length');
+  responseHeaders.delete('content-encoding');
 
   return new Response(html, {
     status: originResponse.status,
@@ -382,4 +383,8 @@ async function handleRequest(event) {
   });
 }
 
-addEventListener('fetch', (event) => event.respondWith(handleRequest(event)));
+export default {
+  async fetch(request, env, ctx) {
+    return handleRequest(request, env, ctx);
+  },
+};

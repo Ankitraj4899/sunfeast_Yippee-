@@ -1,26 +1,5 @@
-import { addSchemaEntities } from '../../scripts/schema.js';
-
 export default function decorate(block) {
   const rows = [...block.children];
-
-  const products = rows.map((row, idx) => {
-    const titleEl = row.querySelector('h2, h3, h4, strong, p');
-    const image = row.querySelector('img');
-    const name = titleEl ? titleEl.textContent.trim() : `YiPPee Pasta ${idx + 1}`;
-    const slug = encodeURIComponent(name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
-    return {
-      '@type': 'Product',
-      '@id': `${window.location.origin}/#pasta-${slug}`,
-      name,
-      image: image?.src || '',
-      category: 'Pasta',
-      brand: {
-        '@type': 'Brand',
-        name: 'Sunfeast YiPPee!',
-      },
-    };
-  });
-  addSchemaEntities(products);
 
   const items = rows.map((row) => {
     const image = row.querySelector('img');

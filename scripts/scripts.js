@@ -11,7 +11,6 @@ import {
   loadCSS,
   buildBlock,
 } from './aem.js';
-import { buildPageSchema } from './schema.js';
 
 if (window.trustedTypes && window.trustedTypes.createPolicy) {
   const innerTT = window.trustedTypes.createPolicy('tt-inner', {
@@ -174,7 +173,6 @@ async function loadLazy(doc) {
   } catch (e) {
     // header load error handled gracefully
   }
-  buildPageSchema(doc);
 }
 
 function loadDelayed() {

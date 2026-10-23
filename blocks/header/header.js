@@ -1,7 +1,6 @@
 /* eslint-disable no-use-before-define */
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
-import { updateSchemaGraph } from '../../scripts/schema.js';
 
 const isDesktop = window.matchMedia('(min-width: 900px)');
 
@@ -147,6 +146,4 @@ export default async function decorate(block) {
   navWrapper.className = 'nav-wrapper';
   navWrapper.append(nav);
   block.append(navWrapper);
-
-  updateSchemaGraph(document);
 }

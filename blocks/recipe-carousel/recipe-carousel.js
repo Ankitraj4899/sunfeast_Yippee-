@@ -1,5 +1,3 @@
-import { addSchemaEntities } from '../../scripts/schema.js';
-
 const DEFAULT_ICONS = {
   appetizers: '/Appetizers.webp',
   breakfast: '/breakfast.webp',
@@ -460,29 +458,6 @@ export default function decorate(block) {
       });
     });
   }
-
-  const recipesList = [];
-  categoriesData.forEach((cat) => {
-    (cat.recipes || []).forEach((rec) => {
-      const parts = (rec.duration || '15 Mins').split(' ');
-      const num = parts[0] || '15';
-      const slug = encodeURIComponent(rec.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
-      recipesList.push({
-        '@type': 'Recipe',
-        '@id': `${window.location.origin}/#recipe-${slug}`,
-        name: rec.title,
-        image: rec.imageUrl,
-        recipeCategory: cat.category,
-        cookTime: `PT${num}M`,
-        description: `${rec.title} recipe by Sunfeast YiPPee!`,
-        author: {
-          '@type': 'Organization',
-          name: 'Sunfeast YiPPee!',
-        },
-      });
-    });
-  });
-  addSchemaEntities(recipesList);
 
   block.textContent = '';
 

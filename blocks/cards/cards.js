@@ -1,30 +1,7 @@
-import { addSchemaEntities } from '../../scripts/schema.js';
-
 export default function decorate(block) {
   const rows = [...block.children];
   const instantItems = rows.slice(0, 4);
   const cupItems = rows.slice(4, 6);
-
-  const products = rows.map((row, idx) => {
-    const cell = row.children[0];
-    const image = cell?.querySelector('img')?.src || '';
-    const titleEl = cell?.querySelector('h2, h3, h4, strong, p');
-    const name = titleEl ? titleEl.textContent.trim() : `YiPPee Noodle ${idx + 1}`;
-    const isCup = idx >= 4;
-    const slug = encodeURIComponent(name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
-    return {
-      '@type': 'Product',
-      '@id': `${window.location.origin}/#product-${slug}`,
-      name,
-      image,
-      category: isCup ? 'Cup Noodles' : 'Instant Noodles',
-      brand: {
-        '@type': 'Brand',
-        name: 'Sunfeast YiPPee!',
-      },
-    };
-  });
-  addSchemaEntities(products);
 
   block.classList.add('noodle-range');
 

@@ -1,0 +1,6 @@
+name = "sunfeast-yippee-edge-worker"
+main = "src/index.js"
+compatibility_date = "2024-04-01"
+
+[vars]
+EDS_HOST = "main--sunfeast-yippee--ankitraj4899.aem.live"
