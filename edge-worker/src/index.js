@@ -340,6 +340,7 @@ async function handleRequest(requestOrEvent, env = {}) {
 
   const upstreamHeaders = new Headers(req.headers);
   upstreamHeaders.set('host', edsHost);
+  upstreamHeaders.delete('accept-encoding');
 
   const upstreamUrl = new URL(url.pathname + url.search, `https://${edsHost}`);
 
@@ -351,11 +352,22 @@ async function handleRequest(requestOrEvent, env = {}) {
 
   const contentType = originResponse.headers.get('content-type') || '';
 
-  if (!contentType.includes('text/html')) {
+  if (!contentType.includes('text/html') || url.pathname.endsWith('.plain.html')) {
     return originResponse;
   }
 
-  let html = await originResponse.text();
+  let html;
+  const encoding = (originResponse.headers.get('content-encoding') || '').toLowerCase();
+  if (encoding.includes('gzip') && typeof DecompressionStream !== 'undefined') {
+    const decompressed = originResponse.body.pipeThrough(new DecompressionStream('gzip'));
+    html = await new Response(decompressed).text();
+  } else if (encoding.includes('deflate') && typeof DecompressionStream !== 'undefined') {
+    const decompressed = originResponse.body.pipeThrough(new DecompressionStream('deflate'));
+    html = await new Response(decompressed).text();
+  } else {
+    html = await originResponse.text();
+  }
+
   const metadata = extractPageMetadata(html);
 
   const schema = isProductListingPage(url, html)
