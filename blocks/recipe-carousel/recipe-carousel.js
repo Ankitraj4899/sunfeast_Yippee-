@@ -11,43 +11,117 @@ const DEFAULT_ICONS = {
 
 const SAMPLE_TITLES = {
   Appetizers: [
-    'Bruschetta Bites Recipe...',
-    'Crispy Rings Recipe with...',
-    'Zucchini Bites Recipe with...',
+    'Scotch Eggs with Noodles...',
+    'Noodles Lollipop Recipe',
+    'Finger Fries Recipe with...',
     'Scotch Eggs with Noodles Recipe',
     'Noodles Lollipop Recipe',
   ],
   Breakfast: [
-    'Noodles Chilla Recipe...',
-    'Masala Omelette Recipe with...',
-    'Veggie Loaded Bowl Recipe',
-    'Cheesy Noodles Toast Recipe',
-    'Quick Noodle Upma Recipe',
+    'Masala Omelette Recipe',
+    'Yippee Noodle Paratha Recipe',
+    'Yippee Noodle Poha Recipe',
+    'Yippee Noodle Sandwich Recipe',
+    'Yippee Noodle Upma Recipe',
   ],
   Snacks: [
-    'YiPPee Pockets Recipe...',
-    'Noodle Cutlets Recipe with...',
-    'Crispy Spring Rolls Recipe',
+    'Yippee Noodle Chaat Recipe',
+    'Yippee Spring Rolls Recipe',
+    'Yippee Noodle Burger Recipe',
     'Noodle Bhel Puri Recipe',
     'Cheese Stuffed Balls Recipe',
   ],
   'Fancy Meal': [
-    'Noodles in Tamarind Sauce...',
-    'Sizzling Szechuan Recipe',
-    'Creamy Noodle Casserole',
-    'Stir Fry Exotic Noodles',
-    'Paneer Tikka Platter',
+    'Masala Noodle Soup Recipe',
+    'Yippee Noodle Curry Recipe',
+    'Noodle Fried Rice Recipe',
+    'Noodle Manchurian Recipe',
+    'Yippee Noodle Pulao Recipe',
   ],
   Pasta: [
+    'Yippee Noodle Pizza Recipe',
+    'Yippee Noodle Tacos Recipe',
     'Creamy Tomato Pasta Recipe...',
     'Cheesy Macaroni Delight',
     'Spicy Masala Pasta Recipe',
-    'Herb & Garlic Pasta Recipe',
-    'Veggie Delight Pasta Recipe',
   ],
 };
 
-const COOKING_TIMES = ['15 Mins', '10 Mins', '10 Mins', '15 Mins', '20 Mins'];
+const COOKING_TIMES = ['15 Mins', '15 Mins', '20 Mins', '15 Mins', '20 Mins'];
+
+const S7_BASE = 'https://s7ap1.scene7.com/is/image/itcportalprod';
+
+const DISH_IMAGE_RULES = [
+  { match: /fries|finger/i, img: '02_Yippee-Finger-Fries' },
+  { match: /scotch|egg/i, img: 'Yippee!%20Scotch%20Eggs-thumb' },
+  { match: /pocket|lollipop|cutlet|ball|nugget|burger/i, img: 'YiPPee!%20Pockets-1' },
+  { match: /sauce|tamarind|curry|soup|pulao|rice|biryani/i, img: '01_Yippee-Noodles-in-Tamarind-Sauce-1' },
+  { match: /pasta|macaroni|pizza|tomato/i, img: 'YiPPee-Pasta-Cauliflower-Pasta-1' },
+  { match: /sandwich|taco|roll/i, img: 'YiPPee!%20Pockets-1' },
+  { match: /stir|chinese|manchurian|szechuan/i, img: 'Yippee!%20Stir-Fried-thumb' },
+  { match: /toast|upma|poha|paratha|omelette|chilla/i, img: 'Yippee!%20Stir-Fried-thumb' },
+];
+
+function resolveDynamicRecipeImage(r, idx) {
+  if (r.image && r.image.trim().length > 0 && !r.image.endsWith('/') && !r.image.includes('Thumbnail')) {
+    return r.image.replace(/&#x26;/g, '&');
+  }
+  const text = `${r.title || ''} ${r.path || ''}`.toLowerCase();
+  for (let i = 0; i < DISH_IMAGE_RULES.length; i += 1) {
+    if (DISH_IMAGE_RULES[i].match.test(text)) {
+      return `${S7_BASE}/${DISH_IMAGE_RULES[i].img}?fmt=webp-alpha&wid=340&fit=fit,1`;
+    }
+  }
+  const fallbacks = [
+    'YiPPee!%20Pockets-1',
+    'Yippee!%20Scotch%20Eggs-thumb',
+    '02_Yippee-Finger-Fries',
+    '01_Yippee-Noodles-in-Tamarind-Sauce-1',
+    'Yippee!%20Stir-Fried-thumb',
+    'YiPPee-Pasta-Cauliflower-Pasta-1',
+  ];
+  const chosen = fallbacks[idx % fallbacks.length];
+  return `${S7_BASE}/${chosen}?fmt=webp-alpha&wid=340&fit=fit,1`;
+}
+
+function parseCookingTime(durationStr) {
+  if (!durationStr) return { num: '15', unit: 'Mins' };
+  const str = String(durationStr).trim();
+  const match = str.match(/(\d+)\s*([a-zA-Z]+)?/);
+  if (match) {
+    const num = match[1];
+    let unit = match[2] || 'Mins';
+    if (/^min/i.test(unit)) unit = 'Mins';
+    return { num, unit };
+  }
+  return { num: '15', unit: 'Mins' };
+}
+
+const COOK_TIME_CACHE = new Map();
+
+async function fetchRecipeCookTime(path) {
+  if (!path) return null;
+  const cleanPath = path.replace(/\.html$/, '');
+  if (COOK_TIME_CACHE.has(cleanPath)) {
+    return COOK_TIME_CACHE.get(cleanPath);
+  }
+
+  try {
+    const res = await fetch(`${cleanPath}.plain.html`);
+    if (!res.ok) return null;
+    const html = await res.text();
+    const cookMatch = html.match(/<strong>\s*Cook\s*Time\s*<\/strong>\s*<\/p>\s*<p>\s*([^<]+)\s*<\/p>/i)
+      || html.match(/Cook\s*Time[^<]*<\/p>\s*<p>\s*([^<]+)\s*<\/p>/i);
+    if (cookMatch && cookMatch[1]) {
+      const time = cookMatch[1].trim();
+      COOK_TIME_CACHE.set(cleanPath, time);
+      return time;
+    }
+  } catch (err) {
+    // Ignore fetch failures
+  }
+  return null;
+}
 
 function getTitle(text, category, index) {
   if (text && !text.includes('http') && !text.includes('/') && text.trim().length > 2) {
@@ -129,6 +203,13 @@ function downloadRecipePdf(recipe) {
 }
 
 function getShareUrl(recipe) {
+  if (recipe.path) {
+    try {
+      return new URL(recipe.path, window.location.origin).href;
+    } catch (e) {
+      // fallback
+    }
+  }
   const slug = (recipe.title || 'recipe').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
   return `https://sunfeastyippee.com/recipes/${slug}`;
 }
@@ -365,98 +446,186 @@ if (!window.recipePopupListenerAttached) {
   window.recipePopupListenerAttached = true;
 }
 
-export default function decorate(block) {
+export default async function decorate(block) {
   const rows = [...block.children];
   const categoriesData = [];
 
-  rows.forEach((row) => {
-    const cells = [...row.children];
-    if (cells.length === 0) return;
+  // 1. Check if authored link specifies an index or default to /query-index.json
+  const jsonLink = block.querySelector('a[href$=".json"]')?.href || '/query-index.json';
 
-    const categoryName = cells[0].textContent.trim() || 'Appetizers';
-    const key = categoryName.toLowerCase().trim();
-    const categoryIcon = DEFAULT_ICONS[key] || '/Appetizers.webp';
+  let indexRecipes = [];
+  try {
+    const res = await fetch(jsonLink);
+    if (res.ok) {
+      const json = await res.json();
+      const data = json.data || json;
+      if (Array.isArray(data) && data.length > 0) {
+        indexRecipes = data.filter((item) => (
+          (item.path && item.path.includes('/recipes')) || item.category || item.duration
+        ));
+      }
+    }
+  } catch (err) {
+    // Fallback gracefully
+  }
 
-    const items = [];
-    const contentCell = cells[1] || cells[0];
+  // 2. If index recipes are available, dynamically group by category
+  if (indexRecipes.length > 0) {
+    const defaultCategories = ['Appetizers', 'Breakfast', 'Snacks', 'Fancy Meal', 'Pasta'];
+    const extraCategories = [];
 
-    if (contentCell) {
-      const links = [...contentCell.querySelectorAll('a')];
-      const images = [...contentCell.querySelectorAll('img')];
+    indexRecipes.forEach((r) => {
+      const cat = (r.category || '').trim();
+      if (cat && !defaultCategories.some((dc) => dc.toLowerCase() === cat.toLowerCase())) {
+        if (!extraCategories.some((ec) => ec.toLowerCase() === cat.toLowerCase())) {
+          extraCategories.push(cat);
+        }
+      }
+    });
 
-      if (links.length > 0) {
-        links.forEach((link, idx) => {
-          const imageUrl = link.href;
-          if (!imageUrl) return;
+    const allCategories = [...defaultCategories, ...extraCategories];
 
+    allCategories.forEach((catName) => {
+      const key = catName.toLowerCase().trim();
+      const categoryIcon = DEFAULT_ICONS[key] || '/Appetizers.webp';
+
+      const matching = indexRecipes.filter((r) => {
+        const rCat = (r.category || '').toLowerCase().trim();
+        return rCat === key || rCat.includes(key) || key.includes(rCat);
+      });
+
+      const items = matching.map((r, idx) => {
+        const cleanTitle = (r.title || 'YiPPee Recipe')
+          .replace(/\s*\|\s*Sunfeast\s*YiPPee!?/i, '')
+          .replace(/\s*(with\s+)?(Yippee!?\s*Noodles|Sunfeast\s*YiPPee!?)/gi, '')
+          .trim();
+        return {
+          imageUrl: resolveDynamicRecipeImage(r, idx),
+          title: cleanTitle,
+          duration: r.cookTime || r.cook_time || r.duration
+            || COOKING_TIMES[idx % COOKING_TIMES.length],
+          path: r.path || '',
+          description: r.description || '',
+        };
+      });
+
+      // If category has no items in index, supply placeholders so tab remains interactive
+      if (items.length === 0 && defaultCategories.includes(catName)) {
+        const sampleList = SAMPLE_TITLES[catName] || ['Delicious Recipe 1', 'Delicious Recipe 2', 'Delicious Recipe 3'];
+        const sampleImgs = [
+          `${S7_BASE}/Yippee!%20Scotch%20Eggs-thumb?fmt=webp-alpha&wid=340&fit=fit,1`,
+          `${S7_BASE}/YiPPee!%20Pockets-1?fmt=webp-alpha&wid=340&fit=fit,1`,
+          `${S7_BASE}/02_Yippee-Finger-Fries?fmt=webp-alpha&wid=340&fit=fit,1`,
+        ];
+        sampleList.slice(0, 3).forEach((title, idx) => {
           items.push({
-            imageUrl,
-            title: getTitle(link.textContent, categoryName, idx),
+            imageUrl: sampleImgs[idx % sampleImgs.length],
+            title,
             duration: COOKING_TIMES[idx % COOKING_TIMES.length],
+            path: '',
           });
         });
-      } else if (images.length > 0) {
-        images.forEach((img, idx) => {
-          if (!img.src) return;
+      }
 
+      if (items.length > 0) {
+        categoriesData.push({
+          category: catName,
+          icon: categoryIcon,
+          recipes: items,
+        });
+      }
+    });
+  } else {
+    // 3. Fallback to authored static rows
+    rows.forEach((row) => {
+      const cells = [...row.children];
+      if (cells.length === 0) return;
+
+      const categoryName = cells[0].textContent.trim() || 'Appetizers';
+      const key = categoryName.toLowerCase().trim();
+      const categoryIcon = DEFAULT_ICONS[key] || '/Appetizers.webp';
+
+      const items = [];
+      const contentCell = cells[1] || cells[0];
+
+      if (contentCell) {
+        const links = [...contentCell.querySelectorAll('a')];
+        const images = [...contentCell.querySelectorAll('img')];
+
+        if (links.length > 0) {
+          links.forEach((link, idx) => {
+            const imageUrl = link.href;
+            if (!imageUrl) return;
+
+            items.push({
+              imageUrl,
+              title: getTitle(link.textContent, categoryName, idx),
+              duration: COOKING_TIMES[idx % COOKING_TIMES.length],
+            });
+          });
+        } else if (images.length > 0) {
+          images.forEach((img, idx) => {
+            if (!img.src) return;
+
+            items.push({
+              imageUrl: img.src,
+              title: getTitle(img.alt, categoryName, idx),
+              duration: COOKING_TIMES[idx % COOKING_TIMES.length],
+            });
+          });
+        }
+      }
+
+      if (items.length === 0) {
+        const defaultUrls = [
+          `${S7_BASE}/Yippee!%20Scotch%20Eggs-thumb?fmt=webp-alpha&wid=340&fit=fit,1`,
+          `${S7_BASE}/YiPPee!%20Pockets-1?fmt=webp-alpha&wid=340&fit=fit,1`,
+          `${S7_BASE}/02_Yippee-Finger-Fries?fmt=webp-alpha&wid=340&fit=fit,1`,
+        ];
+
+        defaultUrls.forEach((imgUrl, idx) => {
           items.push({
-            imageUrl: img.src,
-            title: getTitle(img.alt, categoryName, idx),
+            imageUrl: imgUrl,
+            title: getTitle('', categoryName, idx),
             duration: COOKING_TIMES[idx % COOKING_TIMES.length],
           });
         });
       }
-    }
 
-    if (items.length === 0) {
-      const defaultUrls = [
-        'https://s7ap1.scene7.com/is/image/itcportalprod/01_Yippee-Noodles-in-Tamarind-Sauce-1?fmt=webp-alpha&wid=270&fit=fit,1',
-        'https://s7ap1.scene7.com/is/image/itcportalprod/6.-Chilla-Thumbnail-Noodles?fmt=webp-alpha&wid=270&fit=fit,1',
-        'https://s7ap1.scene7.com/is/image/itcportalprod/YiPPee%20Pockets-1?fmt=webp-alpha&wid=270&fit=fit,1',
-      ];
+      categoriesData.push({
+        category: categoryName,
+        icon: categoryIcon,
+        recipes: items,
+      });
+    });
 
-      defaultUrls.forEach((imgUrl, idx) => {
-        items.push({
-          imageUrl: imgUrl,
-          title: getTitle('', categoryName, idx),
-          duration: COOKING_TIMES[idx % COOKING_TIMES.length],
+    if (categoriesData.length === 0) {
+      const list = ['Appetizers', 'Breakfast', 'Snacks', 'Fancy Meal', 'Pasta'];
+      list.forEach((cat) => {
+        const key = cat.toLowerCase();
+        categoriesData.push({
+          category: cat,
+          icon: DEFAULT_ICONS[key] || '/Appetizers.webp',
+          recipes: [
+            {
+              imageUrl: `${S7_BASE}/Yippee!%20Scotch%20Eggs-thumb?fmt=webp-alpha&wid=340&fit=fit,1`,
+              title: 'Scotch Eggs with Noodles...',
+              duration: '15 Mins',
+            },
+            {
+              imageUrl: `${S7_BASE}/YiPPee!%20Pockets-1?fmt=webp-alpha&wid=340&fit=fit,1`,
+              title: 'Noodles Lollipop Recipe',
+              duration: '15 Mins',
+            },
+            {
+              imageUrl: `${S7_BASE}/02_Yippee-Finger-Fries?fmt=webp-alpha&wid=340&fit=fit,1`,
+              title: 'Finger Fries Recipe with...',
+              duration: '20 Mins',
+            },
+          ],
         });
       });
     }
-
-    categoriesData.push({
-      category: categoryName,
-      icon: categoryIcon,
-      recipes: items,
-    });
-  });
-
-  if (categoriesData.length === 0) {
-    const list = ['Appetizers', 'Breakfast', 'Snacks', 'Fancy Meal', 'Pasta'];
-    list.forEach((cat) => {
-      const key = cat.toLowerCase();
-      categoriesData.push({
-        category: cat,
-        icon: DEFAULT_ICONS[key] || '/Appetizers.webp',
-        recipes: [
-          {
-            imageUrl: 'https://s7ap1.scene7.com/is/image/itcportalprod/01_Yippee-Noodles-in-Tamarind-Sauce-1?fmt=webp-alpha&wid=270&fit=fit,1',
-            title: 'Bruschetta Bites Recipe...',
-            duration: '15 Mins',
-          },
-          {
-            imageUrl: 'https://s7ap1.scene7.com/is/image/itcportalprod/6.-Chilla-Thumbnail-Noodles?fmt=webp-alpha&wid=270&fit=fit,1',
-            title: 'Crispy Rings Recipe with...',
-            duration: '10 Mins',
-          },
-          {
-            imageUrl: 'https://s7ap1.scene7.com/is/image/itcportalprod/YiPPee%20Pockets-1?fmt=webp-alpha&wid=270&fit=fit,1',
-            title: 'Zucchini Bites Recipe with...',
-            duration: '10 Mins',
-          },
-        ],
-      });
-    });
   }
 
   block.textContent = '';
@@ -621,6 +790,9 @@ export default function decorate(block) {
   const createCard = (recipe) => {
     const card = document.createElement('div');
     card.className = 'recipe-card';
+    if (recipe.path) {
+      card.dataset.path = recipe.path;
+    }
 
     const menu = document.createElement('button');
     menu.type = 'button';
@@ -632,8 +804,13 @@ export default function decorate(block) {
       toggleCardPopup(card, recipe, e);
     });
 
-    const imageWrap = document.createElement('div');
+    const isLink = Boolean(recipe.path);
+    const imageWrap = document.createElement(isLink ? 'a' : 'div');
     imageWrap.className = 'recipe-card-image-wrap';
+    if (isLink) {
+      imageWrap.href = recipe.path;
+      imageWrap.setAttribute('aria-label', recipe.title);
+    }
 
     const img = document.createElement('img');
     img.className = 'recipe-card-img';
@@ -645,9 +822,12 @@ export default function decorate(block) {
     const footer = document.createElement('div');
     footer.className = 'recipe-card-footer';
 
-    const title = document.createElement('div');
+    const title = document.createElement(isLink ? 'a' : 'div');
     title.className = 'recipe-card-title';
     title.textContent = recipe.title;
+    if (isLink) {
+      title.href = recipe.path;
+    }
 
     const timeWrap = document.createElement('div');
     timeWrap.className = 'recipe-card-time';
@@ -655,10 +835,7 @@ export default function decorate(block) {
     const badge = document.createElement('div');
     badge.className = 'recipe-card-badge';
 
-    const parts = recipe.duration.split(' ');
-    const num = parts[0] || '15';
-    const unit = parts[1] || 'Mins';
-
+    const { num, unit } = parseCookingTime(recipe.duration);
     badge.innerHTML = `<span class="badge-number">${num}</span>`;
 
     const unitEl = document.createElement('span');
@@ -668,6 +845,17 @@ export default function decorate(block) {
     timeWrap.append(badge, unitEl);
     footer.append(title, timeWrap);
     card.append(menu, imageWrap, footer);
+
+    if (recipe.path && !recipe.duration) {
+      fetchRecipeCookTime(recipe.path).then((cookTime) => {
+        if (cookTime) {
+          const parsed = parseCookingTime(cookTime);
+          const numEl = badge.querySelector('.badge-number');
+          if (numEl) numEl.textContent = parsed.num;
+          unitEl.textContent = parsed.unit;
+        }
+      });
+    }
 
     return card;
   };

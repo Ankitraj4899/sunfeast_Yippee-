@@ -1,0 +1,197 @@
+{
+  "total": 19,
+  "offset": 0,
+  "limit": 19,
+  "data": [
+    {
+      "path": "/recipes/noodles-chilla",
+      "title": "Scotch Eggs with Noodles...",
+      "description": "Try this fun and crispy Yippee Scotch Eggs recipe — hard-boiled eggs wrapped in a spiced Magic Masala noodle coating and deep-fried to golden perfection. Perfect party snack!",
+      "category": "Appetizers",
+      "cookTime": "15 mins",
+      "duration": "15 mins",
+      "image": "https://s7ap1.scene7.com/is/image/itcportalprod/Yippee!%20Scotch%20Eggs-thumb?fmt=webp-alpha&wid=340&fit=fit,1",
+      "lastModified": "1730000000"
+    },
+    {
+      "path": "/recipes/noodle-cutlets",
+      "title": "Noodles Lollipop Recipe",
+      "description": "Make crispy and delicious Yippee Noodle Cutlets and Lollipops with Sunfeast Yippee! Magic Masala noodles and spiced mashed potatoes. A perfect tea-time party starter!",
+      "category": "Appetizers",
+      "cookTime": "15 mins",
+      "duration": "15 mins",
+      "image": "https://s7ap1.scene7.com/is/image/itcportalprod/YiPPee!%20Pockets-1?fmt=webp-alpha&wid=340&fit=fit,1",
+      "lastModified": "1730000000"
+    },
+    {
+      "path": "/recipes/finger-fries-recipe",
+      "title": "Finger Fries Recipe with...",
+      "description": "Make crispy and delicious Yippee Finger Fries with Sunfeast Yippee! Magic Masala noodles and spiced mashed potatoes. A fun and easy snack recipe perfect for kids and parties!",
+      "category": "Appetizers",
+      "cookTime": "20 mins",
+      "duration": "20 mins",
+      "image": "https://s7ap1.scene7.com/is/image/itcportalprod/02_Yippee-Finger-Fries?fmt=webp-alpha&wid=340&fit=fit,1",
+      "lastModified": "1730000000"
+    },
+    {
+      "path": "/recipes/masala-omelette",
+      "title": "Masala Omelette Recipe",
+      "description": "Make a spicy and delicious Masala Omelette with Sunfeast Yippee! Magic Masala noodles, eggs, and fresh veggies. A quick, flavour-packed breakfast or snack recipe the whole family will love!",
+      "category": "Breakfast",
+      "cookTime": "15 mins",
+      "duration": "15 mins",
+      "image": "https://s7ap1.scene7.com/is/image/itcportalprod/Yippee!%20Stir-Fried-thumb?fmt=webp-alpha&wid=340&fit=fit,1",
+      "lastModified": "1730000000"
+    },
+    {
+      "path": "/recipes/noodle-paratha",
+      "title": "Yippee Noodle Paratha Recipe",
+      "description": "Make a delicious Yippee Noodle Paratha stuffed with spiced Sunfeast Yippee! Magic Masala noodles. A crispy and flavourful Indian breakfast that kids and families will love!",
+      "category": "Breakfast",
+      "cookTime": "20 mins",
+      "duration": "20 mins",
+      "image": "https://s7ap1.scene7.com/is/image/itcportalprod/02_Yippee-Finger-Fries?fmt=webp-alpha&wid=340&fit=fit,1",
+      "lastModified": "1730000000"
+    },
+    {
+      "path": "/recipes/noodle-poha",
+      "title": "Yippee Noodle Poha Recipe",
+      "description": "A fun twist on classic poha — made with Sunfeast Yippee! Magic Masala noodles, flattened rice, and fresh veggies. A quick and delicious Indian breakfast recipe!",
+      "category": "Breakfast",
+      "cookTime": "15 mins",
+      "duration": "15 mins",
+      "image": "https://s7ap1.scene7.com/is/image/itcportalprod/01_Yippee-Noodles-in-Tamarind-Sauce-1?fmt=webp-alpha&wid=340&fit=fit,1",
+      "lastModified": "1730000000"
+    },
+    {
+      "path": "/recipes/noodle-sandwich",
+      "title": "Yippee Noodle Sandwich Recipe",
+      "description": "Make a quick and delicious Yippee Noodle Sandwich stuffed with Sunfeast Yippee! Magic Masala noodles, fresh veggies, and chutney. The perfect toasted breakfast or snack!",
+      "category": "Breakfast",
+      "cookTime": "10 mins",
+      "duration": "10 mins",
+      "image": "https://s7ap1.scene7.com/is/image/itcportalprod/YiPPee!%20Pockets-1?fmt=webp-alpha&wid=340&fit=fit,1",
+      "lastModified": "1730000000"
+    },
+    {
+      "path": "/recipes/noodle-upma",
+      "title": "Yippee Noodle Upma Recipe",
+      "description": "Try this flavourful Yippee Noodle Upma — a South Indian breakfast classic made with Sunfeast Yippee! noodles, semolina, and fresh veggies. Quick, healthy, and delicious!",
+      "category": "Breakfast",
+      "cookTime": "15 mins",
+      "duration": "15 mins",
+      "image": "https://s7ap1.scene7.com/is/image/itcportalprod/02_Yippee-Finger-Fries?fmt=webp-alpha&wid=340&fit=fit,1",
+      "lastModified": "1730000000"
+    },
+    {
+      "path": "/recipes/noodle-chaat",
+      "title": "Yippee Noodle Chaat Recipe",
+      "description": "Make this tangy and spicy Yippee Noodle Chaat with Sunfeast Yippee! Magic Masala noodles, chutneys, sev, and fresh veggies. A fun street-style snack ready in minutes!",
+      "category": "Snacks",
+      "cookTime": "10 mins",
+      "duration": "10 mins",
+      "image": "https://s7ap1.scene7.com/is/image/itcportalprod/01_Yippee-Noodles-in-Tamarind-Sauce-1?fmt=webp-alpha&wid=340&fit=fit,1",
+      "lastModified": "1730000000"
+    },
+    {
+      "path": "/recipes/noodle-spring-rolls",
+      "title": "Yippee Spring Rolls Recipe",
+      "description": "Make crispy and delicious Yippee Noodle Spring Rolls with Sunfeast Yippee! Magic Masala noodles and crunchy veggies. A perfect Indo-Asian fusion starter for parties and gatherings!",
+      "category": "Snacks",
+      "cookTime": "20 mins",
+      "duration": "20 mins",
+      "image": "https://s7ap1.scene7.com/is/image/itcportalprod/02_Yippee-Finger-Fries?fmt=webp-alpha&wid=340&fit=fit,1",
+      "lastModified": "1730000000"
+    },
+    {
+      "path": "/recipes/noodle-burger",
+      "title": "Yippee Noodle Burger Recipe",
+      "description": "Make a fun and flavourful Yippee Noodle Burger with crispy Sunfeast Yippee! noodle patties, fresh veggies, and zesty sauces. A creative Indo-Western fusion recipe everyone will love!",
+      "category": "Snacks",
+      "cookTime": "20 mins",
+      "duration": "20 mins",
+      "image": "https://s7ap1.scene7.com/is/image/itcportalprod/YiPPee!%20Pockets-1?fmt=webp-alpha&wid=340&fit=fit,1",
+      "lastModified": "1730000000"
+    },
+    {
+      "path": "/recipes/masala-noodle-soup",
+      "title": "Masala Noodle Soup Recipe",
+      "description": "Warm up with a comforting bowl of Yippee Masala Noodle Soup — Sunfeast Yippee! noodles simmered in a spiced vegetable broth with fresh veggies. A perfect quick dinner!",
+      "category": "Fancy Meal",
+      "cookTime": "20 mins",
+      "duration": "20 mins",
+      "image": "https://s7ap1.scene7.com/is/image/itcportalprod/01_Yippee-Noodles-in-Tamarind-Sauce-1?fmt=webp-alpha&wid=340&fit=fit,1",
+      "lastModified": "1730000000"
+    },
+    {
+      "path": "/recipes/noodle-curry",
+      "title": "Yippee Noodle Curry Recipe",
+      "description": "Make a rich and aromatic Yippee Noodle Curry with Sunfeast Yippee! noodles simmered in a spiced tomato-onion gravy. A hearty and satisfying Indian main course!",
+      "category": "Fancy Meal",
+      "cookTime": "25 mins",
+      "duration": "25 mins",
+      "image": "https://s7ap1.scene7.com/is/image/itcportalprod/Yippee!%20Scotch%20Eggs-thumb?fmt=webp-alpha&wid=340&fit=fit,1",
+      "lastModified": "1730000000"
+    },
+    {
+      "path": "/recipes/noodle-fried-rice",
+      "title": "Noodle Fried Rice Recipe",
+      "description": "Try this delicious Yippee Noodle Fried Rice — Sunfeast Yippee! noodles combined with spiced fried rice and fresh vegetables in a bold soy-chilli sauce. A quick and hearty main course!",
+      "category": "Fancy Meal",
+      "cookTime": "20 mins",
+      "duration": "20 mins",
+      "image": "https://s7ap1.scene7.com/is/image/itcportalprod/02_Yippee-Finger-Fries?fmt=webp-alpha&wid=340&fit=fit,1",
+      "lastModified": "1730000000"
+    },
+    {
+      "path": "/recipes/noodle-manchurian",
+      "title": "Noodle Manchurian Recipe",
+      "description": "Make crispy and saucy Yippee Noodle Manchurian with Sunfeast Yippee! noodle balls in a tangy Indo-Chinese sauce. A delicious main course loved by kids and adults!",
+      "category": "Fancy Meal",
+      "cookTime": "25 mins",
+      "duration": "25 mins",
+      "image": "https://s7ap1.scene7.com/is/image/itcportalprod/YiPPee!%20Pockets-1?fmt=webp-alpha&wid=340&fit=fit,1",
+      "lastModified": "1730000000"
+    },
+    {
+      "path": "/recipes/noodle-pulao",
+      "title": "Yippee Noodle Pulao Recipe",
+      "description": "Try this aromatic Yippee Noodle Pulao made with Sunfeast Yippee! Magic Masala noodles, whole spices, and fresh vegetables. A hearty and satisfying one-pot main course!",
+      "category": "Fancy Meal",
+      "cookTime": "20 mins",
+      "duration": "20 mins",
+      "image": "https://s7ap1.scene7.com/is/image/itcportalprod/01_Yippee-Noodles-in-Tamarind-Sauce-1?fmt=webp-alpha&wid=340&fit=fit,1",
+      "lastModified": "1730000000"
+    },
+    {
+      "path": "/recipes/noodle-stir-fry",
+      "title": "Noodle Stir Fry Recipe",
+      "description": "Make a quick and flavourful Yippee Noodle Stir Fry with Sunfeast Yippee! Magic Masala noodles, crunchy veggies, and bold sauces. A satisfying one-pan main course in under 30 minutes!",
+      "category": "Fancy Meal",
+      "cookTime": "15 mins",
+      "duration": "15 mins",
+      "image": "https://s7ap1.scene7.com/is/image/itcportalprod/02_Yippee-Finger-Fries?fmt=webp-alpha&wid=340&fit=fit,1",
+      "lastModified": "1730000000"
+    },
+    {
+      "path": "/recipes/noodle-pizza",
+      "title": "Yippee Noodle Pizza Recipe",
+      "description": "Make a fun and creative Yippee Noodle Pizza with a crispy Sunfeast Yippee! noodle base, pizza sauce, veggies, and melted mozzarella. A fusion recipe kids absolutely love!",
+      "category": "Pasta",
+      "cookTime": "25 mins",
+      "duration": "25 mins",
+      "image": "https://s7ap1.scene7.com/is/image/itcportalprod/YiPPee-Pasta-Cauliflower-Pasta-1?fmt=webp-alpha&wid=340&fit=fit,1",
+      "lastModified": "1730000000"
+    },
+    {
+      "path": "/recipes/noodle-tacos",
+      "title": "Yippee Noodle Tacos Recipe",
+      "description": "Make fun and flavourful Yippee Noodle Tacos with Sunfeast Yippee! Magic Masala noodles, fresh salsa, and creamy guacamole in crispy taco shells. A creative fusion recipe for parties!",
+      "category": "Pasta",
+      "cookTime": "15 mins",
+      "duration": "15 mins",
+      "image": "https://s7ap1.scene7.com/is/image/itcportalprod/YiPPee!%20Pockets-1?fmt=webp-alpha&wid=340&fit=fit,1",
+      "lastModified": "1730000000"
+    }
+  ]
+}
