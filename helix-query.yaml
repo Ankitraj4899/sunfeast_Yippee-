@@ -1,0 +1,34 @@
+version: 1
+
+indices:
+  default:
+    include:
+      - '/**'
+    exclude:
+      - '/**.json'
+      - '/nav'
+      - '/footer'
+      - '/tools/**'
+    target: /query-index.json
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      category:
+        select: head > meta[name="category"]
+        value: attribute(el, 'content')
+      duration:
+        select: head > meta[name="duration"]
+        value: attribute(el, 'content')
+      cookTime:
+        select: head > meta[name="cooktime"], head > meta[name="cook-time"], head > meta[name="cook_time"]
+        value: attribute(el, 'content')
+      image:
+        select: head > meta[property="og:image"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
