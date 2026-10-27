@@ -1,0 +1,84 @@
+{
+  "definitions": [
+    {
+      "title": "Footer Block",
+      "id": "footer-block",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "Footer Block",
+              "model": "footer-block",
+              "filter": "footer-block"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Footer Column",
+      "id": "footer-column",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Footer Column",
+              "model": "footer-column"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "footer-block",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "logo",
+          "label": "Logo",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "logoAlt",
+          "label": "Alt Text",
+          "value": ""
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "copyright",
+          "label": "Copyright",
+          "value": "",
+          "description": "Must contain the © symbol; may include an \"ITC Portal\" link"
+        }
+      ]
+    },
+    {
+      "id": "footer-column",
+      "fields": [
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "links",
+          "label": "Links",
+          "value": ""
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "footer-block",
+      "components": [
+        "footer-column"
+      ]
+    }
+  ]
+}

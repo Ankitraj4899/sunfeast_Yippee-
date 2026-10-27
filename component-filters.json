@@ -1,0 +1,99 @@
+[
+  {
+    "id": "main",
+    "components": [
+      "section"
+    ]
+  },
+  {
+    "id": "section",
+    "components": [
+      "text",
+      "image",
+      "button",
+      "title",
+      "cards",
+      "carousel",
+      "columns",
+      "creativity",
+      "footer-block",
+      "fragment",
+      "grid-cards",
+      "pasta",
+      "recipe-carousel",
+      "sunfeast-yippee-products",
+      "treasure-hunt",
+      "world",
+      "yippee-intro"
+    ]
+  },
+  {
+    "id": "cards",
+    "components": [
+      "card"
+    ]
+  },
+  {
+    "id": "carousel",
+    "components": [
+      "carousel-item"
+    ]
+  },
+  {
+    "id": "columns",
+    "components": [
+      "column"
+    ]
+  },
+  {
+    "id": "column",
+    "components": [
+      "text",
+      "image",
+      "button",
+      "title"
+    ]
+  },
+  {
+    "id": "creativity",
+    "components": [
+      "creativity-item"
+    ]
+  },
+  {
+    "id": "footer-block",
+    "components": [
+      "footer-column"
+    ]
+  },
+  {
+    "id": "grid-cards",
+    "components": [
+      "grid-card"
+    ]
+  },
+  {
+    "id": "pasta",
+    "components": [
+      "pasta-item"
+    ]
+  },
+  {
+    "id": "recipe-carousel",
+    "components": [
+      "recipe-category"
+    ]
+  },
+  {
+    "id": "sunfeast-yippee-products",
+    "components": [
+      "product-category"
+    ]
+  },
+  {
+    "id": "world",
+    "components": [
+      "world-card"
+    ]
+  }
+]

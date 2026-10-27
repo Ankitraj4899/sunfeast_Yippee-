@@ -1,0 +1,72 @@
+{
+  "definitions": [
+    {
+      "title": "Sunfeast YiPPee Products",
+      "id": "sunfeast-yippee-products",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "Sunfeast YiPPee Products",
+              "filter": "sunfeast-yippee-products"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Product Category",
+      "id": "product-category",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Product Category",
+              "model": "product-category"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "product-category",
+      "fields": [
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "name",
+          "label": "Category Name",
+          "value": "",
+          "description": "e.g. Noodles, Pasta"
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "content_text",
+          "label": "Headings",
+          "value": "",
+          "description": "Range heading (containing \"Explore\" or \"Range\") and a sub heading"
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "content_images",
+          "label": "Product Images",
+          "multi": true
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "sunfeast-yippee-products",
+      "components": [
+        "product-category"
+      ]
+    }
+  ]
+}
