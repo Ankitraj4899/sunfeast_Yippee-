@@ -74,6 +74,40 @@
         }
       ],
       "sections": []
+    },
+    {
+      "name": "recipe",
+      "description": "Recipe detail pages (/recipes/*): title, intro, recipe-info strip, then Ingredients, Method, Serving Suggestion and Chef's Tips sections; imported from their authored .plain.html into AEM authoring with category/duration page metadata",
+      "urls": [
+        "https://main--sunfeast-yippee--ankitraj4899.aem.live/recipes/masala-noodle-soup.plain.html",
+        "https://main--sunfeast-yippee--ankitraj4899.aem.live/recipes/noodle-burger.plain.html",
+        "https://main--sunfeast-yippee--ankitraj4899.aem.live/recipes/masala-omelette.plain.html",
+        "https://main--sunfeast-yippee--ankitraj4899.aem.live/recipes/noodle-chaat.plain.html",
+        "https://main--sunfeast-yippee--ankitraj4899.aem.live/recipes/finger-fries-recipe.plain.html",
+        "https://main--sunfeast-yippee--ankitraj4899.aem.live/recipes/noodle-curry.plain.html",
+        "https://main--sunfeast-yippee--ankitraj4899.aem.live/recipes/noodle-fried-rice.plain.html",
+        "https://main--sunfeast-yippee--ankitraj4899.aem.live/recipes/noodle-cutlets.plain.html",
+        "https://main--sunfeast-yippee--ankitraj4899.aem.live/recipes/noodle-paratha.plain.html",
+        "https://main--sunfeast-yippee--ankitraj4899.aem.live/recipes/noodle-manchurian.plain.html",
+        "https://main--sunfeast-yippee--ankitraj4899.aem.live/recipes/noodle-pizza.plain.html",
+        "https://main--sunfeast-yippee--ankitraj4899.aem.live/recipes/noodle-poha.plain.html",
+        "https://main--sunfeast-yippee--ankitraj4899.aem.live/recipes/noodle-pulao.plain.html",
+        "https://main--sunfeast-yippee--ankitraj4899.aem.live/recipes/noodle-sandwich.plain.html",
+        "https://main--sunfeast-yippee--ankitraj4899.aem.live/recipes/noodle-spring-rolls.plain.html",
+        "https://main--sunfeast-yippee--ankitraj4899.aem.live/recipes/noodles-chilla.plain.html",
+        "https://main--sunfeast-yippee--ankitraj4899.aem.live/recipes/noodle-stir-fry.plain.html",
+        "https://main--sunfeast-yippee--ankitraj4899.aem.live/recipes/noodle-tacos.plain.html",
+        "https://main--sunfeast-yippee--ankitraj4899.aem.live/recipes/noodle-upma.plain.html"
+      ],
+      "blocks": [
+        {
+          "name": "recipe-info",
+          "instances": [
+            "div.recipe-info"
+          ]
+        }
+      ],
+      "sections": []
     }
   ]
 }

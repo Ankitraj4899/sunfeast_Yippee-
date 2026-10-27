@@ -22,6 +22,14 @@
         "label": "Keywords"
       },
       {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Teaser Image",
+        "multi": false,
+        "description": "Image used when the page is shared and on recipe cards"
+      },
+      {
         "component": "text",
         "valueType": "string",
         "name": "category",
@@ -578,6 +586,19 @@
         "label": "Category icon",
         "multi": false,
         "description": "Optional. Defaults to the built-in icon for Appetizers, Breakfast, Snacks, Fancy Meal and Pasta"
+      }
+    ]
+  },
+  {
+    "id": "recipe-info-item",
+    "fields": [
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "text",
+        "label": "Text",
+        "value": "",
+        "description": "A bold label (e.g. Prep Time, Cook Time, Serves, Difficulty) followed by its value"
       }
     ]
   },

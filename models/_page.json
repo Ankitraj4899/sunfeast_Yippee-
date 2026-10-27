@@ -23,6 +23,14 @@
           "label": "Keywords"
         },
         {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image",
+          "label": "Teaser Image",
+          "multi": false,
+          "description": "Image used when the page is shared and on recipe cards"
+        },
+        {
           "component": "text",
           "valueType": "string",
           "name": "category",

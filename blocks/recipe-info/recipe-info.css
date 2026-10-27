@@ -1,0 +1,4 @@
+/* layout is unchanged from the default block rendering; items stay stacked */
+.recipe-info .recipe-info-item {
+  display: block;
+}

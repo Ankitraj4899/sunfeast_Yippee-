@@ -8,7 +8,8 @@
       "aemSitePath": "/content/sunfeast_Yippee-",
       "aemAssetsFolderPath": "/content/dam/sunfeast_Yippee-",
       "aemSiteName": "sunfeast_Yippee-",
-      "aemSiteTitle": "Sunfeast YiPPee!"
+      "aemSiteTitle": "Sunfeast YiPPee!",
+      "baseUrl": "https://main--sunfeast-yippee--ankitraj4899.aem.live/"
     }
   }
 }
