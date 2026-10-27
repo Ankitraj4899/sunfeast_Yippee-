@@ -38,21 +38,27 @@
         {
           "component": "reference",
           "valueType": "string",
-          "name": "image",
+          "name": "media_image",
           "label": "Image",
           "multi": false
         },
         {
           "component": "text",
           "valueType": "string",
-          "name": "imageAlt",
+          "name": "media_imageAlt",
           "label": "Alt Text",
           "value": ""
         },
         {
+          "component": "aem-content",
+          "name": "media_video",
+          "label": "Video URL",
+          "description": "Plays when the image is clicked"
+        },
+        {
           "component": "richtext",
           "valueType": "string",
-          "name": "text",
+          "name": "content_text",
           "label": "Text",
           "value": "",
           "description": "Add a heading (H2) and a paragraph"

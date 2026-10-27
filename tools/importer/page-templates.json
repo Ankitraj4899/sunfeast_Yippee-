@@ -1,0 +1,79 @@
+{
+  "metadata": {
+    "projectType": "xwalk"
+  },
+  "templates": [
+    {
+      "name": "eds-page",
+      "description": "Existing Edge Delivery pages (home, nav, footer) imported from their authored .plain.html content into AEM authoring, reusing the project blocks as-is",
+      "urls": [
+        "https://main--sunfeast-yippee--ankitraj4899.aem.live/index.plain.html",
+        "https://main--sunfeast-yippee--ankitraj4899.aem.live/nav.plain.html",
+        "https://main--sunfeast-yippee--ankitraj4899.aem.live/footer.plain.html"
+      ],
+      "blocks": [
+        {
+          "name": "carousel",
+          "instances": [
+            "div.carousel"
+          ]
+        },
+        {
+          "name": "yippee-intro",
+          "instances": [
+            "div.yippee-intro"
+          ]
+        },
+        {
+          "name": "cards",
+          "instances": [
+            "div.cards"
+          ]
+        },
+        {
+          "name": "pasta",
+          "instances": [
+            "div.pasta"
+          ]
+        },
+        {
+          "name": "recipe-carousel",
+          "instances": [
+            "div.recipe-carousel"
+          ]
+        },
+        {
+          "name": "treasure-hunt",
+          "instances": [
+            "div.treasure-hunt"
+          ]
+        },
+        {
+          "name": "world",
+          "instances": [
+            "div.world"
+          ]
+        },
+        {
+          "name": "creativity",
+          "instances": [
+            "div.creativity"
+          ]
+        },
+        {
+          "name": "grid-cards",
+          "instances": [
+            "div.grid-cards"
+          ]
+        },
+        {
+          "name": "footer-block",
+          "instances": [
+            "div.footer-block"
+          ]
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

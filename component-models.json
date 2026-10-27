@@ -199,21 +199,27 @@
       {
         "component": "reference",
         "valueType": "string",
-        "name": "image",
+        "name": "media_image",
         "label": "Image",
         "multi": false
       },
       {
         "component": "text",
         "valueType": "string",
-        "name": "imageAlt",
+        "name": "media_imageAlt",
         "label": "Alt Text",
         "value": ""
       },
       {
+        "component": "aem-content",
+        "name": "media_video",
+        "label": "Video URL",
+        "description": "Plays when the image is clicked"
+      },
+      {
         "component": "richtext",
         "valueType": "string",
-        "name": "text",
+        "name": "content_text",
         "label": "Text",
         "value": "",
         "description": "Add a heading (H2) and a paragraph"
@@ -243,18 +249,10 @@
     "id": "creativity-item",
     "fields": [
       {
-        "component": "reference",
-        "valueType": "string",
-        "name": "image",
-        "label": "Thumbnail",
-        "multi": false
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "imageAlt",
-        "label": "Alt Text",
-        "value": ""
+        "component": "aem-content",
+        "name": "imageUrl",
+        "label": "Thumbnail URL",
+        "description": "Image URL, e.g. a Scene7 image"
       },
       {
         "component": "aem-content",
@@ -268,18 +266,10 @@
     "id": "footer-block",
     "fields": [
       {
-        "component": "reference",
-        "valueType": "string",
-        "name": "logo",
-        "label": "Logo",
-        "multi": false
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "logoAlt",
-        "label": "Alt Text",
-        "value": ""
+        "component": "aem-content",
+        "name": "logoUrl",
+        "label": "Logo URL",
+        "description": "Logo image URL, e.g. a Scene7 image"
       },
       {
         "component": "richtext",
@@ -350,18 +340,10 @@
     "id": "grid-card",
     "fields": [
       {
-        "component": "reference",
-        "valueType": "string",
-        "name": "image",
-        "label": "Image",
-        "multi": false
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "imageAlt",
-        "label": "Alt Text",
-        "value": ""
+        "component": "aem-content",
+        "name": "imageUrl",
+        "label": "Image URL",
+        "description": "Image URL, e.g. a Scene7 image"
       }
     ]
   },
@@ -381,24 +363,6 @@
         "name": "imageAlt",
         "label": "Alt Text",
         "value": ""
-      },
-      {
-        "component": "richtext",
-        "valueType": "string",
-        "name": "text",
-        "label": "Text",
-        "value": ""
-      }
-    ]
-  },
-  {
-    "id": "recipe-carousel",
-    "fields": [
-      {
-        "component": "aem-content",
-        "name": "index",
-        "label": "Recipe Index (JSON)",
-        "description": "Defaults to /query-index.json. Recipes are grouped by the page \"Recipe Category\" field"
       }
     ]
   },
@@ -419,7 +383,7 @@
         "name": "recipes",
         "label": "Recipes",
         "value": "",
-        "description": "Links or images of recipes for this category"
+        "description": "One image link per recipe. Only used when the recipe index (/query-index.json) is not available"
       }
     ]
   },
@@ -527,18 +491,10 @@
     "id": "world-card",
     "fields": [
       {
-        "component": "reference",
-        "valueType": "string",
-        "name": "image",
-        "label": "Image",
-        "multi": false
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "imageAlt",
-        "label": "Alt Text",
-        "value": ""
+        "component": "aem-content",
+        "name": "imageUrl",
+        "label": "Image URL",
+        "description": "Image URL, e.g. a Scene7 image"
       },
       {
         "component": "richtext",

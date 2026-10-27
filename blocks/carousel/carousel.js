@@ -318,11 +318,17 @@ export default function decorate(block) {
   const images = rows.map((row) => row.querySelector('.carousel-image'));
 
   images.forEach((image) => {
-    const link = image.closest('a');
+    // the video link either wraps the image or sits next to it in the same cell
+    const link = image.closest('a') || image.closest('.carousel-item > div')?.querySelector('a[href]');
     if (!link) return;
 
     const videoUrl = link.href;
-    link.replaceWith(image);
+    if (link.contains(image)) {
+      link.replaceWith(image);
+    } else {
+      (link.closest('p') || link).remove();
+      image.closest('picture')?.replaceWith(image);
+    }
 
     image.parentElement.classList.add('carousel-image-wrapper');
 

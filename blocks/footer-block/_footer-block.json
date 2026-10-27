@@ -37,18 +37,10 @@
       "id": "footer-block",
       "fields": [
         {
-          "component": "reference",
-          "valueType": "string",
-          "name": "logo",
-          "label": "Logo",
-          "multi": false
-        },
-        {
-          "component": "text",
-          "valueType": "string",
-          "name": "logoAlt",
-          "label": "Alt Text",
-          "value": ""
+          "component": "aem-content",
+          "name": "logoUrl",
+          "label": "Logo URL",
+          "description": "Logo image URL, e.g. a Scene7 image"
         },
         {
           "component": "richtext",
