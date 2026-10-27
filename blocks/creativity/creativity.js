@@ -1,3 +1,5 @@
+import { moveCellInstrumentation, moveInstrumentation } from '../../scripts/scripts.js';
+
 function normalizeYouTubeUrl(url) {
   if (!url) return '';
   const trimmed = url.trim();
@@ -285,13 +287,47 @@ function openVideoModal(videoUrl) {
   document.addEventListener('keydown', handleKeyDown);
 }
 
+// block-level fields in model order; each one is its own row before the items
+const CONFIG_FIELDS = [
+  ['heading', 'Get Creative With Us'],
+  ['subtitle', 'Take a look at our DIY Videos and upcycle waste'],
+  ['viewAllLabel', 'View All'],
+  ['viewLessLabel', 'View Less'],
+];
+
+const isImageUrl = (href) => /\.(png|jpe?g|gif|webp|avif|svg)(\?|$)|scene7\.com\/is\/image\//i.test(href || '');
+
+// a config row has a single cell with plain text (no media, no image link, no URL)
+function isConfigRow(row) {
+  if (row.children.length !== 1) return false;
+  const cell = row.firstElementChild;
+  if (cell.querySelector('picture, img')) return false;
+  const link = cell.querySelector('a[href]');
+  if (link && isImageUrl(link.href)) return false;
+  return !/^https?:\/\//.test(cell.textContent.trim());
+}
+
 export default function decorate(block) {
   block.classList.add('creativity');
 
   const rawRows = [...block.children];
+
+  // leading config rows (absent in older content, which then uses the defaults)
+  let configCount = 0;
+  while (configCount < CONFIG_FIELDS.length
+    && configCount < rawRows.length
+    && isConfigRow(rawRows[configCount])) {
+    configCount += 1;
+  }
+  const config = {};
+  CONFIG_FIELDS.forEach(([name, fallback], i) => {
+    const cell = i < configCount ? rawRows[i].firstElementChild : null;
+    config[name] = { cell, value: cell?.textContent.trim() || fallback };
+  });
+
   const items = [];
 
-  rawRows.forEach((row) => {
+  rawRows.slice(configCount).forEach((row) => {
     const cols = [...row.children];
     if (cols.length === 0) return;
 
@@ -330,8 +366,11 @@ export default function decorate(block) {
       }
     }
 
-    if (imgSrc || videoUrl) {
-      items.push({ imgSrc, videoUrl });
+    // keep empty but instrumented items, so authors can select and fill them in
+    if (imgSrc || videoUrl || row.hasAttribute('data-aue-resource')) {
+      items.push({
+        imgSrc, videoUrl, row, imgCol, videoCol,
+      });
     }
   });
 
@@ -353,7 +392,8 @@ export default function decorate(block) {
 
   const titleText = document.createElement('span');
   titleText.classList.add('creativity-title-text');
-  titleText.textContent = 'Get Creative With Us';
+  titleText.textContent = config.heading.value;
+  moveCellInstrumentation(config.heading.cell, titleText);
 
   const rightStar = document.createElement('span');
   rightStar.classList.add('creativity-heading-star');
@@ -364,7 +404,8 @@ export default function decorate(block) {
 
   const subtitle = document.createElement('p');
   subtitle.classList.add('creativity-subtitle');
-  subtitle.textContent = 'Take a look at our DIY Videos and upcycle waste';
+  subtitle.textContent = config.subtitle.value;
+  moveCellInstrumentation(config.subtitle.cell, subtitle);
 
   headerWrapper.append(heading, subtitle);
   mainContainer.append(headerWrapper);
@@ -392,8 +433,9 @@ export default function decorate(block) {
   const track = document.createElement('div');
   track.classList.add('creativity-track');
 
-  items.forEach((item, index) => {
+  const cards = items.map((item, index) => {
     const card = document.createElement('div');
+    moveInstrumentation(item.row, card);
     card.classList.add('creativity-card');
     card.setAttribute('role', 'button');
     card.setAttribute('tabindex', '0');
@@ -413,9 +455,12 @@ export default function decorate(block) {
       img.loading = 'lazy';
       cardMedia.append(img);
     }
+    // thumbnail field -> image (or the empty media area); video field -> play button
+    moveCellInstrumentation(item.imgCol, cardMedia.querySelector('img') || cardMedia);
 
     const playBtn = document.createElement('div');
     playBtn.classList.add('creativity-play-btn');
+    moveCellInstrumentation(item.videoCol, playBtn);
 
     const playIcon = document.createElement('span');
     playIcon.classList.add('creativity-play-icon');
@@ -439,6 +484,7 @@ export default function decorate(block) {
     });
 
     track.append(card);
+    return card;
   });
 
   viewport.append(track);
@@ -526,20 +572,35 @@ export default function decorate(block) {
   const viewAllBtn = document.createElement('button');
   viewAllBtn.classList.add('creativity-view-all-btn');
   viewAllBtn.type = 'button';
-  viewAllBtn.textContent = 'View All';
+  viewAllBtn.textContent = config.viewAllLabel.value;
+
+  // the button shows one of two labels; keep the instrumentation of the label
+  // it currently shows on the button and park the other one
+  const labelInstrumentation = {
+    all: document.createElement('span'),
+    less: document.createElement('span'),
+  };
+  moveCellInstrumentation(config.viewLessLabel.cell, labelInstrumentation.less);
+  moveCellInstrumentation(config.viewAllLabel.cell, viewAllBtn);
+  const swapLabelInstrumentation = (showing, hidden) => {
+    moveInstrumentation(viewAllBtn, labelInstrumentation[hidden]);
+    moveInstrumentation(labelInstrumentation[showing], viewAllBtn);
+  };
 
   viewAllBtn.addEventListener('click', () => {
     isViewAll = !isViewAll;
     if (isViewAll) {
       mainContainer.classList.add('creativity-view-all-active');
-      viewAllBtn.textContent = 'View Less';
+      viewAllBtn.textContent = config.viewLessLabel.value;
+      swapLabelInstrumentation('less', 'all');
       track.style.transform = 'none';
       prevBtn.classList.add('creativity-arrow-hidden');
       nextBtn.classList.add('creativity-arrow-hidden');
       dotsContainer.classList.add('creativity-dots-hidden');
     } else {
       mainContainer.classList.remove('creativity-view-all-active');
-      viewAllBtn.textContent = 'View All';
+      viewAllBtn.textContent = config.viewAllLabel.value;
+      swapLabelInstrumentation('all', 'less');
       prevBtn.classList.remove('creativity-arrow-hidden');
       nextBtn.classList.remove('creativity-arrow-hidden');
       dotsContainer.classList.remove('creativity-dots-hidden');
@@ -554,5 +615,17 @@ export default function decorate(block) {
   updateCarousel();
   window.addEventListener('resize', () => {
     updateCarousel();
+  });
+
+  // Universal Editor: selecting an item (or a field inside it) slides its page into view
+  block.addEventListener('aue:ui-select', (e) => {
+    if (!e.detail?.selected || isViewAll) return;
+    const index = cards.indexOf(e.target.closest('.creativity-card'));
+    if (index === -1) return;
+    const page = Math.floor(index / getCardsPerView());
+    if (page !== currentIndex) {
+      currentIndex = page;
+      updateCarousel();
+    }
   });
 }

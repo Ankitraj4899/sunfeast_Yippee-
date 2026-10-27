@@ -1,0 +1,11 @@
+{
+  "status": "success",
+  "url": "https://main--sunfeast-yippee--ankitraj4899.aem.live/recipes/noodle-pizza.plain.html",
+  "path": "recipes/noodle-pizza",
+  "timestamp": "2026-10-27T17:26:05.790Z",
+  "title": "",
+  "template": "recipe",
+  "blocks": [
+    "recipe-info"
+  ]
+}

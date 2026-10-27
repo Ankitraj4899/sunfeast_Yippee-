@@ -258,6 +258,7 @@
   border-radius: 38px;
   background: linear-gradient(180deg, #ffca34 0%, #ffa115 100%);
   padding: 0;
+
   /* box-shadow: 0 14px 28px rgb(0 0 0 / 12%); */
   transition: box-shadow 0.25s ease;
 }
@@ -776,7 +777,6 @@ a.recipe-card-image-wrap {
 }
 
 @media (width <=600px) {
-
   .section:has(.recipe-carousel),
   .section:has(.reciepe-carousel),
   .recipe-carousel,

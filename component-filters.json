@@ -21,6 +21,7 @@
       "grid-cards",
       "pasta",
       "recipe-carousel",
+      "recipe-info",
       "sunfeast-yippee-products",
       "treasure-hunt",
       "world",
@@ -82,6 +83,12 @@
     "id": "recipe-carousel",
     "components": [
       "recipe-category"
+    ]
+  },
+  {
+    "id": "recipe-info",
+    "components": [
+      "recipe-info-item"
     ]
   },
   {

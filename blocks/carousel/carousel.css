@@ -187,10 +187,19 @@
   border-radius: 22px;
 }
 
+/* the play button is centred on the image, whatever its size */
+.carousel .carousel-image-wrapper {
+  position: relative;
+}
+
+.carousel .carousel-image-wrapper .carousel-image {
+  display: block;
+}
+
 .video-button {
   position: absolute;
   top: 50%;
-  left: calc(50% - 400px);
+  left: 50%;
   transform: translate(-50%, -50%);
   width: 70px;
   height: 70px;
@@ -443,10 +452,6 @@
   .carousel-description {
     max-width: 520px;
   }
-
-  .video-button {
-    left: calc(50% - 310px);
-  }
 }
 
 @media (width <=1400px) {
@@ -460,10 +465,6 @@
 
   .carousel-description {
     max-width: 420px;
-  }
-
-  .video-button {
-    left: calc(50% - 240px);
   }
 }
 
@@ -479,10 +480,6 @@
   .carousel-description {
     max-width: 360px;
   }
-
-  .video-button {
-    left: calc(50% - 205px);
-  }
 }
 
 @media (width <=1000px) {
@@ -497,10 +494,6 @@
   .carousel-description {
     max-width: 300px;
   }
-
-  .video-button {
-    left: calc(50% - 166px);
-  }
 }
 
 @media (width <=900px) {
@@ -514,10 +507,6 @@
 
   .carousel-description {
     max-width: 240px;
-  }
-
-  .video-button {
-    left: calc(50% - 132px);
   }
 
   .next-button,
@@ -575,11 +564,6 @@
 
   .carousel-description {
     max-width: 100%;
-  }
-
-  .video-button {
-    top: 140px;
-    left: 50%;
   }
 
   .next-button {
@@ -641,9 +625,5 @@
 
   .carousel-image {
     width: 240px;
-  }
-
-  .video-button {
-    top: 140px;
   }
 }

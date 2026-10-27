@@ -1,8 +1,15 @@
 {
+  "type": "xwalk",
   "sites": {
     "sunfeast_Yippee-": {
       "previewOrg": "Ankitraj4899",
-      "previewSite": "sunfeast_Yippee-"
+      "previewSite": "sunfeast_Yippee-",
+      "libraryUrl": "https://main--sta-xwalk-boilerplate--aemysites.aem.page/tools/sidekick/library.json",
+      "aemSitePath": "/content/sunfeast_Yippee-",
+      "aemAssetsFolderPath": "/content/dam/sunfeast_Yippee-",
+      "aemSiteName": "sunfeast_Yippee-",
+      "aemSiteTitle": "Sunfeast YiPPee!",
+      "baseUrl": "https://main--sunfeast-yippee--ankitraj4899.aem.live/"
     }
   }
 }

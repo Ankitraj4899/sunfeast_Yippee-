@@ -37,10 +37,48 @@
       "id": "recipe-carousel",
       "fields": [
         {
+          "component": "text",
+          "valueType": "string",
+          "name": "heading",
+          "label": "Heading",
+          "value": "YiPPee! With a Twist!",
+          "description": "Main heading. The decorative stars are added automatically"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "subtitle",
+          "label": "Subtitle",
+          "value": "Explore all the new and exciting ways you can make your YiPPee! Noodles and Pasta"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "recipesHeading",
+          "label": "Recipes heading",
+          "value": "Recipes",
+          "description": "Heading above the recipe cards"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "viewAllLabel",
+          "label": "View all button label",
+          "value": "View all"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "viewLessLabel",
+          "label": "View less button label",
+          "value": "View less",
+          "description": "Shown on the button while all recipes are expanded"
+        },
+        {
           "component": "aem-content",
-          "name": "index",
-          "label": "Recipe Index (JSON)",
-          "description": "Defaults to /query-index.json. Recipes are grouped by the page \"Recipe Category\" field"
+          "name": "viewAllLink",
+          "label": "View all target",
+          "description": "Optional. When set, the View all button opens this page instead of expanding the recipe list"
         }
       ]
     },
@@ -53,7 +91,7 @@
           "name": "category",
           "label": "Category",
           "value": "",
-          "description": "Only used when the recipe index is not available"
+          "description": "Tab label. Recipes whose page \"category\" metadata matches this name are taken from the recipe index (/query-index.json)"
         },
         {
           "component": "richtext",
@@ -61,7 +99,15 @@
           "name": "recipes",
           "label": "Recipes",
           "value": "",
-          "description": "Links or images of recipes for this category"
+          "description": "One image link per recipe. Only used when the recipe index (/query-index.json) is not available"
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "icon",
+          "label": "Category icon",
+          "multi": false,
+          "description": "Optional. Defaults to the built-in icon for Appetizers, Breakfast, Snacks, Fancy Meal and Pasta"
         }
       ]
     }

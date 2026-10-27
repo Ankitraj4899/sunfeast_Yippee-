@@ -41,28 +41,31 @@
           "valueType": "string",
           "name": "title",
           "label": "Title",
-          "value": "",
-          "description": "Must start with # or contain \"YiPPeelicious\", e.g. #YiPPeelicious"
+          "value": "#YiPPeelicious",
+          "description": "Hashtag heading (the decorative stars are added automatically; a leading # is added if missing). Leave empty to use the default."
         },
         {
           "component": "text",
           "valueType": "string",
           "name": "subtitle",
           "label": "Subtitle",
-          "value": "",
-          "description": "Must contain \"upload\", \"moments\" or \"tag us\""
+          "value": "Upload your YiPPee! moments and tag us to get featured in our website",
+          "description": "Text below the title. Leave empty to use the default."
         },
         {
           "component": "aem-content",
           "name": "link",
-          "label": "Button Link"
+          "label": "Button Link",
+          "value": "#",
+          "description": "Target of the button below the grid. Leave empty to use #."
         },
         {
           "component": "text",
           "valueType": "string",
           "name": "linkText",
-          "label": "Button Text",
-          "value": ""
+          "label": "Button Label",
+          "value": "Join us",
+          "description": "Text of the button. Leave empty to use the default."
         }
       ]
     },
@@ -70,18 +73,10 @@
       "id": "grid-card",
       "fields": [
         {
-          "component": "reference",
-          "valueType": "string",
-          "name": "image",
-          "label": "Image",
-          "multi": false
-        },
-        {
-          "component": "text",
-          "valueType": "string",
-          "name": "imageAlt",
-          "label": "Alt Text",
-          "value": ""
+          "component": "aem-content",
+          "name": "imageUrl",
+          "label": "Image URL",
+          "description": "Image URL, e.g. a Scene7 image"
         }
       ]
     }

@@ -41,28 +41,31 @@
           "valueType": "string",
           "name": "title",
           "label": "Title",
-          "value": "",
-          "description": "Must contain \"Better World\" or \"Take a look\""
+          "value": "Take A Look At The Better World",
+          "description": "Heading above the cards (the decorative stars are added automatically). Leave empty to use the default."
         },
         {
           "component": "text",
           "valueType": "string",
           "name": "subtitle",
           "label": "Subtitle",
-          "value": "",
-          "description": "Must start with \"Learn how\""
+          "value": "Learn how we are driving a change through the",
+          "description": "Text shown above the button. Leave empty to use the default."
         },
         {
           "component": "aem-content",
           "name": "link",
-          "label": "Button Link"
+          "label": "Button Link",
+          "value": "https://www.sunfeastyippee.com/better-world",
+          "description": "Target of the button. Leave empty to use https://www.sunfeastyippee.com/better-world."
         },
         {
           "component": "text",
           "valueType": "string",
           "name": "linkText",
-          "label": "Button Text",
-          "value": ""
+          "label": "Button Label",
+          "value": "YiPPee! Better World",
+          "description": "Text of the button. Leave empty to use the default."
         }
       ]
     },
@@ -70,18 +73,10 @@
       "id": "world-card",
       "fields": [
         {
-          "component": "reference",
-          "valueType": "string",
-          "name": "image",
-          "label": "Image",
-          "multi": false
-        },
-        {
-          "component": "text",
-          "valueType": "string",
-          "name": "imageAlt",
-          "label": "Alt Text",
-          "value": ""
+          "component": "aem-content",
+          "name": "imageUrl",
+          "label": "Image URL",
+          "description": "Image URL, e.g. a Scene7 image"
         },
         {
           "component": "richtext",

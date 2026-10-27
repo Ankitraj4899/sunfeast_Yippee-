@@ -37,26 +37,35 @@
       "id": "footer-block",
       "fields": [
         {
-          "component": "reference",
-          "valueType": "string",
-          "name": "logo",
-          "label": "Logo",
-          "multi": false
+          "component": "aem-content",
+          "name": "logoUrl",
+          "label": "Logo URL",
+          "value": "https://s7ap1.scene7.com/is/image/itcportalprod/Yippee-itc-logo-updated-5?fmt=webp-alpha",
+          "description": "Logo image URL, e.g. a Scene7 image"
         },
         {
           "component": "text",
           "valueType": "string",
-          "name": "logoAlt",
-          "label": "Alt Text",
-          "value": ""
+          "name": "logoAltLabel",
+          "label": "Logo alt text",
+          "value": "Sunfeast YiPPee! & ITC Logo",
+          "description": "Text alternative for the logo image"
         },
         {
           "component": "richtext",
           "valueType": "string",
           "name": "copyright",
           "label": "Copyright",
-          "value": "",
-          "description": "Must contain the © symbol; may include an \"ITC Portal\" link"
+          "value": "<p><a href=\"https://www.itcportal.com\">ITC Portal</a></p><p>© 2026 YiPPee!. All Rights Reserved.</p>",
+          "description": "The first link (e.g. \"ITC Portal\") is shown before the copyright text; the text should contain the © symbol"
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "socials",
+          "label": "Social links",
+          "value": "<p><a href=\"https://www.instagram.com/sunfeast_yippee/\">Instagram</a></p><p><a href=\"https://www.facebook.com/SunfeastYiPPee/\">Facebook</a></p><p><a href=\"https://www.youtube.com/@SunfeastYiPPee\">YouTube</a></p><p><a href=\"https://twitter.com/SunfeastYiPPee\">X</a></p>",
+          "description": "One link per social network. Instagram, Facebook, YouTube and X/Twitter links get their icon automatically (by host name); the link text is used as the accessible label"
         }
       ]
     },

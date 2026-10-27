@@ -1,0 +1,11 @@
+{
+  "status": "success",
+  "url": "https://main--sunfeast-yippee--ankitraj4899.aem.live/recipes/noodle-sandwich.plain.html",
+  "path": "recipes/noodle-sandwich",
+  "timestamp": "2026-10-27T17:26:21.426Z",
+  "title": "",
+  "template": "recipe",
+  "blocks": [
+    "recipe-info"
+  ]
+}
