@@ -1,19 +1,23 @@
+import { moveInstrumentation } from '../../scripts/scripts.js';
+
 export default function decorate(block) {
+  // each authored row is a slide; the row element itself is kept, so its
+  // Universal Editor instrumentation stays in place
   const rows = [...block.children];
+  if (!rows.length) return;
 
   rows.forEach((row) => {
     row.classList.add('carousel-item');
 
-    const imageCell = row.children[0];
-    const contentCell = row.children[1];
+    const [imageCell, contentCell] = row.children;
 
-    const image = imageCell.querySelector('img');
-    const heading = contentCell.querySelector('h2');
-    const description = contentCell.querySelector('p');
+    const image = imageCell?.querySelector('img');
+    const heading = contentCell?.querySelector('h2');
+    const description = contentCell?.querySelector('p');
 
-    image.classList.add('carousel-image');
-    heading.classList.add('carousel-heading');
-    description.classList.add('carousel-description');
+    image?.classList.add('carousel-image');
+    heading?.classList.add('carousel-heading');
+    description?.classList.add('carousel-description');
   });
 
   function normalizeYouTubeUrl(url) {
@@ -315,7 +319,7 @@ export default function decorate(block) {
   star3.classList.add('star3');
   star4.classList.add('star4');
 
-  const images = rows.map((row) => row.querySelector('.carousel-image'));
+  const images = rows.map((row) => row.querySelector('.carousel-image')).filter(Boolean);
 
   images.forEach((image) => {
     // the video link either wraps the image or sits next to it in the same cell
@@ -323,19 +327,35 @@ export default function decorate(block) {
     if (!link) return;
 
     const videoUrl = link.href;
-    if (link.contains(image)) {
-      link.replaceWith(image);
-    } else {
-      (link.closest('p') || link).remove();
-      image.closest('picture')?.replaceWith(image);
-    }
-
-    image.parentElement.classList.add('carousel-image-wrapper');
+    // keep the instrumentation of the dropped <picture> on the image
+    const picture = image.closest('picture');
+    if (picture) moveInstrumentation(picture, image);
 
     const videoButton = document.createElement('button');
     videoButton.classList.add('video-button');
     videoButton.type = 'button';
     videoButton.innerHTML = '&#9654;';
+
+    if (link.contains(image)) {
+      link.replaceWith(image);
+    } else {
+      const linkWrapper = link.closest('p');
+      const removable = linkWrapper && !linkWrapper.contains(image) ? linkWrapper : link;
+      if (removable !== link) moveInstrumentation(removable, videoButton);
+      removable.remove();
+      picture?.replaceWith(image);
+    }
+    // the video field stays selectable through the play button
+    moveInstrumentation(link, videoButton);
+
+    // same DOM as the link-wrapped shape: the image sits directly in its cell
+    const imageWrapper = image.parentElement;
+    if (imageWrapper?.tagName === 'P' && imageWrapper.children.length === 1) {
+      moveInstrumentation(imageWrapper, image);
+      imageWrapper.replaceWith(image);
+    }
+
+    image.parentElement.classList.add('carousel-image-wrapper');
 
     image.parentElement.append(videoButton);
 
@@ -361,31 +381,28 @@ export default function decorate(block) {
 
   prevButton.classList.add('disable');
 
+  const showSlide = (index) => {
+    if (index < 0 || index > rows.length - 1) return;
+    rows[currentIndex].classList.remove('active');
+    currentIndex = index;
+    rows[currentIndex].classList.add('active');
+    prevButton.classList.toggle('disable', currentIndex === 0);
+    nextButton.classList.toggle('disable', currentIndex === rows.length - 1);
+  };
+
   nextButton.addEventListener('click', () => {
-    if (currentIndex < rows.length - 1) {
-      rows[currentIndex].classList.remove('active');
-      currentIndex += 1;
-      rows[currentIndex].classList.add('active');
-    }
-
-    if (currentIndex === rows.length - 1) {
-      nextButton.classList.add('disable');
-    }
-
-    prevButton.classList.remove('disable');
+    if (currentIndex < rows.length - 1) showSlide(currentIndex + 1);
   });
 
   prevButton.addEventListener('click', () => {
-    if (currentIndex > 0) {
-      rows[currentIndex].classList.remove('active');
-      currentIndex -= 1;
-      rows[currentIndex].classList.add('active');
-    }
+    if (currentIndex > 0) showSlide(currentIndex - 1);
+  });
 
-    if (currentIndex === 0) {
-      prevButton.classList.add('disable');
-    }
-
-    nextButton.classList.remove('disable');
+  // Universal Editor: selecting a slide (or anything inside it) shows that slide
+  block.addEventListener('aue:ui-select', (e) => {
+    if (!e.detail?.selected) return;
+    const slide = e.target.closest('.carousel-item');
+    const index = rows.indexOf(slide);
+    if (index !== -1) showSlide(index);
   });
 }

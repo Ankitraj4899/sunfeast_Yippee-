@@ -3,7 +3,11 @@
 
 // Source: <div class="yippee-intro">: row 1 = <h2> heading, row 2 = description
 // text (not always wrapped in <p>).
-// Model: heading (+ headingType, collapsed into the heading level) | description.
+// Model: heading (+ headingType, collapsed into the heading level) | description |
+// subheading. The live source has no subheading row, so the text visitors see on
+// the live page (hard-coded in the block JS) is emitted.
+
+const DEFAULT_SUBHEADING = 'Sunfeast Yippee – Quick & Tasty Instant Noodles & Pasta';
 
 function field(document, name, ...nodes) {
   const content = nodes.filter(Boolean);
@@ -19,6 +23,11 @@ function cell(document, ...fields) {
   const frag = document.createDocumentFragment();
   frag.append(...parts);
   return frag;
+}
+
+function text(document, value) {
+  const trimmed = (value || '').replace(/\s+/g, ' ').trim();
+  return trimmed ? document.createTextNode(trimmed) : null;
 }
 
 function richtext(document, el) {
@@ -40,13 +49,19 @@ export default function parse(element, { document }) {
     headingEl.textContent = heading.textContent.trim();
   }
 
-  // the description is the first row that is not the heading row
-  const descriptionRow = [...element.children].find((row) => !row.contains(heading));
+  // the description is the first row that is not the heading row; a newer
+  // source shape may carry the subheading in the row after it
+  const rows = [...element.children];
+  const descriptionIndex = rows.findIndex((row) => !row.contains(heading));
+  const descriptionRow = rows[descriptionIndex];
   const description = descriptionRow?.firstElementChild || descriptionRow;
+  const subheadingRow = descriptionIndex >= 0 ? rows[descriptionIndex + 1] : null;
+  const subheading = subheadingRow?.textContent.trim() || DEFAULT_SUBHEADING;
 
   const cells = [
     [cell(document, field(document, 'heading', headingEl))],
     [cell(document, field(document, 'description', ...richtext(document, description)))],
+    [cell(document, field(document, 'subheading', text(document, subheading)))],
   ];
   const block = WebImporter.Blocks.createBlock(document, { name: 'Yippee Intro', cells });
   element.replaceWith(block);

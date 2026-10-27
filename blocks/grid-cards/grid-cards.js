@@ -1,69 +1,93 @@
+import { moveInstrumentation, moveCellInstrumentation } from '../../scripts/scripts.js';
+
+const DEFAULT_TITLE = '#YiPPeelicious';
+const DEFAULT_SUBTITLE = 'Upload your YiPPee! moments and tag us to get featured in our website';
+const DEFAULT_CTA_LABEL = 'Join us';
+const DEFAULT_CTA_HREF = '#';
+
+// block-level field groups, in model order: title | subtitle | link (+ linkText)
+const CONFIG_FIELDS = 3;
+
+const IMAGE_URL = /scene7\.com|\.(jpe?g|gif|png|webp|svg|avif)(\?.*)?$/i;
+
+const normalize = (text) => (text || '').replace(/\s+/g, ' ').trim();
+
+/**
+ * A config row has a single cell, no image and no link to an image URL.
+ * Item rows (grid-card) hold an image (picture or link to the image URL).
+ */
+function isConfigRow(row) {
+  if (row.children.length > 1) return false;
+  if (row.querySelector('picture, img')) return false;
+  const links = [...row.querySelectorAll('a[href]')];
+  if (links.some((a) => IMAGE_URL.test(a.getAttribute('href')))) return false;
+  const text = row.textContent.trim();
+  return !(/^https?:\/\//.test(text) && IMAGE_URL.test(text));
+}
+
+function splitRows(block) {
+  const rows = [...block.children];
+  const config = [];
+  while (config.length < CONFIG_FIELDS && rows.length && isConfigRow(rows[0])) {
+    config.push(rows.shift());
+  }
+  return { config, items: rows };
+}
+
+const cellOf = (row) => (row ? row.firstElementChild || row : null);
+
+function formatTitle(text) {
+  const title = normalize(text).replace(/^[✧*\s]+|[✧*\s]+$/g, '');
+  if (!title || title === '#') return DEFAULT_TITLE;
+  return title.startsWith('#') ? title : `#${title}`;
+}
+
+function buildCard(row, index, variant) {
+  const card = document.createElement('div');
+  card.classList.add('grid-cards-card', variant);
+  moveInstrumentation(row, card);
+
+  const cell = cellOf(row);
+  const picture = row.querySelector('picture');
+  const img = row.querySelector('img');
+  const link = row.querySelector('a[href]');
+  const text = row.textContent.trim();
+
+  let imgSrc = '';
+  if (link && IMAGE_URL.test(link.href)) imgSrc = link.href;
+  else if (/^https?:\/\//.test(text) && IMAGE_URL.test(text)) imgSrc = text;
+
+  if (picture) {
+    // move the authored picture (keeps its own instrumentation)
+    card.append(picture);
+  } else if (img) {
+    card.append(img);
+  } else if (imgSrc) {
+    const image = document.createElement('img');
+    image.src = imgSrc;
+    image.alt = `YiPPeelicious moment ${index + 1}`;
+    image.loading = 'lazy';
+    moveCellInstrumentation(cell, image);
+    card.append(image);
+  } else {
+    moveCellInstrumentation(cell, card);
+  }
+  return card;
+}
+
 export default function decorate(block) {
   block.classList.add('grid-cards');
 
-  const rows = [...block.children];
-
-  let customTitle = null;
-  let customSubtitle = null;
-  let customCtaText = null;
-  let customCtaLink = null;
-  const items = [];
-
-  rows.forEach((row) => {
-    const cols = [...row.children];
-    if (cols.length === 0) return;
-
-    const pic = row.querySelector('picture');
-    const img = row.querySelector('img');
-    const link = row.querySelector('a');
-    const text = row.textContent.trim();
-
-    let imgSrc = '';
-    let itemLink = '';
-
-    if (pic) {
-      const foundImg = pic.querySelector('img');
-      imgSrc = foundImg ? (foundImg.currentSrc || foundImg.src) : '';
-    } else if (img) {
-      imgSrc = img.currentSrc || img.src;
-    } else if (link && (link.href.includes('scene7.com') || link.href.match(/\.(jpeg|jpg|gif|png|webp|svg)(\?.*)?$/i))) {
-      imgSrc = link.href;
-      itemLink = link.href;
-    } else if (text.startsWith('http://') || text.startsWith('https://')) {
-      if (text.includes('scene7.com') || text.match(/\.(jpeg|jpg|gif|png|webp|svg)(\?.*)?$/i)) {
-        imgSrc = text;
-      } else {
-        customCtaLink = text;
-      }
-    } else if (cols.length === 1) {
-      if (text.startsWith('#') || text.toLowerCase().includes('yippeelicious')) {
-        customTitle = text.replace(/^[✧*#\s]+|[✧*#\s]+$/g, '').trim();
-      } else if (text.toLowerCase().includes('upload') || text.toLowerCase().includes('moments') || text.toLowerCase().includes('tag us')) {
-        customSubtitle = text;
-      } else if (text.toLowerCase().includes('join')) {
-        customCtaText = text;
-      }
-    }
-
-    if (link && !imgSrc && link.href) {
-      customCtaLink = link.href;
-      if (!customCtaText) customCtaText = link.textContent.trim();
-    }
-
-    if (imgSrc || pic || img) {
-      items.push({
-        picElement: pic || (img ? img.parentElement : null),
-        imgSrc: imgSrc || (img ? img.src : ''),
-        link: itemLink || (link ? link.href : ''),
-      });
-    }
-  });
-
-  block.textContent = '';
+  const { config, items } = splitRows(block);
+  const [titleRow, subtitleRow, linkRow] = config;
+  const titleCell = cellOf(titleRow);
+  const subtitleCell = cellOf(subtitleRow);
+  const linkCell = cellOf(linkRow);
 
   const container = document.createElement('div');
   container.classList.add('grid-cards-container');
 
+  // Header
   const headerWrapper = document.createElement('div');
   headerWrapper.classList.add('grid-cards-header');
 
@@ -77,7 +101,8 @@ export default function decorate(block) {
 
   const titleText = document.createElement('span');
   titleText.classList.add('grid-cards-title-text');
-  titleText.textContent = customTitle ? `#${customTitle}` : '#YiPPeelicious';
+  titleText.textContent = formatTitle(titleCell?.textContent);
+  moveCellInstrumentation(titleCell, titleText);
 
   const rightStar = document.createElement('span');
   rightStar.classList.add('grid-cards-star');
@@ -88,11 +113,13 @@ export default function decorate(block) {
 
   const subtitle = document.createElement('p');
   subtitle.classList.add('grid-cards-subtitle');
-  subtitle.textContent = customSubtitle || 'Upload your YiPPee! moments and tag us to get featured in our website';
+  subtitle.textContent = normalize(subtitleCell?.textContent) || DEFAULT_SUBTITLE;
+  moveCellInstrumentation(subtitleCell, subtitle);
 
   headerWrapper.append(heading, subtitle);
   container.append(headerWrapper);
 
+  // Masonry grid: 4 columns, items distributed round-robin
   const grid = document.createElement('div');
   grid.classList.add('grid-cards-grid');
 
@@ -110,62 +137,51 @@ export default function decorate(block) {
     ['card-tall', 'card-short'],
   ];
 
-  if (items.length <= 8) {
-    items.forEach((item, index) => {
-      const colIdx = index % numCols;
-      const rowIdx = Math.floor(index / numCols);
-      const variant = (cardVariants[colIdx] && cardVariants[colIdx][rowIdx]) || (index % 2 === 0 ? 'card-short' : 'card-tall');
-
-      const card = document.createElement('div');
-      card.classList.add('grid-cards-card', variant);
-
-      if (item.picElement) {
-        card.append(item.picElement.cloneNode(true));
-      } else if (item.imgSrc) {
-        const image = document.createElement('img');
-        image.src = item.imgSrc;
-        image.alt = `YiPPeelicious moment ${index + 1}`;
-        image.loading = 'lazy';
-        card.append(image);
-      }
-
-      columns[colIdx].append(card);
-    });
-  } else {
-    items.forEach((item, index) => {
-      const colIdx = index % numCols;
-      const card = document.createElement('div');
-      const variant = index % 2 === 0 ? 'card-short' : 'card-tall';
-      card.classList.add('grid-cards-card', variant);
-
-      if (item.picElement) {
-        card.append(item.picElement.cloneNode(true));
-      } else if (item.imgSrc) {
-        const image = document.createElement('img');
-        image.src = item.imgSrc;
-        image.alt = `YiPPeelicious moment ${index + 1}`;
-        image.loading = 'lazy';
-        card.append(image);
-      }
-
-      columns[colIdx].append(card);
-    });
-  }
+  const itemRows = items.filter((row) => row.children.length > 0);
+  itemRows.forEach((row, index) => {
+    const colIdx = index % numCols;
+    const rowIdx = Math.floor(index / numCols);
+    const fallback = index % 2 === 0 ? 'card-short' : 'card-tall';
+    const variant = itemRows.length <= 8
+      ? (cardVariants[colIdx]?.[rowIdx] || fallback)
+      : fallback;
+    columns[colIdx].append(buildCard(row, index, variant));
+  });
 
   columns.forEach((col) => grid.append(col));
   container.append(grid);
+
+  // CTA
+  let ctaHref = DEFAULT_CTA_HREF;
+  let ctaLabel = '';
+  if (linkCell) {
+    const authoredLink = linkCell.querySelector('a[href]');
+    const text = normalize(linkCell.textContent);
+    if (authoredLink) {
+      ctaHref = authoredLink.getAttribute('href') || DEFAULT_CTA_HREF;
+      const label = normalize(authoredLink.textContent);
+      // a link without linkText renders its URL as text: use the default label then
+      if (label && label !== ctaHref && label !== authoredLink.href) ctaLabel = label;
+    } else if (/^(https?:\/\/|\/|#)/.test(text)) {
+      ctaHref = text;
+    } else {
+      ctaLabel = text;
+    }
+  }
+  ctaLabel = ctaLabel || DEFAULT_CTA_LABEL;
 
   const ctaWrapper = document.createElement('div');
   ctaWrapper.classList.add('grid-cards-cta-wrapper');
 
   const ctaBtn = document.createElement('a');
   ctaBtn.classList.add('grid-cards-btn');
-  ctaBtn.textContent = customCtaText || 'Join us';
-  ctaBtn.href = customCtaLink || '#';
-  ctaBtn.setAttribute('aria-label', customCtaText || 'Join us');
+  ctaBtn.textContent = ctaLabel;
+  ctaBtn.href = ctaHref;
+  ctaBtn.setAttribute('aria-label', ctaLabel);
+  moveCellInstrumentation(linkCell, ctaBtn);
 
   ctaWrapper.append(ctaBtn);
   container.append(ctaWrapper);
 
-  block.append(container);
+  block.replaceChildren(container);
 }

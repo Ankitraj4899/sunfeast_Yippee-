@@ -9,7 +9,14 @@
             "resourceType": "core/franklin/components/block/v1/block",
             "template": {
               "name": "Cards",
-              "filter": "cards"
+              "model": "cards",
+              "filter": "cards",
+              "heading": "YiPPee!'s Noodle Range",
+              "tabOneLabel": "Instant Noodles",
+              "tabTwoLabel": "Cup Noodles",
+              "firstTabCount": 4,
+              "viewAllLabel": "View All",
+              "viewLessLabel": "View Less"
             }
           }
         }
@@ -33,6 +40,57 @@
   ],
   "models": [
     {
+      "id": "cards",
+      "fields": [
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "heading",
+          "label": "Heading",
+          "description": "Shown between the two stars above the tabs",
+          "value": "YiPPee!'s Noodle Range"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "tabOneLabel",
+          "label": "First Tab Label",
+          "value": "Instant Noodles"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "tabTwoLabel",
+          "label": "Second Tab Label",
+          "value": "Cup Noodles"
+        },
+        {
+          "component": "text",
+          "valueType": "number",
+          "name": "firstTabCount",
+          "label": "Cards in First Tab",
+          "description": "How many cards (from the top) belong to the first tab; the remaining cards belong to the second tab",
+          "value": 4
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "viewAllLabel",
+          "label": "View All Button Label",
+          "description": "Label of the button that expands the first tab to show all its cards",
+          "value": "View All"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "viewLessLabel",
+          "label": "View Less Button Label",
+          "description": "Label of the same button while all cards are shown",
+          "value": "View Less"
+        }
+      ]
+    },
+    {
       "id": "card",
       "fields": [
         {
@@ -41,7 +99,7 @@
           "name": "image",
           "label": "Image",
           "multi": false,
-          "description": "The first 4 cards show under \"Instant Noodles\", the next 2 under \"Cup Noodles\""
+          "description": "Cards belong to the first tab up to the block's \"Cards in First Tab\" count; the rest belong to the second tab"
         },
         {
           "component": "text",

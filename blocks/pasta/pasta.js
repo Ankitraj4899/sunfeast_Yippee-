@@ -1,6 +1,52 @@
-export default function decorate(block) {
-  const rows = [...block.children];
+import { moveCellInstrumentation } from '../../scripts/scripts.js';
 
+// Block-level fields, in model order (one row each, before the item rows).
+const CONFIG_FIELDS = ['heading', 'viewMoreLabel', 'viewLessLabel'];
+
+// Today's texts: used when a field is empty or its row is missing (older content).
+const DEFAULTS = {
+  heading: "YiPPee!'s Pasta Range",
+  viewMoreLabel: 'View More',
+  viewLessLabel: 'View Less',
+};
+
+const IMAGE_URL = /\.(png|jpe?g|gif|webp|svg|avif)([?#]|$)/i;
+
+/** A config row has a single cell without any image (item rows carry a picture). */
+function isConfigRow(row) {
+  if (row.hasAttribute('data-aue-resource')) return false;
+  if (row.children.length !== 1) return false;
+  if (row.querySelector('picture, img')) return false;
+  const link = row.querySelector('a[href]');
+  if (link && IMAGE_URL.test(link.getAttribute('href'))) return false;
+  return true;
+}
+
+function splitRows(block) {
+  const rows = [...block.children];
+  let count = 0;
+  while (count < CONFIG_FIELDS.length && count < rows.length && isConfigRow(rows[count])) {
+    count += 1;
+  }
+  const config = {};
+  rows.slice(0, count).forEach((row, index) => {
+    config[CONFIG_FIELDS[index]] = row.firstElementChild;
+  });
+  return { config, rows: rows.slice(count) };
+}
+
+/** Creates a label element showing a config value, carrying the cell's instrumentation. */
+function label(tag, cell, fallback) {
+  const el = document.createElement(tag);
+  el.textContent = (cell ? cell.textContent.trim() : '') || fallback;
+  moveCellInstrumentation(cell, el);
+  return el;
+}
+
+export default function decorate(block) {
+  const { config, rows } = splitRows(block);
+
+  // Each authored row becomes its card once; rendering only toggles visibility.
   const items = rows.map((row) => {
     const image = row.querySelector('img');
     if (image) {
@@ -15,8 +61,7 @@ export default function decorate(block) {
   const leftStar = document.createElement('span');
   leftStar.classList.add('pasta-heading-star');
   leftStar.textContent = '✧';
-  const title = document.createElement('span');
-  title.textContent = "YiPPee!'s Pasta Range";
+  const title = label('span', config.heading, DEFAULTS.heading);
   const rightStar = document.createElement('span');
   rightStar.classList.add('pasta-heading-star');
   rightStar.textContent = '✧';
@@ -76,11 +121,17 @@ export default function decorate(block) {
 
   const track = document.createElement('div');
   track.classList.add('pasta-track');
+  track.append(...items);
 
   const viewAllButton = document.createElement('button');
   viewAllButton.classList.add('pasta-view-all');
   viewAllButton.type = 'button';
-  viewAllButton.textContent = 'View More';
+
+  const viewMoreLabel = label('span', config.viewMoreLabel, DEFAULTS.viewMoreLabel);
+  viewMoreLabel.classList.add('pasta-view-more-label');
+  const viewLessLabel = label('span', config.viewLessLabel, DEFAULTS.viewLessLabel);
+  viewLessLabel.classList.add('pasta-view-less-label');
+  viewAllButton.append(viewMoreLabel, viewLessLabel);
 
   let currentIndex = 0;
   let isViewAll = false;
@@ -93,7 +144,7 @@ export default function decorate(block) {
     }
 
     if (isMobile()) {
-      return [items[currentIndex]];
+      return items.slice(currentIndex, currentIndex + 1);
     }
 
     if (currentIndex === 0) {
@@ -104,12 +155,10 @@ export default function decorate(block) {
   };
 
   const render = () => {
-    track.textContent = '';
-
     const itemsToShow = getItemsToShow();
 
-    itemsToShow.forEach((item) => {
-      track.append(item.cloneNode(true));
+    items.forEach((item) => {
+      item.hidden = !itemsToShow.includes(item);
     });
 
     track.classList.toggle(
@@ -142,7 +191,8 @@ export default function decorate(block) {
 
     nextButton.hidden = isViewAll || items.length <= 3;
 
-    viewAllButton.textContent = isViewAll ? 'View Less' : 'View More';
+    viewMoreLabel.hidden = isViewAll;
+    viewLessLabel.hidden = !isViewAll;
   };
 
   previousButton.addEventListener('click', () => {
@@ -198,6 +248,33 @@ export default function decorate(block) {
       currentIndex = items.length - 1;
     }
 
+    render();
+  });
+
+  // Universal Editor: reveal whatever the author selects.
+  block.addEventListener('aue:ui-select', (e) => {
+    if (!e.detail?.selected) return;
+    const { target } = e;
+
+    if (target.closest('.pasta-view-less-label')) {
+      if (!isViewAll) {
+        isViewAll = true;
+        currentIndex = 0;
+        render();
+      }
+      return;
+    }
+
+    const item = target.closest('.pasta-card');
+    if (!item || !item.hidden) return;
+    const position = items.indexOf(item);
+    if (position < 0) return;
+
+    if (isMobile()) {
+      currentIndex = position;
+    } else {
+      currentIndex = position < 3 ? 0 : 3;
+    }
     render();
   });
 

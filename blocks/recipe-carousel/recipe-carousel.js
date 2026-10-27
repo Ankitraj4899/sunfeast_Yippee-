@@ -1,3 +1,5 @@
+import { moveInstrumentation, moveCellInstrumentation } from '../../scripts/scripts.js';
+
 const DEFAULT_ICONS = {
   appetizers: '/Appetizers.webp',
   breakfast: '/breakfast.webp',
@@ -446,8 +448,153 @@ if (!window.recipePopupListenerAttached) {
   window.recipePopupListenerAttached = true;
 }
 
-export default async function decorate(block) {
+const DEFAULT_CATEGORIES = ['Appetizers', 'Breakfast', 'Snacks', 'Fancy Meal', 'Pasta'];
+
+// Block-level fields, in model order: one leading row (one cell) each.
+const CONFIG_FIELDS = ['heading', 'subtitle', 'recipesHeading', 'viewAllLabel', 'viewLessLabel', 'viewAllLink'];
+
+const DEFAULT_TEXTS = {
+  heading: 'YiPPee! With a Twist!',
+  subtitle: 'Explore all the new and exciting ways you can make your YiPPee! Noodles and Pasta',
+  recipesHeading: 'Recipes',
+  viewAllLabel: 'View all',
+  viewLessLabel: 'View less',
+};
+
+const IMAGE_URL = /\.(png|jpe?g|gif|webp|svg|avif)([?#]|$)|scene7\.com\/is\/image/i;
+
+function isConfigRow(row) {
+  if (row.children.length !== 1) return false;
+  if (row.querySelector('picture, img')) return false;
+  return ![...row.querySelectorAll('a[href]')].some((a) => IMAGE_URL.test(a.getAttribute('href')));
+}
+
+/**
+ * Splits the block rows into block-level field cells and category item rows.
+ * Content authored before the block had fields (the live site) has no config rows.
+ */
+function readRows(block) {
   const rows = [...block.children];
+  const config = {};
+  let count = 0;
+  while (count < CONFIG_FIELDS.length && count < rows.length && isConfigRow(rows[count])) {
+    config[CONFIG_FIELDS[count]] = rows[count].firstElementChild;
+    count += 1;
+  }
+  return {
+    config,
+    itemRows: rows.slice(count).filter((row) => row.children.length > 0),
+  };
+}
+
+function cellText(cellEl) {
+  return cellEl?.textContent.trim() || '';
+}
+
+function cellHref(cellEl) {
+  if (!cellEl) return '';
+  const a = cellEl.querySelector('a[href]');
+  if (a) return a.getAttribute('href');
+  const text = cellText(cellEl);
+  return /^(https?:\/\/|\/)\S+$/.test(text) ? text : '';
+}
+
+function recipesFromIndex(indexRecipes, key) {
+  const matching = indexRecipes.filter((r) => {
+    const rCat = (r.category || '').toLowerCase().trim();
+    return rCat === key || rCat.includes(key) || key.includes(rCat);
+  });
+
+  return matching.map((r, idx) => {
+    const cleanTitle = (r.title || 'YiPPee Recipe')
+      .replace(/\s*\|\s*Sunfeast\s*YiPPee!?/i, '')
+      .replace(/\s*(with\s+)?(Yippee!?\s*Noodles|Sunfeast\s*YiPPee!?)/gi, '')
+      .trim();
+    return {
+      imageUrl: resolveDynamicRecipeImage(r, idx),
+      title: cleanTitle,
+      duration: r.cookTime || r.cook_time || r.duration
+        || COOKING_TIMES[idx % COOKING_TIMES.length],
+      path: r.path || '',
+      description: r.description || '',
+    };
+  });
+}
+
+// Recipes authored in the category's "recipes" cell (image links or images).
+function recipesFromCell(contentCell, categoryName) {
+  const items = [];
+
+  if (contentCell) {
+    const links = [...contentCell.querySelectorAll('a')];
+    const images = [...contentCell.querySelectorAll('img')];
+
+    if (links.length > 0) {
+      links.forEach((link, idx) => {
+        const imageUrl = link.href;
+        if (!imageUrl) return;
+
+        items.push({
+          imageUrl,
+          title: getTitle(link.textContent, categoryName, idx),
+          duration: COOKING_TIMES[idx % COOKING_TIMES.length],
+        });
+      });
+    } else if (images.length > 0) {
+      images.forEach((img, idx) => {
+        if (!img.src) return;
+
+        items.push({
+          imageUrl: img.src,
+          title: getTitle(img.alt, categoryName, idx),
+          duration: COOKING_TIMES[idx % COOKING_TIMES.length],
+        });
+      });
+    }
+  }
+
+  if (items.length === 0) {
+    const defaultUrls = [
+      `${S7_BASE}/Yippee!%20Scotch%20Eggs-thumb?fmt=webp-alpha&wid=340&fit=fit,1`,
+      `${S7_BASE}/YiPPee!%20Pockets-1?fmt=webp-alpha&wid=340&fit=fit,1`,
+      `${S7_BASE}/02_Yippee-Finger-Fries?fmt=webp-alpha&wid=340&fit=fit,1`,
+    ];
+
+    defaultUrls.forEach((imgUrl, idx) => {
+      items.push({
+        imageUrl: imgUrl,
+        title: getTitle('', categoryName, idx),
+        duration: COOKING_TIMES[idx % COOKING_TIMES.length],
+      });
+    });
+  }
+
+  return items;
+}
+
+// Placeholder cards for a category the index has no recipes for
+function placeholderRecipes(catName) {
+  const sampleList = SAMPLE_TITLES[catName] || ['Delicious Recipe 1', 'Delicious Recipe 2', 'Delicious Recipe 3'];
+  const sampleImgs = [
+    `${S7_BASE}/Yippee!%20Scotch%20Eggs-thumb?fmt=webp-alpha&wid=340&fit=fit,1`,
+    `${S7_BASE}/YiPPee!%20Pockets-1?fmt=webp-alpha&wid=340&fit=fit,1`,
+    `${S7_BASE}/02_Yippee-Finger-Fries?fmt=webp-alpha&wid=340&fit=fit,1`,
+  ];
+  return sampleList.slice(0, 3).map((title, idx) => ({
+    imageUrl: sampleImgs[idx % sampleImgs.length],
+    title,
+    duration: COOKING_TIMES[idx % COOKING_TIMES.length],
+    path: '',
+  }));
+}
+
+export default async function decorate(block) {
+  const { config, itemRows } = readRows(block);
+  const texts = {};
+  Object.keys(DEFAULT_TEXTS).forEach((name) => {
+    texts[name] = cellText(config[name]) || DEFAULT_TEXTS[name];
+  });
+  const viewAllHref = cellHref(config.viewAllLink);
   const categoriesData = [];
 
   // 1. Check if authored link specifies an index or default to /query-index.json
@@ -469,163 +616,100 @@ export default async function decorate(block) {
     // Fallback gracefully
   }
 
-  // 2. If index recipes are available, dynamically group by category
-  if (indexRecipes.length > 0) {
-    const defaultCategories = ['Appetizers', 'Breakfast', 'Snacks', 'Fancy Meal', 'Pasta'];
-    const extraCategories = [];
+  const indexLoaded = indexRecipes.length > 0;
 
+  // 2. Tabs: authored category items in authored order (label + icon), or the
+  // default categories when there are none.
+  const categoryDefs = itemRows.length > 0
+    ? itemRows.map((row) => {
+      const cells = [...row.children];
+      const [categoryCell, recipesCell, iconCell] = cells;
+      const categoryName = categoryCell.textContent.trim() || 'Appetizers';
+      const key = categoryName.toLowerCase().trim();
+      return {
+        category: categoryName,
+        icon: iconCell?.querySelector('a[href]')?.href || DEFAULT_ICONS[key] || '/Appetizers.webp',
+        iconImg: iconCell?.querySelector('img') || null,
+        row,
+        categoryCell,
+        recipesCell: recipesCell || categoryCell,
+      };
+    })
+    : [];
+
+  if (indexLoaded) {
+    // 3. Index available: recipes per category from the index, placeholders when the
+    // index has none; extra index categories are appended after the listed ones.
+    const listed = categoryDefs.length > 0
+      ? categoryDefs
+      : DEFAULT_CATEGORIES.map((cat) => ({
+        category: cat,
+        icon: DEFAULT_ICONS[cat.toLowerCase()] || '/Appetizers.webp',
+      }));
+
+    const extraCategories = [];
     indexRecipes.forEach((r) => {
       const cat = (r.category || '').trim();
-      if (cat && !defaultCategories.some((dc) => dc.toLowerCase() === cat.toLowerCase())) {
+      if (cat && !listed.some((c) => c.category.toLowerCase() === cat.toLowerCase())) {
         if (!extraCategories.some((ec) => ec.toLowerCase() === cat.toLowerCase())) {
           extraCategories.push(cat);
         }
       }
     });
 
-    const allCategories = [...defaultCategories, ...extraCategories];
-
-    allCategories.forEach((catName) => {
-      const key = catName.toLowerCase().trim();
-      const categoryIcon = DEFAULT_ICONS[key] || '/Appetizers.webp';
-
-      const matching = indexRecipes.filter((r) => {
-        const rCat = (r.category || '').toLowerCase().trim();
-        return rCat === key || rCat.includes(key) || key.includes(rCat);
-      });
-
-      const items = matching.map((r, idx) => {
-        const cleanTitle = (r.title || 'YiPPee Recipe')
-          .replace(/\s*\|\s*Sunfeast\s*YiPPee!?/i, '')
-          .replace(/\s*(with\s+)?(Yippee!?\s*Noodles|Sunfeast\s*YiPPee!?)/gi, '')
-          .trim();
-        return {
-          imageUrl: resolveDynamicRecipeImage(r, idx),
-          title: cleanTitle,
-          duration: r.cookTime || r.cook_time || r.duration
-            || COOKING_TIMES[idx % COOKING_TIMES.length],
-          path: r.path || '',
-          description: r.description || '',
-        };
-      });
-
+    listed.forEach((catData) => {
+      const key = catData.category.toLowerCase().trim();
+      let recipes = recipesFromIndex(indexRecipes, key);
       // If category has no items in index, supply placeholders so tab remains interactive
-      if (items.length === 0 && defaultCategories.includes(catName)) {
-        const sampleList = SAMPLE_TITLES[catName] || ['Delicious Recipe 1', 'Delicious Recipe 2', 'Delicious Recipe 3'];
-        const sampleImgs = [
-          `${S7_BASE}/Yippee!%20Scotch%20Eggs-thumb?fmt=webp-alpha&wid=340&fit=fit,1`,
-          `${S7_BASE}/YiPPee!%20Pockets-1?fmt=webp-alpha&wid=340&fit=fit,1`,
-          `${S7_BASE}/02_Yippee-Finger-Fries?fmt=webp-alpha&wid=340&fit=fit,1`,
-        ];
-        sampleList.slice(0, 3).forEach((title, idx) => {
-          items.push({
-            imageUrl: sampleImgs[idx % sampleImgs.length],
-            title,
-            duration: COOKING_TIMES[idx % COOKING_TIMES.length],
-            path: '',
-          });
-        });
-      }
+      if (recipes.length === 0) recipes = placeholderRecipes(catData.category);
+      categoriesData.push({ ...catData, recipes });
+    });
 
-      if (items.length > 0) {
+    extraCategories.forEach((catName) => {
+      const key = catName.toLowerCase().trim();
+      const recipes = recipesFromIndex(indexRecipes, key);
+      if (recipes.length > 0) {
         categoriesData.push({
           category: catName,
-          icon: categoryIcon,
-          recipes: items,
+          icon: DEFAULT_ICONS[key] || '/Appetizers.webp',
+          recipes,
         });
       }
+    });
+  } else if (categoryDefs.length > 0) {
+    // 4. Index unavailable: recipes from the authored recipe links
+    categoryDefs.forEach((catData) => {
+      categoriesData.push({
+        ...catData,
+        recipes: recipesFromCell(catData.recipesCell, catData.category),
+      });
     });
   } else {
-    // 3. Fallback to authored static rows
-    rows.forEach((row) => {
-      const cells = [...row.children];
-      if (cells.length === 0) return;
-
-      const categoryName = cells[0].textContent.trim() || 'Appetizers';
-      const key = categoryName.toLowerCase().trim();
-      const categoryIcon = DEFAULT_ICONS[key] || '/Appetizers.webp';
-
-      const items = [];
-      const contentCell = cells[1] || cells[0];
-
-      if (contentCell) {
-        const links = [...contentCell.querySelectorAll('a')];
-        const images = [...contentCell.querySelectorAll('img')];
-
-        if (links.length > 0) {
-          links.forEach((link, idx) => {
-            const imageUrl = link.href;
-            if (!imageUrl) return;
-
-            items.push({
-              imageUrl,
-              title: getTitle(link.textContent, categoryName, idx),
-              duration: COOKING_TIMES[idx % COOKING_TIMES.length],
-            });
-          });
-        } else if (images.length > 0) {
-          images.forEach((img, idx) => {
-            if (!img.src) return;
-
-            items.push({
-              imageUrl: img.src,
-              title: getTitle(img.alt, categoryName, idx),
-              duration: COOKING_TIMES[idx % COOKING_TIMES.length],
-            });
-          });
-        }
-      }
-
-      if (items.length === 0) {
-        const defaultUrls = [
-          `${S7_BASE}/Yippee!%20Scotch%20Eggs-thumb?fmt=webp-alpha&wid=340&fit=fit,1`,
-          `${S7_BASE}/YiPPee!%20Pockets-1?fmt=webp-alpha&wid=340&fit=fit,1`,
-          `${S7_BASE}/02_Yippee-Finger-Fries?fmt=webp-alpha&wid=340&fit=fit,1`,
-        ];
-
-        defaultUrls.forEach((imgUrl, idx) => {
-          items.push({
-            imageUrl: imgUrl,
-            title: getTitle('', categoryName, idx),
-            duration: COOKING_TIMES[idx % COOKING_TIMES.length],
-          });
-        });
-      }
-
+    // 5. No index and no authored categories
+    DEFAULT_CATEGORIES.forEach((cat) => {
+      const key = cat.toLowerCase();
       categoriesData.push({
-        category: categoryName,
-        icon: categoryIcon,
-        recipes: items,
+        category: cat,
+        icon: DEFAULT_ICONS[key] || '/Appetizers.webp',
+        recipes: [
+          {
+            imageUrl: `${S7_BASE}/Yippee!%20Scotch%20Eggs-thumb?fmt=webp-alpha&wid=340&fit=fit,1`,
+            title: 'Scotch Eggs with Noodles...',
+            duration: '15 Mins',
+          },
+          {
+            imageUrl: `${S7_BASE}/YiPPee!%20Pockets-1?fmt=webp-alpha&wid=340&fit=fit,1`,
+            title: 'Noodles Lollipop Recipe',
+            duration: '15 Mins',
+          },
+          {
+            imageUrl: `${S7_BASE}/02_Yippee-Finger-Fries?fmt=webp-alpha&wid=340&fit=fit,1`,
+            title: 'Finger Fries Recipe with...',
+            duration: '20 Mins',
+          },
+        ],
       });
     });
-
-    if (categoriesData.length === 0) {
-      const list = ['Appetizers', 'Breakfast', 'Snacks', 'Fancy Meal', 'Pasta'];
-      list.forEach((cat) => {
-        const key = cat.toLowerCase();
-        categoriesData.push({
-          category: cat,
-          icon: DEFAULT_ICONS[key] || '/Appetizers.webp',
-          recipes: [
-            {
-              imageUrl: `${S7_BASE}/Yippee!%20Scotch%20Eggs-thumb?fmt=webp-alpha&wid=340&fit=fit,1`,
-              title: 'Scotch Eggs with Noodles...',
-              duration: '15 Mins',
-            },
-            {
-              imageUrl: `${S7_BASE}/YiPPee!%20Pockets-1?fmt=webp-alpha&wid=340&fit=fit,1`,
-              title: 'Noodles Lollipop Recipe',
-              duration: '15 Mins',
-            },
-            {
-              imageUrl: `${S7_BASE}/02_Yippee-Finger-Fries?fmt=webp-alpha&wid=340&fit=fit,1`,
-              title: 'Finger Fries Recipe with...',
-              duration: '20 Mins',
-            },
-          ],
-        });
-      });
-    }
   }
 
   block.textContent = '';
@@ -641,11 +725,19 @@ export default async function decorate(block) {
 
   const heading = document.createElement('h2');
   heading.className = 'recipe-main-title';
-  heading.innerHTML = '<span class="title-sparkle">✧</span> YiPPee! With a Twist! <span class="title-sparkle">✧</span>';
+  const headingText = document.createElement('span');
+  headingText.textContent = texts.heading;
+  moveCellInstrumentation(config.heading, headingText);
+  heading.append(document.createElement('span'), ' ', headingText, ' ', document.createElement('span'));
+  [heading.firstElementChild, heading.lastElementChild].forEach((sparkle) => {
+    sparkle.className = 'title-sparkle';
+    sparkle.textContent = '✧';
+  });
 
   const subtitle = document.createElement('p');
   subtitle.className = 'recipe-main-subtitle';
-  subtitle.textContent = 'Explore all the new and exciting ways you can make your YiPPee! Noodles and Pasta';
+  subtitle.textContent = texts.subtitle;
+  moveCellInstrumentation(config.subtitle, subtitle);
 
   header.append(wave, heading, subtitle);
 
@@ -657,7 +749,8 @@ export default async function decorate(block) {
 
   const sectionTitle = document.createElement('h3');
   sectionTitle.className = 'recipe-section-title';
-  sectionTitle.textContent = 'Recipes';
+  sectionTitle.textContent = texts.recipesHeading;
+  moveCellInstrumentation(config.recipesHeading, sectionTitle);
 
   const carousel = document.createElement('div');
   carousel.className = 'recipe-carousel-stage';
@@ -689,7 +782,8 @@ export default async function decorate(block) {
   const viewAllBtn = document.createElement('button');
   viewAllBtn.className = 'recipe-view-all';
   viewAllBtn.type = 'button';
-  viewAllBtn.textContent = 'View all';
+  viewAllBtn.textContent = texts.viewAllLabel;
+  moveCellInstrumentation(config.viewAllLabel, viewAllBtn);
 
   section.append(sectionTitle, carousel, pagination, viewAllBtn);
   container.append(header, nav, section);
@@ -872,6 +966,19 @@ export default async function decorate(block) {
     updateTrack();
   };
 
+  const activateTab = (idx) => {
+    if (activeCatIndex === idx) return;
+
+    activeCatIndex = idx;
+    currentIndex = 0;
+
+    [...nav.children].forEach((t, i) => {
+      t.classList.toggle('active', i === activeCatIndex);
+    });
+
+    renderCards();
+  };
+
   const renderTabs = () => {
     nav.innerHTML = '';
 
@@ -884,34 +991,35 @@ export default async function decorate(block) {
       const iconWrap = document.createElement('div');
       iconWrap.className = 'recipe-category-icon-wrap';
 
-      const icon = document.createElement('img');
-      icon.className = 'recipe-category-icon';
-      icon.src = catData.icon;
-      icon.alt = catData.category;
+      let icon;
+      if (catData.iconImg) {
+        // authored icon: move the image so it keeps its own instrumentation
+        icon = catData.iconImg;
+        icon.removeAttribute('width');
+        icon.removeAttribute('height');
+        if (!icon.alt) icon.alt = catData.category;
+        icon.className = 'recipe-category-icon';
+      } else {
+        icon = document.createElement('img');
+        icon.className = 'recipe-category-icon';
+        icon.src = catData.icon;
+        icon.alt = catData.category;
+      }
 
       iconWrap.append(icon);
 
       const label = document.createElement('span');
       label.className = 'recipe-category-name';
       label.textContent = catData.category;
+      if (catData.categoryCell) moveCellInstrumentation(catData.categoryCell, label);
+      if (catData.row) moveInstrumentation(catData.row, tab);
 
       const line = document.createElement('span');
       line.className = 'recipe-category-indicator';
 
       tab.append(iconWrap, label, line);
 
-      tab.addEventListener('click', () => {
-        if (activeCatIndex === idx) return;
-
-        activeCatIndex = idx;
-        currentIndex = 0;
-
-        [...nav.children].forEach((t, i) => {
-          t.classList.toggle('active', i === activeCatIndex);
-        });
-
-        renderCards();
-      });
+      tab.addEventListener('click', () => activateTab(idx));
 
       nav.append(tab);
     });
@@ -932,6 +1040,10 @@ export default async function decorate(block) {
   });
 
   viewAllBtn.addEventListener('click', () => {
+    if (viewAllHref) {
+      window.location.href = viewAllHref;
+      return;
+    }
     isViewAll = !isViewAll;
     block.classList.toggle('is-view-all', isViewAll);
 
@@ -940,12 +1052,12 @@ export default async function decorate(block) {
       prevBtn.style.display = 'none';
       nextBtn.style.display = 'none';
       pagination.style.display = 'none';
-      viewAllBtn.textContent = 'View less';
+      viewAllBtn.textContent = texts.viewLessLabel;
     } else {
       prevBtn.style.display = '';
       nextBtn.style.display = '';
       pagination.style.display = '';
-      viewAllBtn.textContent = 'View all';
+      viewAllBtn.textContent = texts.viewAllLabel;
       currentIndex = 0;
       createPagination();
       updateTrack();
@@ -956,6 +1068,15 @@ export default async function decorate(block) {
     currentIndex = Math.min(currentIndex, getMaxIndex());
     createPagination();
     updateTrack();
+  });
+
+  // Universal Editor: selecting a category item shows its tab
+  block.addEventListener('aue:ui-select', (e) => {
+    if (!e.detail?.selected) return;
+    const tab = e.target.closest?.('.recipe-category-tab');
+    if (!tab || !nav.contains(tab)) return;
+    const idx = [...nav.children].indexOf(tab);
+    if (idx >= 0) activateTab(idx);
   });
 
   renderTabs();

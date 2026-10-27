@@ -46,6 +46,19 @@ export function moveInstrumentation(from, to) {
   );
 }
 
+/**
+ * Move the instrumentation of an authored cell, and of the field elements inside it,
+ * to the element that replaces it. Use when a block reads a single-field cell's value
+ * into a newly created element.
+ * @param {Element} cell the authored cell
+ * @param {Element} to the element that now shows the cell's value
+ */
+export function moveCellInstrumentation(cell, to) {
+  if (!cell || !to) return;
+  moveInstrumentation(cell, to);
+  cell.querySelectorAll('[data-aue-prop], [data-richtext-prop]').forEach((el) => moveInstrumentation(el, to));
+}
+
 if (window.trustedTypes && window.trustedTypes.createPolicy) {
   const innerTT = window.trustedTypes.createPolicy('tt-inner', {
     createHTML: (s) => s,

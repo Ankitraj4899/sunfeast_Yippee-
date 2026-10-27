@@ -1,3 +1,5 @@
+import { moveInstrumentation } from '../../scripts/scripts.js';
+
 function normalizeYouTubeUrl(url) {
   if (!url) return '';
   const trimmed = url.trim();
@@ -306,10 +308,12 @@ export default function decorate(block) {
 
   // Extract video URL
   let videoUrl = '';
+  let videoLink = null;
   if (mainCell) {
     const link = mainCell.querySelector('a');
     if (link && link.href) {
       videoUrl = link.href;
+      videoLink = link;
     } else {
       const text = mainCell.textContent.trim();
       if (text.startsWith('http://') || text.startsWith('https://')) {
@@ -323,6 +327,7 @@ export default function decorate(block) {
     const fallbackLink = block.querySelector('a');
     if (fallbackLink && fallbackLink.href) {
       videoUrl = fallbackLink.href;
+      videoLink = fallbackLink;
     }
   }
 
@@ -371,6 +376,16 @@ export default function decorate(block) {
 
   playButton.append(playIcon);
   banner.append(mediaWrapper, playButton);
+
+  // Universal Editor: the pictures are moved (they keep their own instrumentation);
+  // the video link is dropped, so the play button carries the video field
+  if (videoLink) {
+    const linkWrapper = videoLink.closest('p');
+    if (linkWrapper && !linkWrapper.querySelector('picture, img')) {
+      moveInstrumentation(linkWrapper, playButton);
+    }
+    moveInstrumentation(videoLink, playButton);
+  }
 
   const triggerVideo = () => {
     if (videoUrl) {

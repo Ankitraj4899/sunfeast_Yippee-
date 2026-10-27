@@ -167,6 +167,57 @@
     ]
   },
   {
+    "id": "cards",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "heading",
+        "label": "Heading",
+        "description": "Shown between the two stars above the tabs",
+        "value": "YiPPee!'s Noodle Range"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "tabOneLabel",
+        "label": "First Tab Label",
+        "value": "Instant Noodles"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "tabTwoLabel",
+        "label": "Second Tab Label",
+        "value": "Cup Noodles"
+      },
+      {
+        "component": "text",
+        "valueType": "number",
+        "name": "firstTabCount",
+        "label": "Cards in First Tab",
+        "description": "How many cards (from the top) belong to the first tab; the remaining cards belong to the second tab",
+        "value": 4
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "viewAllLabel",
+        "label": "View All Button Label",
+        "description": "Label of the button that expands the first tab to show all its cards",
+        "value": "View All"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "viewLessLabel",
+        "label": "View Less Button Label",
+        "description": "Label of the same button while all cards are shown",
+        "value": "View Less"
+      }
+    ]
+  },
+  {
     "id": "card",
     "fields": [
       {
@@ -175,7 +226,7 @@
         "name": "image",
         "label": "Image",
         "multi": false,
-        "description": "The first 4 cards show under \"Instant Noodles\", the next 2 under \"Cup Noodles\""
+        "description": "Cards belong to the first tab up to the block's \"Cards in First Tab\" count; the rest belong to the second tab"
       },
       {
         "component": "text",
@@ -246,6 +297,43 @@
     ]
   },
   {
+    "id": "creativity",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "heading",
+        "label": "Heading",
+        "description": "Shown between the two stars above the videos",
+        "value": "Get Creative With Us"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "subtitle",
+        "label": "Subtitle",
+        "description": "Line shown under the heading",
+        "value": "Take a look at our DIY Videos and upcycle waste"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "viewAllLabel",
+        "label": "View All Label",
+        "description": "Button label that shows all videos in a grid",
+        "value": "View All"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "viewLessLabel",
+        "label": "View Less Label",
+        "description": "Button label shown while all videos are visible",
+        "value": "View Less"
+      }
+    ]
+  },
+  {
     "id": "creativity-item",
     "fields": [
       {
@@ -269,15 +357,32 @@
         "component": "aem-content",
         "name": "logoUrl",
         "label": "Logo URL",
+        "value": "https://s7ap1.scene7.com/is/image/itcportalprod/Yippee-itc-logo-updated-5?fmt=webp-alpha",
         "description": "Logo image URL, e.g. a Scene7 image"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "logoAltLabel",
+        "label": "Logo alt text",
+        "value": "Sunfeast YiPPee! & ITC Logo",
+        "description": "Text alternative for the logo image"
       },
       {
         "component": "richtext",
         "valueType": "string",
         "name": "copyright",
         "label": "Copyright",
-        "value": "",
-        "description": "Must contain the © symbol; may include an \"ITC Portal\" link"
+        "value": "<p><a href=\"https://www.itcportal.com\">ITC Portal</a></p><p>© 2026 YiPPee!. All Rights Reserved.</p>",
+        "description": "The first link (e.g. \"ITC Portal\") is shown before the copyright text; the text should contain the © symbol"
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "socials",
+        "label": "Social links",
+        "value": "<p><a href=\"https://www.instagram.com/sunfeast_yippee/\">Instagram</a></p><p><a href=\"https://www.facebook.com/SunfeastYiPPee/\">Facebook</a></p><p><a href=\"https://www.youtube.com/@SunfeastYiPPee\">YouTube</a></p><p><a href=\"https://twitter.com/SunfeastYiPPee\">X</a></p>",
+        "description": "One link per social network. Instagram, Facebook, YouTube and X/Twitter links get their icon automatically (by host name); the link text is used as the accessible label"
       }
     ]
   },
@@ -311,28 +416,31 @@
         "valueType": "string",
         "name": "title",
         "label": "Title",
-        "value": "",
-        "description": "Must start with # or contain \"YiPPeelicious\", e.g. #YiPPeelicious"
+        "value": "#YiPPeelicious",
+        "description": "Hashtag heading (the decorative stars are added automatically; a leading # is added if missing). Leave empty to use the default."
       },
       {
         "component": "text",
         "valueType": "string",
         "name": "subtitle",
         "label": "Subtitle",
-        "value": "",
-        "description": "Must contain \"upload\", \"moments\" or \"tag us\""
+        "value": "Upload your YiPPee! moments and tag us to get featured in our website",
+        "description": "Text below the title. Leave empty to use the default."
       },
       {
         "component": "aem-content",
         "name": "link",
-        "label": "Button Link"
+        "label": "Button Link",
+        "value": "#",
+        "description": "Target of the button below the grid. Leave empty to use #."
       },
       {
         "component": "text",
         "valueType": "string",
         "name": "linkText",
-        "label": "Button Text",
-        "value": ""
+        "label": "Button Label",
+        "value": "Join us",
+        "description": "Text of the button. Leave empty to use the default."
       }
     ]
   },
@@ -344,6 +452,35 @@
         "name": "imageUrl",
         "label": "Image URL",
         "description": "Image URL, e.g. a Scene7 image"
+      }
+    ]
+  },
+  {
+    "id": "pasta",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "heading",
+        "label": "Heading",
+        "description": "Shown between the two stars above the products",
+        "value": "YiPPee!'s Pasta Range"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "viewMoreLabel",
+        "label": "View More Button Label",
+        "description": "Label of the button that shows all products",
+        "value": "View More"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "viewLessLabel",
+        "label": "View Less Button Label",
+        "description": "Label of the same button while all products are shown",
+        "value": "View Less"
       }
     ]
   },
@@ -367,6 +504,55 @@
     ]
   },
   {
+    "id": "recipe-carousel",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "heading",
+        "label": "Heading",
+        "value": "YiPPee! With a Twist!",
+        "description": "Main heading. The decorative stars are added automatically"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "subtitle",
+        "label": "Subtitle",
+        "value": "Explore all the new and exciting ways you can make your YiPPee! Noodles and Pasta"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "recipesHeading",
+        "label": "Recipes heading",
+        "value": "Recipes",
+        "description": "Heading above the recipe cards"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "viewAllLabel",
+        "label": "View all button label",
+        "value": "View all"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "viewLessLabel",
+        "label": "View less button label",
+        "value": "View less",
+        "description": "Shown on the button while all recipes are expanded"
+      },
+      {
+        "component": "aem-content",
+        "name": "viewAllLink",
+        "label": "View all target",
+        "description": "Optional. When set, the View all button opens this page instead of expanding the recipe list"
+      }
+    ]
+  },
+  {
     "id": "recipe-category",
     "fields": [
       {
@@ -375,7 +561,7 @@
         "name": "category",
         "label": "Category",
         "value": "",
-        "description": "Only used when the recipe index is not available"
+        "description": "Tab label. Recipes whose page \"category\" metadata matches this name are taken from the recipe index (/query-index.json)"
       },
       {
         "component": "richtext",
@@ -384,6 +570,14 @@
         "label": "Recipes",
         "value": "",
         "description": "One image link per recipe. Only used when the recipe index (/query-index.json) is not available"
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "icon",
+        "label": "Category icon",
+        "multi": false,
+        "description": "Optional. Defaults to the built-in icon for Appetizers, Breakfast, Snacks, Fancy Meal and Pasta"
       }
     ]
   },
@@ -462,28 +656,31 @@
         "valueType": "string",
         "name": "title",
         "label": "Title",
-        "value": "",
-        "description": "Must contain \"Better World\" or \"Take a look\""
+        "value": "Take A Look At The Better World",
+        "description": "Heading above the cards (the decorative stars are added automatically). Leave empty to use the default."
       },
       {
         "component": "text",
         "valueType": "string",
         "name": "subtitle",
         "label": "Subtitle",
-        "value": "",
-        "description": "Must start with \"Learn how\""
+        "value": "Learn how we are driving a change through the",
+        "description": "Text shown above the button. Leave empty to use the default."
       },
       {
         "component": "aem-content",
         "name": "link",
-        "label": "Button Link"
+        "label": "Button Link",
+        "value": "https://www.sunfeastyippee.com/better-world",
+        "description": "Target of the button. Leave empty to use https://www.sunfeastyippee.com/better-world."
       },
       {
         "component": "text",
         "valueType": "string",
         "name": "linkText",
-        "label": "Button Text",
-        "value": ""
+        "label": "Button Label",
+        "value": "YiPPee! Better World",
+        "description": "Text of the button. Leave empty to use the default."
       }
     ]
   },
@@ -514,7 +711,8 @@
         "valueType": "string",
         "name": "heading",
         "label": "Heading",
-        "value": ""
+        "value": "YiPPeeeeeeeeeeeeeeeeeeee!",
+        "description": "Big coloured heading. It is coloured by character position (4 black, 6 red, 7 yellow, rest white), tuned for \"YiPPeeeeeeeeeeeeeeeeeeee!\"."
       },
       {
         "component": "select",
@@ -541,7 +739,16 @@
         "valueType": "string",
         "name": "description",
         "label": "Description",
-        "value": ""
+        "value": "",
+        "description": "Intro paragraph below the heading."
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "subheading",
+        "label": "Subheading",
+        "value": "Sunfeast Yippee – Quick & Tasty Instant Noodles & Pasta",
+        "description": "Centered heading shown above the coloured banner. Leave empty to use the default."
       }
     ]
   }
