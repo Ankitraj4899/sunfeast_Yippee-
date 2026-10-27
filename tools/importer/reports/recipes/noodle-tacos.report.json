@@ -1,0 +1,11 @@
+{
+  "status": "success",
+  "url": "https://main--sunfeast-yippee--ankitraj4899.aem.live/recipes/noodle-tacos.plain.html",
+  "path": "recipes/noodle-tacos",
+  "timestamp": "2026-10-27T17:26:40.905Z",
+  "title": "",
+  "template": "recipe",
+  "blocks": [
+    "recipe-info"
+  ]
+}

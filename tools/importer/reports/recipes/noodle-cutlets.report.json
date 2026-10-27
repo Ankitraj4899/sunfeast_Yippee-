@@ -1,0 +1,11 @@
+{
+  "status": "success",
+  "url": "https://main--sunfeast-yippee--ankitraj4899.aem.live/recipes/noodle-cutlets.plain.html",
+  "path": "recipes/noodle-cutlets",
+  "timestamp": "2026-10-27T17:25:52.437Z",
+  "title": "",
+  "template": "recipe",
+  "blocks": [
+    "recipe-info"
+  ]
+}

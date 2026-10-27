@@ -1,0 +1,11 @@
+{
+  "status": "success",
+  "url": "https://main--sunfeast-yippee--ankitraj4899.aem.live/recipes/noodle-stir-fry.plain.html",
+  "path": "recipes/noodle-stir-fry",
+  "timestamp": "2026-10-27T17:26:36.629Z",
+  "title": "",
+  "template": "recipe",
+  "blocks": [
+    "recipe-info"
+  ]
+}
