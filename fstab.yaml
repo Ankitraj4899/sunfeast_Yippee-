@@ -1,0 +1,5 @@
+mountpoints:
+  /:
+    url: "https://author-pXXXXX-eYYYYY.adobeaemcloud.com/bin/franklin.delivery/Ankitraj4899/sunfeast_Yippee-/main"
+    type: "markup"
+    suffix: ".html"

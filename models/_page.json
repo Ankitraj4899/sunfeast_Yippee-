@@ -1,0 +1,49 @@
+{
+  "models": [
+    {
+      "id": "page-metadata",
+      "fields": [
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "jcr:title",
+          "label": "Title"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "jcr:description",
+          "label": "Description"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "keywords",
+          "multi": true,
+          "label": "Keywords"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "category",
+          "label": "Recipe Category",
+          "description": "Used by the recipe carousel to group recipes, e.g. Appetizers, Breakfast, Snacks, Fancy Meal, Pasta"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "duration",
+          "label": "Duration",
+          "description": "e.g. 30 mins"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "cooktime",
+          "label": "Cook Time",
+          "description": "e.g. 15 Mins"
+        }
+      ]
+    }
+  ]
+}
