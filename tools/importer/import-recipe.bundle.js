@@ -77,6 +77,17 @@ var CustomImportScript = (() => {
 
   // tools/importer/transformers/eds-source.js
   var PLACEHOLDER_DESCRIPTION = "Use this template repository as the starting point for new AEM projects.";
+  var AEM_SITE_ROOT = "/content/sunfeast-yippee";
+  function toAemPagePaths(element) {
+    element.querySelectorAll('a[href^="/"]').forEach((a) => {
+      const href = a.getAttribute("href");
+      if (href.startsWith("//") || href.startsWith(AEM_SITE_ROOT)) return;
+      const [path, rest = ""] = href.split(/(?=[?#])/);
+      if (/\/media_|\.[a-z0-9]{2,5}$/i.test(path)) return;
+      const page = path.endsWith("/") ? `${path}index` : path;
+      a.setAttribute("href", `${AEM_SITE_ROOT}${page}${rest}`);
+    });
+  }
   function sourcePageUrl(originalURL) {
     const url = new URL(originalURL);
     url.pathname = url.pathname.replace(/\.plain\.html$/, "").replace(/\/index$/, "/");
@@ -136,6 +147,15 @@ var CustomImportScript = (() => {
     var _a;
     const { document } = payload;
     const originalURL = ((_a = payload.params) == null ? void 0 : _a.originalURL) || payload.url;
+    if (hookName === "onLoad") {
+      element.querySelectorAll("a[href]").forEach((a) => {
+        const parent = a.parentElement;
+        if (!parent || parent.tagName === "P" || parent.querySelectorAll(":scope > a").length < 2) return;
+        const p = document.createElement("p");
+        a.replaceWith(p);
+        p.append(a);
+      });
+    }
     if (hookName === "beforeTransform") {
       element.querySelectorAll("span.icon").forEach((icon) => {
         const name = [...icon.classList].find((c) => c.startsWith("icon-"));
@@ -146,6 +166,7 @@ var CustomImportScript = (() => {
         section.before(document.createElement("hr"));
       });
     }
+    if (hookName === "afterTransform") toAemPagePaths(element);
     if (hookName === "afterTransform" && originalURL) {
       const source = readSourceHead(originalURL);
       const metadata = source ? buildMetadata(element, document, source) : null;
@@ -216,6 +237,10 @@ var CustomImportScript = (() => {
     return pageBlocks;
   }
   var import_recipe_default = {
+    // runs before html2md preprocesses the page
+    onLoad: ({ document }) => {
+      executeTransformers("onLoad", document.body, { document, params: {} });
+    },
     transform: (payload) => {
       const { document, url, params } = payload;
       const main = document.body;
