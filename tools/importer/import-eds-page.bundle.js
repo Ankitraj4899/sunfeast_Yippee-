@@ -772,7 +772,7 @@ var CustomImportScript = (() => {
 
   // tools/importer/transformers/eds-source.js
   var PLACEHOLDER_DESCRIPTION = "Use this template repository as the starting point for new AEM projects.";
-  var AEM_SITE_ROOT = "/content/sunfeast-yippee";
+  var AEM_SITE_ROOT = "/content/sunfeast_Yippee-";
   function toAemPagePaths(element) {
     element.querySelectorAll('a[href^="/"]').forEach((a) => {
       const href = a.getAttribute("href");
