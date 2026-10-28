@@ -588,6 +588,55 @@ function placeholderRecipes(catName) {
   }));
 }
 
+/**
+ * The AEM site root (e.g. /content/sunfeast_Yippee-) when the page is rendered by
+ * AEM Author (Universal Editor), where /query-index.json does not exist.
+ */
+function aemAuthorSiteRoot() {
+  if (!window.location.hostname.endsWith('.adobeaemcloud.com')) return null;
+  const match = window.location.pathname.match(/^\/content\/[^/.]+/);
+  return match ? match[0] : null;
+}
+
+/**
+ * Lists the recipe pages of the AEM site with the query builder (same origin, the
+ * author's own session) in the shape of query-index.json rows.
+ */
+async function fetchAuthorRecipes(siteRoot) {
+  const recipesRoot = `${siteRoot}/recipes`;
+  const params = new URLSearchParams({
+    path: recipesRoot,
+    type: 'cq:Page',
+    'p.limit': '-1',
+    'p.hits': 'full',
+    'p.nodedepth': '2',
+  });
+  const res = await fetch(`/bin/querybuilder.json?${params}`);
+  if (!res.ok) return [];
+  const { hits = [] } = await res.json();
+  return hits
+    .filter((hit) => hit['jcr:path'] && hit['jcr:path'] !== recipesRoot)
+    .map((hit) => {
+      const props = hit['jcr:content'] || {};
+      return {
+        path: `${hit['jcr:path']}.html`,
+        title: props['jcr:title'] || '',
+        description: props['jcr:description'] || '',
+        category: props.category || '',
+        duration: props.duration || '',
+        cookTime: props.cooktime || '',
+        image: props.image?.fileReference || '',
+      };
+    });
+}
+
+async function fetchIndexRecipes(jsonLink) {
+  const res = await fetch(jsonLink);
+  if (!res.ok) return [];
+  const json = await res.json();
+  return json.data || json;
+}
+
 export default async function decorate(block) {
   const { config, itemRows } = readRows(block);
   const texts = {};
@@ -597,20 +646,20 @@ export default async function decorate(block) {
   const viewAllHref = cellHref(config.viewAllLink);
   const categoriesData = [];
 
-  // 1. Check if authored link specifies an index or default to /query-index.json
-  const jsonLink = block.querySelector('a[href$=".json"]')?.href || '/query-index.json';
+  // 1. Recipes come from the authored index link, else /query-index.json; on AEM
+  // Author, where there is no index, from the site's recipe pages
+  const authoredJsonLink = block.querySelector('a[href$=".json"]')?.href;
+  const authorSiteRoot = authoredJsonLink ? null : aemAuthorSiteRoot();
 
   let indexRecipes = [];
   try {
-    const res = await fetch(jsonLink);
-    if (res.ok) {
-      const json = await res.json();
-      const data = json.data || json;
-      if (Array.isArray(data) && data.length > 0) {
-        indexRecipes = data.filter((item) => (
-          (item.path && item.path.includes('/recipes')) || item.category || item.duration
-        ));
-      }
+    const data = authorSiteRoot
+      ? await fetchAuthorRecipes(authorSiteRoot)
+      : await fetchIndexRecipes(authoredJsonLink || '/query-index.json');
+    if (Array.isArray(data) && data.length > 0) {
+      indexRecipes = data.filter((item) => (
+        (item.path && item.path.includes('/recipes')) || item.category || item.duration
+      ));
     }
   } catch (err) {
     // Fallback gracefully

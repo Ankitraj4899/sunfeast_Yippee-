@@ -1,0 +1,11 @@
+{
+  "status": "success",
+  "url": "https://main--sunfeast-yippee--ankitraj4899.aem.live/pages/index.plain.html",
+  "path": "pages/index",
+  "timestamp": "2026-10-28T05:03:22.378Z",
+  "title": "",
+  "template": "product-listing",
+  "blocks": [
+    "sunfeast-yippee-products"
+  ]
+}

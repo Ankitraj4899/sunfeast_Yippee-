@@ -94,7 +94,8 @@
   {
     "id": "sunfeast-yippee-products",
     "components": [
-      "product-category"
+      "product-category",
+      "product"
     ]
   },
   {

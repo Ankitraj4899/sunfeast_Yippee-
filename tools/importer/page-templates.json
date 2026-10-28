@@ -108,6 +108,22 @@
         }
       ],
       "sections": []
+    },
+    {
+      "name": "product-listing",
+      "description": "Product listing page (/pages/): breadcrumb, title, category tabs and product cards from the sunfeast-yippee-products block; imported from its authored .plain.html into AEM authoring",
+      "urls": [
+        "https://main--sunfeast-yippee--ankitraj4899.aem.live/pages/index.plain.html"
+      ],
+      "blocks": [
+        {
+          "name": "sunfeast-yippee-products",
+          "instances": [
+            "div.sunfeast-yippee-products"
+          ]
+        }
+      ],
+      "sections": []
     }
   ]
 }
