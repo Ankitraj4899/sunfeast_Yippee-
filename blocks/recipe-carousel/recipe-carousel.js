@@ -589,7 +589,7 @@ function placeholderRecipes(catName) {
 }
 
 /**
- * The AEM site root (e.g. /content/sunfeast-yippee) when the page is rendered by
+ * The AEM site root (e.g. /content/sunfeast_Yippee-) when the page is rendered by
  * AEM Author (Universal Editor), where /query-index.json does not exist.
  */
 function aemAuthorSiteRoot() {

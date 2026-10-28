@@ -22,7 +22,7 @@
 const PLACEHOLDER_DESCRIPTION = 'Use this template repository as the starting point for new AEM projects.';
 
 // AEM site root, as mapped to / in paths.json / the site's path mapping
-const AEM_SITE_ROOT = '/content/sunfeast-yippee';
+const AEM_SITE_ROOT = '/content/sunfeast_Yippee-';
 
 /**
  * Links to the site's own pages ("/pages/", "/recipes/x", "/") become AEM page

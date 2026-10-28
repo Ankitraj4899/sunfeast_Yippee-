@@ -1,10 +1,10 @@
 {
   "mappings": [
-    "/content/sunfeast-yippee/:/",
-    "/content/sunfeast-yippee/configuration:/.helix/config.json",
-    "/content/sunfeast-yippee/metadata:/metadata.json"
+    "/content/sunfeast_Yippee-/:/",
+    "/content/sunfeast_Yippee-/configuration:/.helix/config.json",
+    "/content/sunfeast_Yippee-/metadata:/metadata.json"
   ],
   "includes": [
-    "/content/sunfeast-yippee/"
+    "/content/sunfeast_Yippee-/"
   ]
 }
