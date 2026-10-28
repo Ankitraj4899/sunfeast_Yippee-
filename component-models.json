@@ -603,15 +603,48 @@
     ]
   },
   {
+    "id": "sunfeast-yippee-products",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "title",
+        "label": "Page Title",
+        "value": "Sunfeast Yippee Products"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "homeLabel",
+        "label": "Breadcrumb Home Label",
+        "value": "Home Page >"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "currentLabel",
+        "label": "Breadcrumb Current Page Label",
+        "value": "Product Listing"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "buyNowLabel",
+        "label": "Buy Now Button Label",
+        "value": "Buy Now"
+      }
+    ]
+  },
+  {
     "id": "product-category",
     "fields": [
       {
         "component": "text",
         "valueType": "string",
-        "name": "name",
+        "name": "categoryName",
         "label": "Category Name",
         "value": "",
-        "description": "e.g. Noodles, Pasta"
+        "description": "Shown on the category tab, e.g. Noodles, Pasta. Add Product items after it for its products."
       },
       {
         "component": "richtext",
@@ -619,14 +652,35 @@
         "name": "content_text",
         "label": "Headings",
         "value": "",
-        "description": "Range heading (containing \"Explore\" or \"Range\") and a sub heading"
-      },
+        "description": "Range heading (e.g. Explore Our Noodles Range) and a sub heading"
+      }
+    ]
+  },
+  {
+    "id": "product",
+    "fields": [
       {
         "component": "reference",
         "valueType": "string",
-        "name": "content_images",
-        "label": "Product Images",
-        "multi": true
+        "name": "image",
+        "label": "Product Image",
+        "multi": false,
+        "description": "Belongs to the Product Category above it"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Alt Text",
+        "value": ""
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "productName",
+        "label": "Product Name",
+        "value": "",
+        "description": "Shown in the Buy Now window; leave empty to use the alt text"
       }
     ]
   },

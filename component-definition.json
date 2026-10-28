@@ -380,7 +380,12 @@
                 "resourceType": "core/franklin/components/block/v1/block",
                 "template": {
                   "name": "Sunfeast Yippee Products",
-                  "filter": "sunfeast-yippee-products"
+                  "model": "sunfeast-yippee-products",
+                  "filter": "sunfeast-yippee-products",
+                  "title": "Sunfeast Yippee Products",
+                  "homeLabel": "Home Page >",
+                  "currentLabel": "Product Listing",
+                  "buyNowLabel": "Buy Now"
                 }
               }
             }
@@ -396,6 +401,21 @@
                 "template": {
                   "name": "Product Category",
                   "model": "product-category"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Product",
+          "id": "product",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block/item",
+                "template": {
+                  "name": "Product",
+                  "model": "product"
                 }
               }
             }

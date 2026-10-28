@@ -122,6 +122,11 @@ function findBlocksOnPage(document, template) {
 }
 
 export default {
+  // runs before html2md preprocesses the page
+  onLoad: ({ document }) => {
+    executeTransformers('onLoad', document.body, { document, params: {} });
+  },
+
   transform: (payload) => {
     const { document, url, params } = payload;
     const main = document.body;

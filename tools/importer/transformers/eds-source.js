@@ -7,16 +7,38 @@
  * <div class="block-name"> elements inside them. .plain.html has no <head>,
  * so page metadata is read from the rendered page.
  *
+ * onLoad:
+ *  - keeps neighbouring links with the same href apart (see below)
  * beforeTransform:
  *  - turns icon spans back into :icon: notation
  *  - separates sections with <hr> so section breaks survive html2md
  * afterTransform:
+ *  - rewrites links to the site's own pages to AEM page paths
  *  - appends the page Metadata block: Title, Description, image, category,
  *    duration, cooktime (the fields of the page model)
  */
 
 // default description of the project template; not real page content
 const PLACEHOLDER_DESCRIPTION = 'Use this template repository as the starting point for new AEM projects.';
+
+// AEM site root, as mapped to / in paths.json / the site's path mapping
+const AEM_SITE_ROOT = '/content/sunfeast-yippee';
+
+/**
+ * Links to the site's own pages ("/pages/", "/recipes/x", "/") become AEM page
+ * paths, so AEM resolves them on author (…/x.html) and maps them back to the
+ * public path when publishing. Media, files and anchors are left alone.
+ */
+function toAemPagePaths(element) {
+  element.querySelectorAll('a[href^="/"]').forEach((a) => {
+    const href = a.getAttribute('href');
+    if (href.startsWith('//') || href.startsWith(AEM_SITE_ROOT)) return;
+    const [path, rest = ''] = href.split(/(?=[?#])/);
+    if (/\/media_|\.[a-z0-9]{2,5}$/i.test(path)) return;
+    const page = path.endsWith('/') ? `${path}index` : path;
+    a.setAttribute('href', `${AEM_SITE_ROOT}${page}${rest}`);
+  });
+}
 
 function sourcePageUrl(originalURL) {
   const url = new URL(originalURL);
@@ -88,6 +110,19 @@ export default function transform(hookName, element, payload) {
   const { document } = payload;
   const originalURL = payload.params?.originalURL || payload.url;
 
+  // onLoad runs before html2md's own preprocessing, which merges neighbouring
+  // links with the same href (e.g. footer links that all point to "/") into one
+  // link; giving each such link its own paragraph keeps them separate.
+  if (hookName === 'onLoad') {
+    element.querySelectorAll('a[href]').forEach((a) => {
+      const parent = a.parentElement;
+      if (!parent || parent.tagName === 'P' || parent.querySelectorAll(':scope > a').length < 2) return;
+      const p = document.createElement('p');
+      a.replaceWith(p);
+      p.append(a);
+    });
+  }
+
   if (hookName === 'beforeTransform') {
     element.querySelectorAll('span.icon').forEach((icon) => {
       const name = [...icon.classList].find((c) => c.startsWith('icon-'));
@@ -99,6 +134,8 @@ export default function transform(hookName, element, payload) {
       section.before(document.createElement('hr'));
     });
   }
+
+  if (hookName === 'afterTransform') toAemPagePaths(element);
 
   if (hookName === 'afterTransform' && originalURL) {
     const source = readSourceHead(originalURL);

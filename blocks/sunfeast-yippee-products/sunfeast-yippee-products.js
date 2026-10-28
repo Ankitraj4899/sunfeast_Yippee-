@@ -1,3 +1,5 @@
+import { moveInstrumentation, moveCellInstrumentation } from '../../scripts/scripts.js';
+
 function createSparkleIcon() {
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('class', 'sparkle-icon');
@@ -206,71 +208,118 @@ function openBuyNowModal(productName) {
   window.addEventListener('keydown', onKeyDown);
 }
 
-export default function decorate(block) {
-  const rows = [...block.children];
-  const categories = [];
+// Block-level fields, in model order: one leading row (one cell) each.
+const CONFIG_FIELDS = ['title', 'homeLabel', 'currentLabel', 'buyNowLabel'];
 
-  rows.forEach((row) => {
+const DEFAULT_TEXTS = {
+  title: 'Sunfeast Yippee Products',
+  homeLabel: 'Home Page >',
+  currentLabel: 'Product Listing',
+  buyNowLabel: 'Buy Now',
+};
+
+const hasImage = (el) => !!el?.querySelector('picture, img');
+
+/**
+ * Splits the rows into block-level field cells and item rows. Content authored
+ * before the block had fields (the live site) has no field rows.
+ */
+function readRows(block) {
+  const rows = [...block.children].filter((row) => row.children.length > 0);
+  const config = {};
+  let count = 0;
+  while (count < CONFIG_FIELDS.length && count < rows.length
+    && rows[count].children.length === 1 && !hasImage(rows[count])) {
+    config[CONFIG_FIELDS[count]] = rows[count].firstElementChild;
+    count += 1;
+  }
+  return { config, itemRows: rows.slice(count) };
+}
+
+function readHeadings(contentCol, catName) {
+  let rangeHeading = '';
+  let subHeading = '';
+  const textNodes = [...(contentCol?.querySelectorAll('h1, h2, h3, h4, h5, h6, p') || [])].filter(
+    (el) => !el.querySelector('picture, img') && el.textContent.trim().length > 0,
+  );
+  textNodes.forEach((node) => {
+    const text = node.textContent.trim();
+    if (!rangeHeading && (/explore/i.test(text) || /range/i.test(text))) {
+      rangeHeading = text;
+    } else if (!subHeading && text !== rangeHeading) {
+      subHeading = text;
+    }
+  });
+  return { rangeHeading: rangeHeading || `Explore Our ${catName} Range`, subHeading };
+}
+
+function toProduct(pic, cat, idx, row = null, nameCell = null) {
+  const parentLink = pic.closest('a');
+  const nextLink = pic.parentElement?.nextElementSibling?.querySelector('a')
+    || pic.parentElement?.querySelector('a');
+  const targetLink = parentLink?.href || nextLink?.href || 'https://itcstore.in/';
+
+  const img = pic.tagName.toLowerCase() === 'img' ? pic : pic.querySelector('img');
+  const altText = img?.alt?.trim() || '';
+  const imgSrc = img?.currentSrc || img?.src || '';
+  const absoluteImageUrl = imgSrc ? new URL(imgSrc, window.location.href).href : '';
+  const authoredName = nameCell?.textContent.trim();
+
+  return {
+    picture: pic,
+    name: authoredName || resolveProductName(altText, imgSrc, cat.name, cat.subHeading, idx),
+    imageUrl: absoluteImageUrl,
+    link: targetLink,
+    row,
+  };
+}
+
+/**
+ * Category items (name | headings) followed by Product items (image | name).
+ * Older content keeps the product pictures inside the category's headings cell.
+ */
+function readCategories(itemRows) {
+  const categories = [];
+  itemRows.forEach((row) => {
     const cols = [...row.children];
-    if (cols.length === 0) return;
+    if (hasImage(cols[0])) {
+      // Product item: belongs to the category above it
+      if (!categories.length) {
+        categories.push({
+          name: 'Products', rangeHeading: 'Explore Our Products Range', subHeading: '', products: [],
+        });
+      }
+      const cat = categories[categories.length - 1];
+      const pic = cols[0].querySelector('picture') || cols[0].querySelector('img');
+      cat.products.push(toProduct(pic, cat, cat.products.length, row, cols[1]));
+      return;
+    }
 
     const catName = cols[0]?.textContent?.trim() || 'Products';
     const contentCol = cols[1] || cols[0];
-
-    let rangeHeading = '';
-    let subHeading = '';
-
-    const textNodes = [...contentCol.querySelectorAll('h1, h2, h3, h4, h5, h6, p')].filter(
-      (el) => !el.querySelector('picture, img') && el.textContent.trim().length > 0,
-    );
-
-    textNodes.forEach((node) => {
-      const text = node.textContent.trim();
-      if (!rangeHeading && (/explore/i.test(text) || /range/i.test(text))) {
-        rangeHeading = text;
-      } else if (!subHeading && text !== rangeHeading) {
-        subHeading = text;
-      }
-    });
-
-    if (!rangeHeading) {
-      rangeHeading = `Explore Our ${catName} Range`;
-    }
-
-    const pictures = [...contentCol.querySelectorAll('picture')];
-    if (pictures.length === 0) {
-      const imgs = [...contentCol.querySelectorAll('img')];
-      imgs.forEach((img) => pictures.push(img));
-    }
-
-    const products = pictures.map((pic, idx) => {
-      const parentLink = pic.closest('a');
-      const nextLink = pic.parentElement?.nextElementSibling?.querySelector('a')
-        || pic.parentElement?.querySelector('a');
-      const targetLink = parentLink?.href || nextLink?.href || 'https://itcstore.in/';
-
-      const img = pic.tagName.toLowerCase() === 'img' ? pic : pic.querySelector('img');
-      const altText = img?.alt?.trim() || '';
-      const imgSrc = img?.currentSrc || img?.src || '';
-      const absoluteImageUrl = imgSrc ? new URL(imgSrc, window.location.href).href : '';
-
-      const prodName = resolveProductName(altText, imgSrc, catName, subHeading, idx);
-
-      return {
-        picture: pic,
-        name: prodName,
-        imageUrl: absoluteImageUrl,
-        link: targetLink,
-      };
-    });
-
-    categories.push({
+    const cat = {
       name: catName,
-      rangeHeading,
-      subHeading,
-      products,
-    });
+      ...readHeadings(contentCol, catName),
+      products: [],
+      row,
+      nameCell: cols[0],
+      contentCol,
+    };
+    const pictures = [...contentCol.querySelectorAll('picture')];
+    if (pictures.length === 0) pictures.push(...contentCol.querySelectorAll('img'));
+    pictures.forEach((pic) => cat.products.push(toProduct(pic, cat, cat.products.length)));
+    categories.push(cat);
   });
+  return categories;
+}
+
+export default function decorate(block) {
+  const { config, itemRows } = readRows(block);
+  const texts = {};
+  Object.keys(DEFAULT_TEXTS).forEach((name) => {
+    texts[name] = config[name]?.textContent.trim() || DEFAULT_TEXTS[name];
+  });
+  const categories = readCategories(itemRows);
 
   block.textContent = '';
 
@@ -278,15 +327,22 @@ export default function decorate(block) {
   const breadcrumb = document.createElement('nav');
   breadcrumb.className = 'product-breadcrumb';
   breadcrumb.setAttribute('aria-label', 'Breadcrumb');
-  breadcrumb.innerHTML = `
-    <a href="/" class="breadcrumb-pill">Home Page &gt;</a>
-    <span class="breadcrumb-pill active">Product Listing</span>
-  `;
+  const homeCrumb = document.createElement('a');
+  homeCrumb.href = '/';
+  homeCrumb.className = 'breadcrumb-pill';
+  homeCrumb.textContent = texts.homeLabel;
+  const currentCrumb = document.createElement('span');
+  currentCrumb.className = 'breadcrumb-pill active';
+  currentCrumb.textContent = texts.currentLabel;
+  moveCellInstrumentation(config.homeLabel, homeCrumb);
+  moveCellInstrumentation(config.currentLabel, currentCrumb);
+  breadcrumb.append(homeCrumb, currentCrumb);
 
   // Main Page Title
   const mainTitle = document.createElement('h1');
   mainTitle.className = 'product-main-title';
-  mainTitle.textContent = 'Sunfeast Yippee Products';
+  mainTitle.textContent = texts.title;
+  moveCellInstrumentation(config.title, mainTitle);
 
   // Category Quick Scroll Navigation
   const tabList = document.createElement('nav');
@@ -312,6 +368,9 @@ export default function decorate(block) {
     tabBtn.setAttribute('aria-label', `Scroll to ${cat.name}`);
     tabBtn.dataset.target = sectionId;
     tabBtn.textContent = cat.name;
+    // older one-cell rows hold everything in one cell; only split cells move
+    const splitCells = cat.contentCol !== cat.nameCell;
+    if (cat.nameCell && splitCells) moveCellInstrumentation(cat.nameCell, tabBtn);
     tabButtons.push(tabBtn);
     tabList.append(tabBtn);
 
@@ -319,6 +378,7 @@ export default function decorate(block) {
     const section = document.createElement('section');
     section.className = 'product-category-section';
     section.id = sectionId;
+    if (cat.row) moveInstrumentation(cat.row, section);
 
     // Range Heading with sparkles
     const headingWrap = document.createElement('div');
@@ -330,6 +390,7 @@ export default function decorate(block) {
     const rangeTitle = document.createElement('h2');
     rangeTitle.className = 'category-range-title';
     rangeTitle.textContent = cat.rangeHeading;
+    if (cat.contentCol && splitCells) moveCellInstrumentation(cat.contentCol, rangeTitle);
 
     headingWrap.append(leftSparkle, rangeTitle, rightSparkle);
     section.append(headingWrap);
@@ -341,15 +402,17 @@ export default function decorate(block) {
     cat.products.forEach((prod) => {
       const card = document.createElement('div');
       card.className = 'product-card';
+      if (prod.row) moveInstrumentation(prod.row, card);
 
       const imgWrap = document.createElement('div');
       imgWrap.className = 'product-card-image';
-      imgWrap.append(prod.picture.cloneNode(true));
+      // move the authored picture (keeps its editor instrumentation)
+      imgWrap.append(prod.picture);
 
       const buyBtn = document.createElement('button');
       buyBtn.type = 'button';
       buyBtn.className = 'product-buy-now-btn';
-      buyBtn.textContent = 'Buy Now';
+      buyBtn.textContent = texts.buyNowLabel;
       buyBtn.setAttribute('aria-label', `Buy Now ${prod.name}`);
 
       buyBtn.addEventListener('click', (e) => {
